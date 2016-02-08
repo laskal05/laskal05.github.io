@@ -3,3 +3,21 @@ This is my page.
 <textarea width="100" style="height: 500px;" id="t"></textarea>
 <label>s</label>
 <textarea width="100" style="height: 500px;" id="s"></textarea>
+<button onClick="getValue()">Get!</button>
+<script type="text/javascript">
+  function getValue() {
+    var count = 0;
+    var arr_t = document.getElementById('t').value.split('\n');
+    var arr_s = document.getElementById('s').value.split('\n');
+    arr_t.some(function(v, i) {
+      arr_s.some(function(v2, i2) {
+        if(v==v2) arr_t[i] = 'null';
+      });
+    });
+    for( var i = 0; i < arr_t.length; i++ ){
+      if(arr_t[i]=='null') count++;
+    }
+    console.log(arr_t);
+    console.log('common word : '+count);
+  }
+</script>
