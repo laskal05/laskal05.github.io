@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>キーボード推定？</title>
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap-theme.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h2>モバイルのキーボードの推定テスト</h2>
+      <hr>
+      <form type="get" action="#">
+        <input type="text">
+      </form>
+    </div>
+    <script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      /* タッチの開始時のイベント */
+      $('#hoge').bind('touchstart', function() {
+          event.preventDefault();                     // ページが動いたり、反応を止める（A タグなど）
+          this.pageX = event.changedTouches[0].pageX; // X 座標の位置
+          this.pageY = event.changedTouches[0].pageY; // Y 座標の位置
+          alert('start');
+      });
+      /* タッチしたまま動かしたときのイベント */
+      $('#hoge').bind('touchmove', function() {
+          event.preventDefault();                     // ページが動くのを止める
+          this.pageX = event.changedTouches[0].pageX; // X 座標の位置
+          this.pageY = event.changedTouches[0].pageY; // Y 座標の位置
+          alert('move');
+      });
+      /* タッチ状態から離れたときのイベント */
+      $('#hoge').bind('touchend', function() {
+          /* 終了処理が必要ならここに書く */
+          /* このイベントは、位置を取得できないので注意 */
+          alert('end');
+      });
+    </script>
+  </body>
+</html>
