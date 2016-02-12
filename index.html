@@ -26,19 +26,19 @@
         });
       });
       
-      /* タッチしたまま動かしたときのイベント */
-      $('#input').bind('touchmove', function() {
-          event.preventDefault();                     // ページが動くのを止める
-          this.pageX = event.changedTouches[0].pageX; // X 座標の位置
-          this.pageY = event.changedTouches[0].pageY; // Y 座標の位置
-          alert('move');
-      });
-      /* タッチ状態から離れたときのイベント */
-      $('#input').bind('touchend', function() {
-          /* 終了処理が必要ならここに書く */
-          /* このイベントは、位置を取得できないので注意 */
-          alert('end');
-      });
+      // /* タッチしたまま動かしたときのイベント */
+      // $('#input').bind('touchmove', function() {
+      //     event.preventDefault();                     // ページが動くのを止める
+      //     this.pageX = event.changedTouches[0].pageX; // X 座標の位置
+      //     this.pageY = event.changedTouches[0].pageY; // Y 座標の位置
+      //     alert('move');
+      // });
+      // /* タッチ状態から離れたときのイベント */
+      // $('#input').bind('touchend', function() {
+      //     /* 終了処理が必要ならここに書く */
+      //     /* このイベントは、位置を取得できないので注意 */
+      //     alert('end');
+      // });
     </script>
   </body>
 </html>
