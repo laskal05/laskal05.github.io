@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <style>
+      body {
+        background: #333;
+        color: #eee;
+      }
+      a:link, a:visited {
+        color: lightgreen;
+      }
+      input[type='file'] {
+        opacity: 0.2;
+        position: absolute;
+        left: 0; top: 0; width: 300px; height: 25px;
+        line-height: 20px;
+      }
+      #cloak {
+        position: absolute;
+        left: 0; top: 0; height: 25px;
+        line-height: 20px;
+        cursor: pointer;
+      }
+      label {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <button id=cloak>Download to...</button>
+    <input type="file" id="cloaked" webkitdirectory directory>
+  </body>
+  <script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+  <script type="text/javascript">
+    document.getElementById("cloaked").onchange = function(e) {
+      console.log(e);
+      console.log(e.target.files.length);
+      for( var i = 0, f; f = e.target.files[i]; ++i ) {
+        console.log("sending file with path: " +
+          f.webkitRelativePath + ", name: " + f.name);
+        fdata = new FormData();
+        fdata.append('path', f.webkitRelativePath);
+        fdata.append('name', f.name);
+        fdata.append('content', f);
+        var xhr = new XMLHttpRequest();
+        // xhr.open("POST", "http://localhost/upload", true);
+        // xhr.send(fdata);
+      }
+    };
+  </script>
+</html>
+
+

@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <style>
+      iframe {
+        position: absolute;
+        height: 100px;
+        width: 100px;
+      }   
+    </style>
+  </head>
+  <body>
+    <iframe id="outerObj" src="p126_2.html"></iframe>
+  </body>
+  <script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+  <script type="text/javascript">
+    $("body").mousemove(function(e) {
+      $("#outerObj").css('top', e.pageY-70);
+      $("#outerObj").css('left', e.pageX-50);
+    });
+  </script>
+</html>
+

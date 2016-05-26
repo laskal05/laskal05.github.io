@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      #link:visited { color: #FF0000; }
+    </style>
+  </head>
+  <body>
+    <a id="link" href="//localhost.com" target="_blank">clickme</a>
+  </body>
+  <script type="text/javascript">
+    var link = document.getElementById('link');
+    var color = document.defaultView.getComputedStyle(link, null)
+    console.log(color.getPropertyValue('color'));
+  </script>
+</html>
+
+
