@@ -1,0 +1,295 @@
+<html>
+<head>
+<!--
+  Code originally from: http://lcamtuf.coredump.cx/cachetime/
+  Code modified by Michele Orrù in order to run on every browser (Chrome/IE/Firefox/Opera/Safari)
+  without the need to call multiple files.
+
+  Check console messages for output.
+-->
+</head>
+<body>
+  <iframe id=f name=f height=20 width=200 style="opacity: 0.1" src="about:blank"></iframe>
+<script>
+
+// var iframe = document.createElement("iframe");
+// iframe.setAttribute("src", "about:blank");
+// iframe.setAttribute("id", "f");
+// iframe.style.width = "0px";
+// iframe.style.height = "0px";
+// iframe.style.opacity = "0";
+// iframe.style.visibility = "hidden";
+// document.body.appendChild(iframe);
+
+/*******************************
+ * SUB-MS TIMER IMPLEMENTATION *
+ *******************************/
+
+//Firefox
+if(navigator.userAgent.indexOf('Firefox/') > 0){
+    var cycles = 0;
+    var exec_next = null;
+
+    function timer_interrupt() {
+        cycles++;
+        if (exec_next) {
+            var cmd = exec_next;
+            exec_next = null;
+            cmd();
+        }
+    }
+
+    window.addEventListener('message', timer_interrupt, false);
+    function sched_call(fn) {
+        exec_next = fn;
+        window.postMessage('123', '*');
+    }
+}
+
+
+/****************
+ * SCANNED URLS *
+ ****************/
+
+var targets = [
+
+    { 'category': 'Social networks' },
+    { 'name': 'MySpace', 'urls': [ 'http://x.myspacecdn.com/modules/common/static/css/futuraglobal_kqj36l0b.css' ] },
+
+    { 'category': 'Content platforms' },
+    { 'name': 'Wikileaks', 'urls': [ 'http://wikileaks.org/squelettes/random.js' ] },
+
+    { 'category': 'Online media' },
+    { 'name': 'AboveTopSecret.com', 'urls': [ 'http://www.abovetopsecret.com/forum/ats-scripts.js' ] },
+
+    { 'category': 'Commerce' },
+    { 'name': 'eBay', 'urls': [ 'http://ir.ebaystatic.com/v4js/z/io/gbsozkl4ha54vasx4meo3qmtw.js' ] }
+];
+
+/*************************
+ * CONFIGURABLE SETTINGS *
+ *************************/
+var TIME_LIMIT = 0;
+var MAX_ATTEMPTS = 0;
+if(navigator.userAgent.indexOf('Firefox/') > 0){
+    TIME_LIMIT = 5;
+    MAX_ATTEMPTS = 2;
+}else{
+    if(navigator.userAgent.indexOf('MSIE') > 0){  // IE
+        TIME_LIMIT = 1;
+        MAX_ATTEMPTS = 1;
+    }else{  // chrome/opera
+        TIME_LIMIT = 3;
+        MAX_ATTEMPTS = 1;
+    }
+}
+
+/**********************
+ * MAIN STATE MACHINE *
+ **********************/
+
+var log_area;
+var target_off = 0;
+var attempt = 0;
+var confirmed_visited = false;
+
+var current_url, current_name;
+var wait_cycles;
+
+var frame_ready = false;
+var start, stop, urls;
+
+/* The frame points to about:blank. Initialize a new test, giving the
+ about:blank frame some time to fully load. */
+
+function perform_check() {
+
+    wait_cycles = 0;
+    if(navigator.userAgent.indexOf('Firefox/') > 0){
+        setTimeout(wait_for_read2, 1);
+    }else{
+        if(navigator.userAgent.indexOf('MSIE') > 0){  // IE
+            setTimeout(wait_for_read1, 0);
+        }else{  // chrome/opera
+            setTimeout(wait_for_read1, 1);
+        }
+    }
+}
+
+
+/* Confirm that about:blank is loaded correctly. */
+
+function wait_for_read1() {
+
+    if (wait_cycles++ > 100) {
+        alert('Something went wrong, sorry.');
+        return;
+    }
+
+    try {
+        if (frames['f'].location.href != 'about:blank') throw 1;
+
+        if(navigator.userAgent.indexOf('MSIE') > 0){  // IE
+            document.getElementById('f').src ='javascript:"<body onload=\'parent.frame_ready = true\'>"';
+            setTimeout(wait_for_read2, 0);
+        }else{
+            frames['f'].stop();
+            document.getElementById('f').src ='javascript:"<body onload=\'parent.frame_ready = true\'>"';
+            setTimeout(wait_for_read2, 1);
+        }
+    } catch (e) {
+        if(navigator.userAgent.indexOf('MSIE') > 0){  // IE
+            setTimeout(wait_for_read1, 0);
+        }else{
+            setTimeout(wait_for_read1, 1);
+        }
+    }
+}
+
+
+function wait_for_read2() {
+
+    if (wait_cycles++ > 100) {
+        alert('Something went wrong, sorry.');
+        return;
+    }
+
+    if (!frame_ready) {
+        if(navigator.userAgent.indexOf('MSIE') > 0){  // IE
+            setTimeout(wait_for_read2, 0);
+        }else{
+            setTimeout(wait_for_read2, 1);
+        }
+    } else {
+        if(navigator.userAgent.indexOf('MSIE') == -1){
+            frames['f'].stop();
+        }
+        setTimeout(navigate_to_target, 1);
+    }
+}
+
+
+
+/* Navigate the frame to the target URL. */
+
+function navigate_to_target() {
+
+    cycles = 0;
+
+    if(navigator.userAgent.indexOf('Firefox/') > 0){
+        sched_call(wait_for_noread);
+    }else{
+        if(navigator.userAgent.indexOf('MSIE') > 0){  // IE
+            setTimeout(wait_for_noread, 0);
+        }else{  // chrome/opera
+            setTimeout(wait_for_noread, 1);
+        }
+    }
+
+    urls++;
+    document.getElementById("f").src = current_url;
+
+}
+
+
+/* The browser is now trying to load the destination URL. Let's see if
+ we lose SOP access before we hit TIME_LIMIT. If yes, we have a cache
+ hit. If not, seems like cache miss. */
+
+function wait_for_noread() {
+
+    try {
+        if (frames['f'].location.href == undefined) throw 1;
+        if(navigator.userAgent.indexOf('Firefox/') > 0){
+            if (cycles >= TIME_LIMIT) {
+                maybe_test_next();
+                return;
+            }
+            sched_call(wait_for_noread);
+        }else{
+            if (cycles++ >= TIME_LIMIT) {
+                maybe_test_next();
+                return;
+            }
+            if(navigator.userAgent.indexOf('MSIE') > 0){  // IE
+                setTimeout(wait_for_noread, 0);
+            }else{
+                setTimeout(wait_for_noread, 1);
+            }
+        }
+    } catch (e) {
+        confirmed_visited = true;
+        maybe_test_next();
+    }
+}
+
+
+/* Just a logging helper. */
+
+function log_text(str, type, cssclass) {
+    console.log(str);
+}
+
+
+/* Decides what to do next. May schedule another attempt for the same target,
+ select a new target, or wrap up the scan. */
+
+function maybe_test_next() {
+
+    frame_ready = false;
+
+    //Firefox
+    if(navigator.userAgent.indexOf('Firefox/') > 0){
+        document.getElementById('f').src = 'data:text/html,<body onload="parent.frame_ready = true">';
+    }else{  //Chrome/Opera/IE
+        document.getElementById('f').src = 'about:blank';
+    }
+
+    if (target_off < targets.length) {
+
+        if (targets[target_off].category) {
+            log_text(targets[target_off].category + ':', 'p', 'category');
+            target_off++;
+        }
+
+
+        if (confirmed_visited) {
+            log_text('Visited: ' + current_name + ' [' + cycles + ':' + attempt + ']', 'li', 'visited');
+        }
+
+        if (confirmed_visited || attempt == MAX_ATTEMPTS * targets[target_off].urls.length) {
+
+            if (!confirmed_visited)
+                log_text('Not visited: ' + current_name + ' [' + cycles + '+]', 'li', 'not_visited');
+
+            confirmed_visited = false;
+            target_off++;
+            attempt = 0;
+            maybe_test_next();
+        } else {
+            current_url = targets[target_off].urls[attempt % targets[target_off].urls.length];
+            current_name = targets[target_off].name;
+            attempt++;
+            perform_check();
+        }
+    }
+}
+
+
+/* The handler for "run the test" button on the main page. Dispenses
+ advice, resets state if necessary. */
+
+function start_stuff() {
+    target_off = 0;
+    attempt = 0;
+    confirmed_visited = false;
+    st = (new Date()).getTime();
+    urls = 0;
+
+    maybe_test_next();
+}
+
+start_stuff();
+</script>
+</body>
+</html>

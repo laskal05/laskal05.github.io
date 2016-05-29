@@ -1,0 +1,31 @@
+<html>
+<head>
+</head>
+<body>
+<script>
+  //check if twitter was visited
+  //var url = "https://twitter.com/images/spinner.gif";
+  // linkedin
+  //var url = "http://static01.linkedin.com/scds/common/u/img/sprite/sprite_global_v6.png";
+  // walmrt
+  var url = "http://cdn.lst.fm/flatness/anonhome/1/anon-sprite.png";
+  var loaded = false;
+  var img = new Image();
+  var start = new Date().getTime();
+  img.src = url;
+  var now = new Date().getTime();
+  if (img.complete) {
+    delete img;
+    console.log("visited");
+  } else if (now - start > 10) {
+    // imgオブジェクトのプロパティを削除
+    delete img;
+    // 読み込みの中止
+    window.stop();
+    console.log("not visited");
+  }else{
+    console.log("not visited");
+  } 
+</script>
+</body>
+</html>
