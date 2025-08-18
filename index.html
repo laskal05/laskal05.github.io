@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L;IT Homepage</title>
+  <!-- <meta name="description" content="ITシステム開発・Webサイト制作の個人事業主ポートフォリオ。モノトーン + アクセント1色、情報設計と心地よい体験にこだわったシングルページ。" /> -->
+  <style>
+    /* ───────────────────────────────────────────
+       Design Tokens (Monotone + 1 Accent)
+       ─────────────────────────────────────────── */
+    :root {
+      --accent: #0EA5E9;               /* Sky / 1-color accent */
+      --bg: #ffffff;                    /* Background */
+      --surface: #fafafa;               /* Card background */
+      --text: #111111;                  /* Primary text */
+      --muted: #60636a;                 /* Secondary text */
+      --border: #e6e8eb;                /* Subtle borders */
+      --radius: 16px;
+      --shadow: 0 8px 30px rgba(0,0,0,.06);
+      --container: 1200px;              /* Max layout width */
+      --space: clamp(16px, 2vw + 10px, 28px);
+      --h1: clamp(28px, 4vw + 10px, 48px);
+      --h2: clamp(22px, 2.2vw + 8px, 32px);
+      --h3: clamp(18px, 1.6vw + 6px, 22px);
+      --lead: clamp(15px, 1.2vw + 6px, 18px);
+    }
+
+    /* Typography */
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    h1, h2 { letter-spacing: -0.02em; }
+    h1 { font-size: var(--h1); line-height: 1.15; margin: 0 0 12px; }
+    h2 { font-size: var(--h2); line-height: 1.25; margin: 0 0 8px; }
+    h3 { font-size: var(--h3); margin: 0 0 6px; }
+    p.lead { font-size: var(--lead); color: var(--muted); }
+
+    /* Utilities */
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: max(16px, 4vw); }
+    .section { padding-block: clamp(40px, 8vw, 96px); }
+    .muted { color: var(--muted); }
+    .btn {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: 12px 18px; border-radius: 999px; border: 1px solid var(--border);
+      background: #111; color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;
+      box-shadow: var(--shadow); transition: transform .2s ease, opacity .2s ease, background .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); opacity: .95; }
+    .btn.ghost { background: transparent; color: #111; }
+    .btn.accent { background: var(--accent); border-color: color-mix(in srgb, var(--accent), #000 12%); }
+
+    /* Header */
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: saturate(1.2) blur(8px);
+      background: rgba(255,255,255,.78);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+    .brand-mark { width: 24px; height: 24px; border-radius: 8px; background: #111; box-shadow: inset 0 0 0 2px #111; }
+    .brand-text { line-height: 1.1; }
+    .brand-text small { color: var(--muted); font-weight: 600; }
+    .nav-links { display: none; gap: 22px; font-weight: 600; font-size: 14px; }
+    .nav-links a { color: #222; text-decoration: none; position: relative; }
+    .nav-links a::after { content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-cta { display:none; }
+    .menu-btn { display:inline-flex; gap:.5rem; align-items:center; border:1px solid var(--border); background:#fff; padding:8px 12px; border-radius:10px; }
+
+    @media (min-width: 880px) {
+      .nav-links { display: flex; }
+      .nav-cta { display: inline-flex; }
+      .menu-btn { display:none; }
+    }
+
+    /* Mobile Drawer */
+    .drawer { position: fixed; inset: 0; background: rgba(0,0,0,.28); display: none; }
+    .drawer.open { display: block; }
+    .drawer-panel { position: absolute; right: 0; top: 0; height: 100%; width: 78%; max-width: 360px; background:#fff; box-shadow: var(--shadow); padding: 24px; display: grid; gap: 18px; }
+    .drawer a { text-decoration: none; color: #111; font-weight: 700; padding: 12px 6px; border-bottom: 1px solid var(--border); }
+
+    /* Hero */
+    .hero { display: grid; gap: 32px; align-items: center; }
+    .hero .eyebrow { display:inline-flex; align-items:center; gap:.5rem; background: #f3f7fb; border:1px solid #e6f0f7; color: #066aa6; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+    .accent { color: var(--accent); }
+    .hero-actions { display:flex; gap:12px; flex-wrap: wrap; margin-top: 18px; }
+    .hero-visual { position: relative; height: clamp(220px, 35vw, 380px); border-radius: var(--radius); background: radial-gradient(60% 60% at 70% 30%, color-mix(in srgb, var(--accent), #fff 80%) 0%, transparent 60%), linear-gradient(135deg, #f6f7f9 0%, #ffffff 60%); border:1px solid var(--border); box-shadow: var(--shadow); }
+    .hero-visual::after { content:""; position:absolute; inset: 0; border-radius: inherit; background: radial-gradient(40% 40% at 20% 80%, color-mix(in srgb, var(--accent), #fff 85%), transparent 60%); opacity:.8; }
+    @media (min-width: 960px){ .hero { grid-template-columns: 1.08fr .92fr; } }
+
+    /* Sections: cards / grids */
+    .grid { display: grid; gap: 18px; }
+    .grid.cols-3 { grid-template-columns: 1fr; }
+    @media (min-width: 780px) { .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
+    .card { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); transition: transform .22s ease, box-shadow .22s ease; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(0,0,0,.08); }
+
+    .icon-ring { width: 42px; height: 42px; display:grid; place-items:center; border-radius: 12px; background: #fff; border:1px solid var(--border); box-shadow: var(--shadow); }
+    .icon-ring svg { width: 20px; height: 20px; color: var(--accent); }
+
+    /* Works */
+    .work-thumb { aspect-ratio: 16 / 10; border-radius: 12px; background: linear-gradient(180deg, #f7f7f8, #eee); border: 1px solid var(--border); position: relative; overflow: hidden; }
+    .work-thumb::before { content:""; position:absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent); transform: translateX(-100%); }
+    .card:hover .work-thumb::before { animation: shine 1.3s ease; }
+    @keyframes shine { to { transform: translateX(100%); } }
+
+    /* About */
+    .about { display:grid; gap: 22px; }
+    @media (min-width: 960px) { .about { grid-template-columns: .9fr 1.1fr; } }
+    .avatar { aspect-ratio: 1; width: 100%; max-width: 320px; border-radius: 20px; background: linear-gradient(135deg, #f0f2f5, #fff); border:1px solid var(--border); box-shadow: var(--shadow); }
+
+    /* Process */
+    .steps { display:grid; gap:14px; }
+    .step { display:grid; grid-template-columns: 40px 1fr; gap: 14px; align-items:flex-start; padding: 16px; border:1px solid var(--border); border-radius: 14px; background:#fff; }
+    .step .num { width:40px; height:40px; border-radius: 12px; display:grid; place-items:center; background: color-mix(in srgb, var(--accent), #fff 85%); font-weight: 800; color: #066aa6; border:1px solid #d8ecf7; }
+
+    /* CTA */
+    .cta { background: linear-gradient(180deg, #f6fbff, #ffffff); border:1px solid var(--border); border-radius: 18px; padding: clamp(20px, 6vw, 40px); box-shadow: var(--shadow); text-align: center; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 24px 0 36px; color: var(--muted); }
+    .social { display:flex; gap: 10px; }
+    .social a { width: 36px; height: 36px; display:grid; place-items:center; border-radius: 10px; border:1px solid var(--border); background:#fff; color:#111; text-decoration:none; }
+    .social svg { width:18px; height:18px; }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Accessibility: prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      .btn, .card, .reveal { transition: none !important; }
+      .card:hover { transform: none !important; }
+    }
+
+    #profile_img {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="Home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">
+          <strong>L;IT</strong><br>
+          <small>IT個人事業主 / Web制作・業務システム</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="主要メニュー">
+        <a href="#works">制作実績</a>
+        <a href="#about">プロフィール</a>
+        <a href="#process">進め方</a>
+      </nav>
+      <!-- <a href="#contact" class="btn nav-cta accent" aria-label="お問い合わせへ移動">お問い合わせ</a> -->
+      <button class="menu-btn" id="menuBtn" aria-controls="drawer" aria-expanded="false">メニュー</button>
+    </div>
+    <div class="drawer" id="drawer" aria-hidden="true">
+      <div class="drawer-panel" role="dialog" aria-label="モバイルメニュー">
+        <a href="#services">サービス</a>
+        <a href="#works">制作実績</a>
+        <a href="#about">プロフィール</a>
+        <a href="#process">進め方</a>
+        <a href="#contact" style="border-bottom:none">お問い合わせ</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section id="top" class="section">
+      <div class="container hero">
+        <div>
+          <span class="eyebrow">ミニマル × 情報設計 × 心地よい体験</span>
+          <h1>
+            価値の最大化を目指して
+          </h1>
+          <p class="lead">ユーザーの価値を最大化するために、優先度を考えながら進めていきます。</p>
+          <div class="hero-actions">
+            <!-- <a class="btn accent" href="#contact">無料相談する</a> -->
+            <a class="btn ghost" href="#works">制作実績を見る</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <img src="/public/img/hero-visual.png" alt="Hero Visual" style="width:100%; height:100%; object-fit:cover; border-radius:var(--radius);" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <!-- <section id="services" class="section">
+      <div class="container">
+        <header class="reveal"><h2>提供サービス</h2><p class="lead muted">要件ヒアリングから情報設計、デザイン、構築、公開後の改善までワンストップで対応します。</p></header>
+        <div class="grid cols-3" style="margin-top: 22px;">
+          <article class="card reveal">
+            <div class="icon-ring" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18"/></svg>
+            </div>
+            <h3>Webサイト制作</h3>
+            <p class="muted">コーポレート/LP/ブログ。タイポグラフィと余白を意識したミニマル設計で、ビジュアルと情報の一貫性を保ちます。</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon-ring" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </div>
+            <h3>業務システム開発</h3>
+            <p class="muted">業務フローに合わせたWebアプリや管理画面。見やすく扱いやすいUIで、毎日の作業効率を高めます。</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon-ring" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>
+            </div>
+            <h3>UI/UX設計・改善</h3>
+            <p class="muted">情報の優先度設計、ナビゲーション、フォーム最適化。滑らかなアニメーションで快適な体験を提供します。</p>
+          </article>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- Works -->
+    <section id="works" class="section">
+      <div class="container">
+        <header class="reveal"><h2>制作実績</h2>
+          <p class="lead muted">Webサービスから、ホームページ、アプリ制作などをおこなっています。</p>
+        </header>
+        <div class="grid cols-3" style="margin-top: 22px;">
+          <article class="card reveal">
+            <div class="work-thumb" aria-hidden="true"></div>
+            <h3>内容証明オンライン</h3>
+            <p class="muted">内容証明郵便の書き方が分からなくても大丈夫。豊富なテンプレートから無料で作成することができます。</p>
+          </article>
+          <article class="card reveal">
+            <div class="work-thumb" aria-hidden="true"></div>
+            <h3>有限会社FSK</h3>
+            <p class="muted">精密板金から板金加工、組み立てまで一貫した生産体制を敷く板金加工メーカーです。</p>
+          </article>
+          <article class="card reveal">
+            <div class="work-thumb" aria-hidden="true"></div>
+            <h3>つみなおし（製作中）</h3>
+            <p class="muted">固定費と投資の見える化を通じて、無駄を省き、資産形成をサポートします。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section">
+      <div class="container about">
+        <div class="reveal"><div class="avatar" aria-hidden="true"><img id="profile_img" src="/public/img/profile.png" /></div></div>
+        <div class="reveal">
+          <h2>プロフィール</h2>
+          <p class="muted">ITシステムやWebサイトを中心に、要件定義から設計、開発、UI/UX改善までを一気通貫で担当します。</p>
+          <ul class="muted">
+            <li>得意領域：Next.js / Node.js / TypeScript / デザインシステム設計</li>
+            <li>利用技術：上記に加え、ChatGPTなど生成AIも活用</li>
+            <li>価値観　：細かなサイクルでリリースし、ユーザーの価値の最大化を常に考えます</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section id="process" class="section">
+      <div class="container">
+        <header class="reveal"><h2>進め方</h2><p class="lead muted">過剰な工程を省き、コミュニケーションのコストを最小化します。</p></header>
+        <div class="steps" style="margin-top: 16px;">
+          <!-- <div class="step reveal"><div class="num">1</div><div><strong>ヒアリング</strong><p class="muted">目的・ターゲット・優先指標（KPI）を共有。競合・参考も確認。</p></div></div>
+          <div class="step reveal"><div class="num">2</div><div><strong>情報設計</strong><p class="muted">サイトマップとワイヤーで視線誘導とヒエラルキーを設計。</p></div></div> -->
+          <div class="step reveal"><div class="num">1</div><div><strong>デザイン</strong><p class="muted">モノトーン + アクセント1色で統一。タイポと余白を丁寧に。</p></div></div>
+          <div class="step reveal"><div class="num">2</div><div><strong>実装</strong><p class="muted">パフォーマンス/アクセシビリティに配慮しながら構築。</p></div></div>
+          <div class="step reveal"><div class="num">3</div><div><strong>公開・改善</strong><p class="muted">解析で仮説検証。必要十分なアニメーションで体験向上。</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA / Contact -->
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="cta reveal">
+          <h2>まずは、課題と目標をお聞かせください</h2>
+          <p class="lead muted">小さく始めて、素早く磨く。ビジネスを前に進めるためのサイトを一緒につくりましょう。</p>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top: 12px;">
+            <p>※ 後日公開予定</p>
+            <!-- <a class="btn accent" href="mailto:hello@example.com?subject=制作のご相談&body=ご相談内容：%0D%0Aご予算目安：%0D%0Aご希望スケジュール：" aria-label="メールで相談">メールで相談</a>
+            <button class="btn ghost" id="copyEmail" type="button">メールアドレスをコピー</button> -->
+          </div>
+          <!-- <p class="muted" style="margin-top:10px;">※ アドレスは <strong id="emailText">hello@example.com</strong> に置き換えてご利用ください。</p> -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+      <small>© <span id="year"></span> L;IT</small>
+      <div class="social" aria-label="SNS">
+        <a href="https://github.com/laskal05" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58l-.01-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.86 1.27 1.86 1.27 1.08 1.85 2.82 1.31 3.51 1 .11-.79.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.51.12-3.15 0 0 1.01-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02.01 2.04.14 3 .41 2.28-1.55 3.29-1.23 3.29-1.23.66 1.64.25 2.85.12 3.15.77.84 1.23 1.92 1.23 3.23 0 4.61-2.81 5.63-5.49 5.93.43.37.82 1.1.82 2.22l-.01 3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z"/></svg>
+        </a>
+        <a href="#" aria-label="Website">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Drawer toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    const toggleDrawer = () => {
+      const open = !drawer.classList.contains('open');
+      drawer.classList.toggle('open', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      drawer.setAttribute('aria-hidden', String(!open));
+    };
+    menuBtn.addEventListener('click', toggleDrawer);
+    drawer.addEventListener('click', (e) => { if (e.target === drawer) toggleDrawer(); });
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Copy email
+    const emailText = document.getElementById('emailText').textContent;
+    document.getElementById('copyEmail').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(emailText); alert('メールアドレスをコピーしました'); }
+      catch { prompt('コピーできない場合は手動でコピーしてください:', emailText); }
+    });
+  </script>
+</body>
+</html>
+
