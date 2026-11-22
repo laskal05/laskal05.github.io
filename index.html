@@ -3,32 +3,34 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>L;IT | Mobile App &amp; Web Engineering Studio</title>
+  <title>L;IT | Engineering Lab. — Mobile App &amp; Web Studio</title>
   <meta name="description" content="iOSアプリ開発（Flutter）、Webサービス・業務システム開発（Next.js / TypeScript / Astro）、AI活用による高速なプロダクト開発を手がけるL;ITのポートフォリオサイト。" />
-  <meta property="og:title" content="L;IT | Mobile App & Web Engineering Studio" />
+  <meta property="og:title" content="L;IT | Engineering Lab." />
   <meta property="og:description" content="iOSアプリ4本の開発・運営と、Webサービス・業務システム開発を一気通貫で手がけるL;ITの制作実績と技術スタック。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://laskal05.github.io/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #060913;
-      --bg-elevated: #0d1424;
-      --surface: rgba(17, 25, 44, 0.72);
-      --surface-solid: #10182b;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --accent: #38bdf8;
-      --accent-2: #818cf8;
-      --border: rgba(148, 163, 184, 0.14);
-      --border-hover: rgba(56, 189, 248, 0.42);
-      --radius: 20px;
+      --bg: #07080c;
+      --bg-panel: rgba(15, 18, 26, 0.78);
+      --surface: rgba(19, 22, 31, 0.76);
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --amber: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.45);
+      --phosphor: #10b981;
+      --phosphor-soft: rgba(16, 185, 129, 0.14);
+      --border: rgba(255, 255, 255, 0.09);
+      --border-hover: rgba(245, 158, 11, 0.48);
+      --radius: 18px;
       --container: 1140px;
-      --h1: clamp(32px, 4.5vw + 10px, 56px);
-      --h2: clamp(24px, 2.5vw + 8px, 36px);
+      --h1: clamp(30px, 4.4vw + 10px, 54px);
+      --h2: clamp(23px, 2.4vw + 8px, 34px);
       --h3: clamp(17px, 1.3vw + 6px, 20px);
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     }
 
     * { box-sizing: border-box; }
@@ -43,130 +45,114 @@
       overflow-x: hidden;
     }
 
-    /* Ambient Aurora Background */
+    /* Ambient Lab Glow + Subtle CRT Scanline */
     .ambient-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      overflow: hidden;
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: -3; overflow: hidden; pointer-events: none;
     }
     .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.34;
-      animation: floatOrb 18s ease-in-out infinite alternate;
+      position: absolute; border-radius: 50%; filter: blur(100px);
+      animation: floatOrb 20s ease-in-out infinite alternate;
     }
     .orb-1 {
-      width: 520px; height: 520px;
-      top: -140px; left: -100px;
-      background: radial-gradient(circle, #0ea5e9, transparent 70%);
+      width: 520px; height: 520px; top: -160px; left: -120px; opacity: 0.22;
+      background: radial-gradient(circle, #f59e0b, transparent 70%);
     }
     .orb-2 {
-      width: 480px; height: 480px;
-      top: 28%; right: -120px;
-      background: radial-gradient(circle, #6366f1, transparent 70%);
-      animation-delay: -6s;
+      width: 480px; height: 480px; top: 30%; right: -140px; opacity: 0.18;
+      background: radial-gradient(circle, #10b981, transparent 70%);
+      animation-delay: -7s;
     }
     .orb-3 {
-      width: 420px; height: 420px;
-      bottom: -120px; left: 25%;
-      background: radial-gradient(circle, #06b6d4, transparent 70%);
-      animation-delay: -11s;
-      opacity: 0.22;
+      width: 420px; height: 420px; bottom: -140px; left: 28%; opacity: 0.14;
+      background: radial-gradient(circle, #ea580c, transparent 70%);
+      animation-delay: -12s;
     }
     @keyframes floatOrb {
       0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(35px, 25px) scale(1.06); }
-      100% { transform: translate(-25px, -30px) scale(0.96); }
+      100% { transform: translate(28px, -24px) scale(1.06); }
     }
 
-    /* Subtle Grid Overlay */
+    .scanlines {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0px,
+        rgba(255, 255, 255, 0) 2px,
+        rgba(0, 0, 0, 0.22) 3px,
+        rgba(0, 0, 0, 0.22) 4px
+      );
+      opacity: 0.28;
+    }
+
     .grid-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: -2; pointer-events: none;
       background-image:
-        linear-gradient(rgba(148, 163, 184, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse 80% 70% at 50% 25%, #000 40%, transparent 100%);
+        linear-gradient(rgba(245, 158, 11, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.035) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 85% 75% at 50% 25%, #000 35%, transparent 100%);
     }
 
-    /* Cursor Spotlight */
     .cursor-glow {
-      position: fixed;
-      width: 420px;
-      height: 420px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: -1;
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 65%);
-      transform: translate(-50%, -50%);
-      transition: opacity 0.3s ease;
-      opacity: 0;
+      position: fixed; width: 380px; height: 380px; border-radius: 50%;
+      pointer-events: none; z-index: -1;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 65%);
+      transform: translate(-50%, -50%); transition: opacity 0.3s ease; opacity: 0;
     }
 
-    /* Scroll Progress Bar */
+    /* Scroll Progress */
     .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      width: 0%;
-      z-index: 60;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+      position: fixed; top: 0; left: 0; height: 2px; width: 0%; z-index: 60;
+      background: linear-gradient(90deg, var(--amber), var(--phosphor));
+      box-shadow: 0 0 10px var(--amber-glow);
     }
 
     h1, h2, h3 { letter-spacing: -0.025em; margin-top: 0; }
     h1 { font-size: var(--h1); line-height: 1.15; margin-bottom: 18px; font-weight: 800; }
-    h2 { font-size: var(--h2); line-height: 1.25; margin-bottom: 12px; font-weight: 800; }
+    h2 { font-size: var(--h2); line-height: 1.25; margin-bottom: 10px; font-weight: 800; }
     h3 { font-size: var(--h3); margin-bottom: 8px; font-weight: 700; }
     .lead { font-size: clamp(15px, 1.1vw + 6px, 18px); color: var(--muted); margin-top: 0; }
     .muted { color: var(--muted); }
-    .gradient-text {
-      background: linear-gradient(135deg, #ffffff 10%, #7dd3fc 55%, #a5b4fc 100%);
+    .mono { font-family: var(--mono); }
+
+    .amber-text {
+      background: linear-gradient(135deg, #fde68a 5%, #f59e0b 55%, #fb923c 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
     .container { max-width: var(--container); margin-inline: auto; padding-inline: max(18px, 4vw); }
-    .section { padding-block: clamp(56px, 8vw, 104px); position: relative; }
+    .section { padding-block: clamp(54px, 7.5vw, 98px); position: relative; }
 
     /* Header */
     .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(16px) saturate(1.4);
-      -webkit-backdrop-filter: blur(16px) saturate(1.4);
-      background: rgba(6, 9, 19, 0.72);
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(14px) saturate(1.3);
+      -webkit-backdrop-filter: blur(14px) saturate(1.3);
+      background: rgba(7, 8, 12, 0.78);
       border-bottom: 1px solid var(--border);
     }
     .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
     .brand-mark {
-      width: 34px; height: 34px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      display: grid; place-items: center; color: #060913; font-weight: 900; font-size: 15px;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+      width: 36px; height: 36px; border-radius: 10px;
+      background: #11131a; border: 1px solid rgba(245, 158, 11, 0.45);
+      display: grid; place-items: center; font-family: var(--mono);
+      color: var(--amber); font-weight: 700; font-size: 14px;
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.22);
     }
     .brand-text { line-height: 1.15; }
-    .brand-text strong { font-size: 15px; letter-spacing: 0.02em; }
-    .brand-text small { color: var(--muted); font-weight: 500; font-size: 11px; }
+    .brand-text strong { font-size: 15px; letter-spacing: 0.04em; }
+    .brand-text small { color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em; }
 
-    .nav-links { display: none; gap: 28px; font-weight: 600; font-size: 14px; }
+    .nav-links { display: none; gap: 26px; font-weight: 600; font-size: 13px; }
     .nav-links a {
       color: var(--muted); text-decoration: none; position: relative; transition: color 0.2s ease;
     }
     .nav-links a::after {
       content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
+      background: var(--amber); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
     }
     .nav-links a:hover { color: var(--text); }
     .nav-links a:hover::after { transform: scaleX(1); }
@@ -182,11 +168,11 @@
     }
 
     /* Drawer */
-    .drawer { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(6px); display: none; z-index: 60; }
+    .drawer { position: fixed; inset: 0; background: rgba(4, 6, 10, 0.78); backdrop-filter: blur(6px); display: none; z-index: 60; }
     .drawer.open { display: block; }
     .drawer-panel {
       position: absolute; right: 0; top: 0; height: 100%; width: 78%; max-width: 320px;
-      background: #0d1424; border-left: 1px solid var(--border);
+      background: #0d1017; border-left: 1px solid var(--border);
       padding: 28px 24px; display: flex; flex-direction: column; gap: 8px;
     }
     .drawer a {
@@ -197,98 +183,126 @@
     /* Buttons */
     .btn {
       display: inline-flex; align-items: center; gap: .55rem;
-      padding: 13px 22px; border-radius: 999px; border: 1px solid var(--border);
+      padding: 13px 22px; border-radius: 12px; border: 1px solid var(--border);
       background: var(--surface); color: var(--text); text-decoration: none;
       font-weight: 700; font-size: 14px;
       transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
     }
     .btn:hover { transform: translateY(-2px); border-color: var(--border-hover); }
     .btn.primary {
-      background: linear-gradient(135deg, #0ea5e9, #6366f1);
-      border-color: transparent; color: #fff;
-      box-shadow: 0 8px 28px rgba(14, 165, 233, 0.35);
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      border-color: rgba(253, 230, 138, 0.35); color: #090a0f;
+      box-shadow: 0 8px 26px rgba(245, 158, 11, 0.28);
     }
-    .btn.primary:hover { box-shadow: 0 12px 36px rgba(14, 165, 233, 0.5); }
+    .btn.primary:hover { box-shadow: 0 12px 34px rgba(245, 158, 11, 0.45); }
+
+    /* Nixie-inspired Iteration Meter */
+    .meter-bar {
+      display: inline-flex; align-items: center; gap: 14px; flex-wrap: wrap;
+      padding: 10px 16px; border-radius: 14px;
+      background: rgba(11, 13, 19, 0.9);
+      border: 1px solid rgba(245, 158, 11, 0.28);
+      box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.65), 0 8px 24px rgba(0, 0, 0, 0.35);
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: border-color 0.25s ease;
+    }
+    .meter-bar:hover { border-color: rgba(245, 158, 11, 0.65); }
+    .meter-label {
+      font-family: var(--mono); font-size: 11px; color: var(--phosphor);
+      display: inline-flex; align-items: center; gap: 7px; letter-spacing: 0.06em;
+    }
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--phosphor);
+      box-shadow: 0 0 8px var(--phosphor);
+      animation: blinkDot 2.4s ease-in-out infinite;
+    }
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    .nixie-readout {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: var(--mono); font-size: 19px; font-weight: 700;
+      color: #fbbf24;
+      text-shadow: 0 0 8px rgba(245, 158, 11, 0.75), 0 0 18px rgba(234, 88, 12, 0.45);
+      letter-spacing: 0.08em;
+    }
+    .nixie-digit {
+      display: inline-grid; place-items: center;
+      min-width: 19px; height: 28px; padding-inline: 2px;
+      border-radius: 5px;
+      background: rgba(245, 158, 11, 0.06);
+      border: 1px solid rgba(245, 158, 11, 0.16);
+    }
+    .nixie-dot { color: #f59e0b; padding-inline: 1px; }
 
     /* Hero */
     .hero { display: grid; gap: 40px; align-items: center; }
     @media (min-width: 920px) { .hero { grid-template-columns: 1.12fr .88fr; } }
-
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.28);
-      color: #7dd3fc; padding: 6px 14px; border-radius: 999px;
-      font-weight: 600; font-size: 12px; margin-bottom: 18px;
-    }
-    .pulse-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: #38bdf8;
-      box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7);
-      animation: pulseRing 2s infinite;
-    }
-    @keyframes pulseRing {
-      0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); }
-      70% { box-shadow: 0 0 0 8px rgba(56, 189, 248, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
-    }
-
-    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 26px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
     .hero-stats {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-      margin-top: 34px; padding-top: 24px; border-top: 1px solid var(--border);
+      margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--border);
     }
-    .stat-val { font-size: clamp(20px, 2vw, 26px); font-weight: 800; color: #fff; line-height: 1.2; }
+    .stat-val { font-size: clamp(19px, 2vw, 25px); font-weight: 800; color: #fff; line-height: 1.2; }
     .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
     .hero-stage { position: relative; }
     .hero-visual {
-      position: relative; border-radius: 24px; overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      position: relative; border-radius: 22px; overflow: hidden;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      background: #10131c;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
       aspect-ratio: 4 / 3;
     }
     .hero-visual img {
       width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: contrast(1.04) saturate(0.92);
       transition: transform 0.6s ease;
     }
     .hero-stage:hover .hero-visual img { transform: scale(1.03); }
 
     .floating-chip {
       position: absolute;
-      background: rgba(13, 20, 36, 0.85);
+      background: rgba(11, 13, 19, 0.9);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(125, 211, 252, 0.25);
-      border-radius: 14px;
-      padding: 10px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-family: var(--mono); font-size: 11px; font-weight: 600; color: #e5e7eb;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
       display: flex; align-items: center; gap: 8px;
       animation: floatChip 5.5s ease-in-out infinite;
     }
     .chip-top { top: -14px; right: 16px; }
-    .chip-bottom { bottom: -14px; left: 16px; animation-delay: -2.6s; }
+    .chip-bottom { bottom: -14px; left: 16px; animation-delay: -2.7s; }
     @keyframes floatChip {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-7px); }
     }
 
-    /* Filter Tabs */
-    .filter-bar {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px;
+    /* Section Header Eyebrow */
+    .sec-tag {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      color: var(--phosphor); letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 6px; display: block;
     }
+
+    /* Filter Tabs */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
     .filter-btn {
       background: var(--surface); border: 1px solid var(--border); color: var(--muted);
-      padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600;
+      padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600;
       cursor: pointer; transition: all 0.2s ease;
     }
     .filter-btn:hover { color: var(--text); border-color: var(--border-hover); }
     .filter-btn.active {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(99, 102, 241, 0.22));
-      border-color: var(--accent); color: #fff;
+      background: rgba(245, 158, 11, 0.16);
+      border-color: var(--amber); color: #fde68a;
     }
 
-    /* Cards & Grids */
+    /* Cards */
     .grid { display: grid; gap: 22px; }
     .cols-3 { grid-template-columns: 1fr; }
     @media (min-width: 760px) { .cols-3 { grid-template-columns: repeat(3, 1fr); } }
@@ -299,85 +313,79 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
+      display: flex; flex-direction: column; position: relative; overflow: hidden;
       transition: transform 0.28s cubic-bezier(.22,1,.36,1), border-color 0.28s ease, box-shadow 0.28s ease;
     }
     .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), rgba(56, 189, 248, 0.11), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), rgba(245, 158, 11, 0.11), transparent 70%);
+      opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
     }
     .card:hover {
       transform: translateY(-5px);
       border-color: var(--border-hover);
-      box-shadow: 0 18px 42px rgba(2, 6, 23, 0.55);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.6);
     }
     .card:hover::before { opacity: 1; }
     .card.is-hidden { display: none; }
 
+    .card-code {
+      font-family: var(--mono); font-size: 10px; color: var(--muted);
+      letter-spacing: 0.08em; margin-bottom: 12px; display: flex; justify-content: space-between;
+    }
     .service-icon {
       width: 44px; height: 44px; border-radius: 12px;
-      background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25);
-      display: grid; place-items: center; color: var(--accent); margin-bottom: 16px;
+      background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.28);
+      display: grid; place-items: center; color: var(--amber); margin-bottom: 16px;
     }
     .service-icon svg { width: 22px; height: 22px; }
 
     .work-thumb {
-      aspect-ratio: 16 / 9; border-radius: 14px;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.7));
-      border: 1px solid var(--border);
-      overflow: hidden; margin-bottom: 16px;
-      display: grid; place-items: center; position: relative;
+      aspect-ratio: 16 / 9; border-radius: 12px;
+      background: linear-gradient(135deg, #0d1017, #171b26);
+      border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px;
+      display: grid; place-items: center;
     }
     .work-thumb.light-logo { background: #f8fafc; }
     .work-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 14px; transition: transform 0.35s ease; }
     .card:hover .work-thumb img { transform: scale(1.04); }
     .work-thumb-art {
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-      color: #e2e8f0; text-align: center; padding: 14px;
+      color: #e5e7eb; text-align: center; padding: 14px;
     }
     .work-thumb-art span.emoji { font-size: 30px; line-height: 1; }
-    .work-thumb-art span.sub { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+    .work-thumb-art span.sub { font-family: var(--mono); font-size: 10px; color: var(--amber); letter-spacing: 0.08em; text-transform: uppercase; }
 
     .work-badge {
-      display: inline-block; font-size: 11px; font-weight: 700; color: #7dd3fc;
-      background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.24);
-      padding: 3px 9px; border-radius: 999px; margin-bottom: 10px; width: fit-content;
+      display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 700; color: #34d399;
+      background: var(--phosphor-soft); border: 1px solid rgba(16, 185, 129, 0.28);
+      padding: 3px 9px; border-radius: 6px; margin-bottom: 10px; width: fit-content;
     }
     .card-desc { font-size: 14px; color: var(--muted); margin: 0; flex-grow: 1; }
     .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
     .tag {
-      font-size: 11px; font-weight: 600; color: #cbd5e1;
-      background: rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.16);
-      padding: 3px 9px; border-radius: 999px;
+      font-family: var(--mono); font-size: 11px; color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+      padding: 3px 8px; border-radius: 6px;
     }
 
     /* About */
     .about { display: grid; gap: 36px; align-items: center; }
     @media (min-width: 860px) { .about { grid-template-columns: .78fr 1.22fr; } }
-    .avatar-wrap {
-      position: relative; max-width: 290px; width: 100%; margin-inline: auto;
-    }
+    .avatar-wrap { position: relative; max-width: 290px; width: 100%; margin-inline: auto; }
     .avatar-wrap::before {
-      content: ""; position: absolute; inset: -3px; border-radius: 26px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      opacity: 0.45; filter: blur(10px); z-index: -1;
+      content: ""; position: absolute; inset: -3px; border-radius: 24px;
+      background: linear-gradient(135deg, var(--amber), var(--phosphor));
+      opacity: 0.35; filter: blur(12px); z-index: -1;
     }
     .avatar {
-      width: 100%; aspect-ratio: 1; border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.16); overflow: hidden; background: var(--surface-solid);
+      width: 100%; aspect-ratio: 1; border-radius: 22px;
+      border: 1px solid rgba(245, 158, 11, 0.3); overflow: hidden; background: #10131c;
     }
     .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .spec-list { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 12px; }
     .spec-list li {
-      padding: 12px 16px; border-radius: 14px; background: var(--surface);
+      padding: 13px 16px; border-radius: 12px; background: var(--surface);
       border: 1px solid var(--border); font-size: 14px; color: var(--muted);
     }
     .spec-list strong { color: var(--text); }
@@ -387,46 +395,43 @@
     @media (min-width: 780px) { .steps { grid-template-columns: repeat(3, 1fr); } }
     .step {
       padding: 24px; border: 1px solid var(--border); border-radius: var(--radius);
-      background: var(--surface); display: flex; flex-direction: column; gap: 12px;
+      background: var(--surface); display: flex; flex-direction: column; gap: 10px;
       transition: transform 0.25s ease, border-color 0.25s ease;
     }
     .step:hover { transform: translateY(-3px); border-color: var(--border-hover); }
     .step .num {
-      width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.2));
-      border: 1px solid rgba(56, 189, 248, 0.32);
-      font-weight: 800; color: #7dd3fc; font-size: 15px;
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      color: var(--amber); letter-spacing: 0.08em;
     }
 
     /* CTA */
     .cta {
       position: relative; overflow: hidden;
-      background: linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(99, 102, 241, 0.12));
-      border: 1px solid rgba(56, 189, 248, 0.28); border-radius: 26px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(16, 185, 129, 0.07));
+      border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 24px;
       padding: clamp(30px, 5vw, 56px); text-align: center;
-      box-shadow: 0 24px 60px rgba(2, 6, 23, 0.5);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
     }
 
     footer { border-top: 1px solid var(--border); padding: 28px 0 40px; color: var(--muted); }
     .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .social a {
       width: 40px; height: 40px; display: grid; place-items: center;
-      border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text);
       transition: border-color 0.2s ease, transform 0.2s ease;
     }
     .social a:hover { border-color: var(--border-hover); transform: translateY(-2px); }
     .social svg { width: 18px; height: 18px; }
 
-    /* Reveal Animations */
+    /* Reveal */
     .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.65s cubic-bezier(.22,1,.36,1), transform 0.65s cubic-bezier(.22,1,.36,1);
+      opacity: 0; transform: translateY(18px);
+      transition: opacity 0.6s cubic-bezier(.22,1,.36,1), transform 0.6s cubic-bezier(.22,1,.36,1);
     }
     .reveal.in { opacity: 1; transform: translateY(0); }
 
     @media (prefers-reduced-motion: reduce) {
-      .orb, .pulse-dot, .floating-chip { animation: none !important; }
+      .orb, .status-dot, .floating-chip { animation: none !important; }
       .reveal { opacity: 1; transform: none; transition: none !important; }
       .card, .btn, .step { transition: none !important; }
     }
@@ -440,15 +445,16 @@
     <div class="orb orb-3"></div>
   </div>
   <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
   <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href="#top" aria-label="L;IT Home">
-        <span class="brand-mark" aria-hidden="true">L</span>
+        <span class="brand-mark" aria-hidden="true">L;</span>
         <span class="brand-text">
           <strong>L;IT</strong><br />
-          <small>App &amp; Web Engineering Studio</small>
+          <small>ENGINEERING LAB.</small>
         </span>
       </a>
       <nav class="nav-links" aria-label="主要メニュー">
@@ -458,7 +464,7 @@
         <a href="#process">開発スタイル</a>
         <a href="#contact">お問い合わせ</a>
       </nav>
-      <button class="menu-btn" id="menuBtn" aria-controls="drawer" aria-expanded="false">メニュー</button>
+      <button class="menu-btn" id="menuBtn" aria-controls="drawer" aria-expanded="false">MENU</button>
     </div>
     <div class="drawer" id="drawer" aria-hidden="true">
       <div class="drawer-panel" role="dialog" aria-label="モバイルメニュー">
@@ -475,31 +481,44 @@
     <section class="section">
       <div class="container hero">
         <div>
-          <span class="eyebrow">
-            <span class="pulse-dot" aria-hidden="true"></span>
-            <span>Mobile Apps × Web Systems × AI Automation</span>
-          </span>
+          <div class="meter-bar" id="divergenceMeter" title="クリックで改善イテレーションを再計測">
+            <span class="meter-label">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span>BRANCH // INDEX</span>
+            </span>
+            <div class="nixie-readout" id="nixieReadout" aria-label="1.112202">
+              <span class="nixie-digit">1</span>
+              <span class="nixie-dot">.</span>
+              <span class="nixie-digit">1</span>
+              <span class="nixie-digit">1</span>
+              <span class="nixie-digit">2</span>
+              <span class="nixie-digit">2</span>
+              <span class="nixie-digit">0</span>
+              <span class="nixie-digit">2</span>
+            </div>
+          </div>
+
           <h1>
-            価値の最大化を、<br />
-            <span class="gradient-text">最短サイクルで形にする。</span>
+            最適解への分岐を、<br />
+            <span class="amber-text">最短サイクルで実装する。</span>
           </h1>
-          <p class="lead">iOSアプリの開発・運営から、Webサービス、業務システム、SEO自動化まで。ユーザー体験と事業成果に直結するプロダクトを一気通貫で構築します。</p>
+          <p class="lead">iOSアプリの開発・運営から、Webサービス、業務システム、SEO自動化まで。仮説と実測を高速に繰り返し、ユーザー価値が最大化するプロダクトを構築します。</p>
           <div class="hero-actions">
             <a class="btn primary" href="#works">制作実績を見る →</a>
             <a class="btn" href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer">GitHub を見る</a>
           </div>
           <div class="hero-stats">
             <div>
-              <div class="stat-val" data-count="4" data-suffix="+">4+</div>
+              <div class="stat-val mono">04+</div>
               <div class="stat-label">自社開発 iOSアプリ</div>
             </div>
             <div>
-              <div class="stat-val">End-to-End</div>
+              <div class="stat-val mono">FULL</div>
               <div class="stat-label">設計・実装・計測まで</div>
             </div>
             <div>
-              <div class="stat-val">AI-Native</div>
-              <div class="stat-label">毎日改善の高速開発</div>
+              <div class="stat-val mono">DAILY</div>
+              <div class="stat-label">AI活用の高速イテレーション</div>
             </div>
           </div>
         </div>
@@ -509,12 +528,12 @@
             <img src="/public/img/hero-visual.png" alt="L;IT プロダクト開発イメージ" />
           </div>
           <div class="floating-chip chip-top">
-            <span style="color:#38bdf8;">●</span>
-            <span>Flutter / Next.js / Astro</span>
+            <span style="color:#f59e0b;">●</span>
+            <span>SYS: Flutter / Next.js / Astro</span>
           </div>
           <div class="floating-chip chip-bottom">
-            <span style="color:#818cf8;">◆</span>
-            <span>Automated Testing &amp; Analytics</span>
+            <span style="color:#10b981;">▸</span>
+            <span>LOG: Tests &amp; Telemetry Active</span>
           </div>
         </div>
       </div>
@@ -523,11 +542,13 @@
     <section id="services" class="section">
       <div class="container">
         <header class="reveal">
+          <span class="sec-tag">// 01. CAPABILITIES</span>
           <h2>提供領域</h2>
-          <p class="lead">要件整理から設計・実装・計測・継続改善まで、ムダのない体制で推進します。</p>
+          <p class="lead">要件整理から設計・実装・計測・継続改善まで、ムダのないラボ体制で推進します。</p>
         </header>
-        <div class="grid cols-3" style="margin-top: 28px;">
+        <div class="grid cols-3" style="margin-top: 26px;">
           <article class="card reveal">
+            <div class="card-code"><span>LAB_DOMAIN // 01</span><span>MOBILE</span></div>
             <div class="service-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>
             </div>
@@ -539,6 +560,7 @@
           </article>
 
           <article class="card reveal">
+            <div class="card-code"><span>LAB_DOMAIN // 02</span><span>SYSTEM</span></div>
             <div class="service-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
             </div>
@@ -550,6 +572,7 @@
           </article>
 
           <article class="card reveal">
+            <div class="card-code"><span>LAB_DOMAIN // 03</span><span>AUTOMATION</span></div>
             <div class="service-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg>
             </div>
@@ -566,10 +589,11 @@
     <section id="works" class="section">
       <div class="container">
         <header class="reveal">
+          <span class="sec-tag">// 02. ARTIFACTS &amp; PRODUCTS</span>
           <h2>制作実績・自社プロダクト</h2>
           <p class="lead">自社運営のiOSアプリ・Webメディアから、受託開発のWebサービス・業務システムまで。</p>
           <div class="filter-bar" role="tablist" aria-label="実績フィルター">
-            <button type="button" class="filter-btn active" data-cat="all">すべて</button>
+            <button type="button" class="filter-btn active" data-cat="all">ALL</button>
             <button type="button" class="filter-btn" data-cat="app">iOSアプリ</button>
             <button type="button" class="filter-btn" data-cat="web">Web・業務システム</button>
           </div>
@@ -580,7 +604,7 @@
             <div class="work-thumb light-logo">
               <img src="/public/img/logo_naiyoo.webp" alt="内容証明オンライン" />
             </div>
-            <span class="work-badge">Webサービス</span>
+            <span class="work-badge">WEB SERVICE</span>
             <h3>内容証明オンライン</h3>
             <p class="card-desc">内容証明郵便の作成を支援するWebサービス。構造化データやSEO/AEO最適化、安定運用の継続改善を担当。</p>
             <div class="tag-list"><span class="tag">Next.js</span><span class="tag">SEO / AEO</span></div>
@@ -590,7 +614,7 @@
             <div class="work-thumb light-logo">
               <img src="/public/img/logo_tsuminaoshi.png" alt="つみなおし" />
             </div>
-            <span class="work-badge">自社 iOSアプリ</span>
+            <span class="work-badge">iOS APP</span>
             <h3>つみなおし</h3>
             <p class="card-desc">固定費と投資の見える化を通じて無駄を省き、無理のない資産形成をサポートするiOSアプリ。</p>
             <div class="tag-list"><span class="tag">Flutter</span><span class="tag">iOS</span></div>
@@ -600,7 +624,7 @@
             <div class="work-thumb light-logo">
               <img src="/public/img/logo_fsk0303.png" alt="有限会社FSK" />
             </div>
-            <span class="work-badge">コーポレートサイト</span>
+            <span class="work-badge">CORPORATE SITE</span>
             <h3>有限会社FSK</h3>
             <p class="card-desc">精密板金から板金加工・組み立てまで一貫生産体制を敷くメーカーのコーポレートサイト制作。</p>
             <div class="tag-list"><span class="tag">Web制作</span><span class="tag">情報設計</span></div>
@@ -610,10 +634,10 @@
             <div class="work-thumb">
               <div class="work-thumb-art">
                 <span class="emoji">📈</span>
-                <span class="sub">DayTrack iOS App</span>
+                <span class="sub">DayTrack // Telemetry &amp; Calendar</span>
               </div>
             </div>
-            <span class="work-badge">自社 iOSアプリ（主軸）</span>
+            <span class="work-badge">iOS APP (FLAGSHIP)</span>
             <h3>でいとらっく（DayTrack）</h3>
             <p class="card-desc">日々のトレード収支をカレンダーと統計で直感的に記録・分析できるiOSアプリ。OCR入力・診断・サブスク課金まで実装。</p>
             <div class="tag-list"><span class="tag">Flutter</span><span class="tag">GA4</span><span class="tag">RevenueCat</span></div>
@@ -623,10 +647,10 @@
             <div class="work-thumb">
               <div class="work-thumb-art">
                 <span class="emoji">🥗</span>
-                <span class="sub">Lipid Balancer &amp; Any Roulette</span>
+                <span class="sub">Lipid Balancer // Any Roulette</span>
               </div>
             </div>
-            <span class="work-badge">自社 iOSアプリ</span>
+            <span class="work-badge">iOS APPS</span>
             <h3>脂質バランサー / Any Roulette</h3>
             <p class="card-desc">外食メニュー対応の脂質コントロールアプリ「脂質バランサー」や、意思決定支援アプリ「Any Roulette」を開発・展開。</p>
             <div class="tag-list"><span class="tag">Flutter</span><span class="tag">SQLite</span><span class="tag">iOS</span></div>
@@ -636,10 +660,10 @@
             <div class="work-thumb">
               <div class="work-thumb-art">
                 <span class="emoji">⚡</span>
-                <span class="sub">Enterprise Web &amp; Media Automation</span>
+                <span class="sub">Enterprise Web &amp; Media Pipeline</span>
               </div>
             </div>
-            <span class="work-badge">受託開発 / Webメディア</span>
+            <span class="work-badge">SYSTEM / MEDIA</span>
             <h3>業務管理Webアプリ・CRM移行・メディア自動化</h3>
             <p class="card-desc">図面・製品マスタ管理システム開発、CRM移行検証、Cloudflare Workersを用いたWebメディア日次自動更新基盤の構築。</p>
             <div class="tag-list"><span class="tag">TypeScript</span><span class="tag">Astro</span><span class="tag">Cloudflare</span></div>
@@ -656,6 +680,7 @@
           </div>
         </div>
         <div class="reveal">
+          <span class="sec-tag">// 03. ARCHITECT PROFILE</span>
           <h2>プロフィール</h2>
           <p class="lead" style="font-size:16px;">Webシステム・モバイルアプリを中心に、課題整理から設計、実装、テスト自動化、リリース後のデータ分析・改善までを一気通貫で担当しています。</p>
           <ul class="spec-list">
@@ -670,24 +695,25 @@
     <section id="process" class="section">
       <div class="container">
         <header class="reveal">
+          <span class="sec-tag">// 04. EXPERIMENT LOOP</span>
           <h2>開発スタイル</h2>
-          <p class="lead">過剰な工程を省き、価値に直結する改善を毎日回し続けます。</p>
+          <p class="lead">仮説・実験・観測のループを高速に回し、確かな成果へと収束させます。</p>
         </header>
         <div class="steps" style="margin-top: 26px;">
           <div class="step reveal">
-            <div class="num">01</div>
+            <div class="num">PHASE 01 // HYPOTHESIS</div>
             <strong>課題整理と優先度設計</strong>
             <p class="muted" style="margin:0; font-size:14px;">目的とKPIを明確化し、最小コストで最大効果が出るスコープを設計します。</p>
           </div>
           <div class="step reveal">
-            <div class="num">02</div>
+            <div class="num">PHASE 02 // EXPERIMENT</div>
             <strong>高速実装と自動テスト</strong>
             <p class="muted" style="margin:0; font-size:14px;">TypeScript / Flutter の堅牢な型設計と単体テストをセットで実装し、後方互換性と品質を守ります。</p>
           </div>
           <div class="step reveal">
-            <div class="num">03</div>
+            <div class="num">PHASE 03 // CONVERGENCE</div>
             <strong>実測データに基づく継続改善</strong>
-            <p class="muted" style="margin:0; font-size:14px;">Search Console / GA4 / Cloudflare Analytics 等の実測値をもとに、UI・SEO・収益導線を継続的に磨きます。</p>
+            <p class="muted" style="margin:0; font-size:14px;">Search Console / GA4 / Cloudflare Analytics 等の実測値をもとに、UI・SEO・収益導線を最適値へ収束させます。</p>
           </div>
         </div>
       </div>
@@ -696,6 +722,7 @@
     <section id="contact" class="section">
       <div class="container">
         <div class="cta reveal">
+          <span class="sec-tag" style="margin-bottom:10px;">// 05. CONTACT &amp; REPOSITORIES</span>
           <h2>開発のご相談・ポートフォリオ一覧</h2>
           <p class="lead" style="max-width:640px; margin-inline:auto;">アプリ開発・Webサイト構築・業務システム改善など、小さく始めて素早く形にしたい方は GitHub よりお気軽にご覧ください。</p>
           <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-top:26px;">
@@ -709,7 +736,7 @@
 
   <footer>
     <div class="container footer-inner">
-      <small>&copy; <span id="year"></span> L;IT — Mobile App &amp; Web Engineering Studio</small>
+      <small class="mono" style="font-size:12px;">&copy; <span id="year"></span> L;IT — Engineering Lab.</small>
       <div class="social" aria-label="Links">
         <a href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58l-.01-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.86 1.27 1.86 1.27 1.08 1.85 2.82 1.31 3.51 1 .11-.79.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.51.12-3.15 0 0 1.01-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02.01 2.04.14 3 .41 2.28-1.55 3.29-1.23 3.29-1.23.66 1.64.25 2.85.12 3.15.77.84 1.23 1.92 1.23 3.23 0 4.61-2.81 5.63-5.49 5.93.43.37.82 1.1.82 2.22l-.01 3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z"/></svg>
@@ -729,7 +756,7 @@
       progressEl.style.width = (scrolled * 100).toFixed(2) + '%';
     }, { passive: true });
 
-    // Cursor spotlight (desktop)
+    // Cursor spotlight
     const glow = document.getElementById('cursorGlow');
     if (window.matchMedia('(pointer: fine)').matches) {
       window.addEventListener('mousemove', (e) => {
@@ -739,13 +766,43 @@
       }, { passive: true });
     }
 
-    // Card inner radial highlight
+    // Card radial highlight
     document.querySelectorAll('.card').forEach((card) => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
         card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
       });
+    });
+
+    // Nixie-style Branch Index Scramble Animation
+    const readout = document.getElementById('nixieReadout');
+    const meterBar = document.getElementById('divergenceMeter');
+    const targetValues = ['1.112202', '1.084920', '1.142857', '1.112202'];
+    let targetIdx = 0;
+
+    function animateNixie(finalStr) {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const digits = readout.querySelectorAll('.nixie-digit');
+      const chars = finalStr.replace('.', '').split('');
+      let frame = 0;
+      const timer = setInterval(() => {
+        frame++;
+        digits.forEach((el, i) => {
+          if (frame > 6 + i * 2) {
+            el.textContent = chars[i] || '0';
+          } else {
+            el.textContent = String(Math.floor(Math.random() * 10));
+          }
+        });
+        if (frame > 22) clearInterval(timer);
+      }, 36);
+    }
+
+    window.addEventListener('load', () => animateNixie(targetValues[0]));
+    meterBar.addEventListener('click', () => {
+      targetIdx = (targetIdx + 1) % targetValues.length;
+      animateNixie(targetValues[targetIdx]);
     });
 
     // Drawer toggle
@@ -762,7 +819,7 @@
       if (e.target === drawer || e.target.tagName === 'A') toggleDrawer();
     });
 
-    // Staggered reveal on scroll
+    // Staggered reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -776,10 +833,10 @@
       observer.observe(el);
     });
 
-    // Works category filter
+    // Works category filter + subtle nixie shift
     const filterBtns = document.querySelectorAll('.filter-btn');
     const workCards = document.querySelectorAll('#worksGrid .card');
-    filterBtns.forEach((btn) => {
+    filterBtns.forEach((btn, idx) => {
       btn.addEventListener('click', () => {
         const cat = btn.dataset.cat;
         filterBtns.forEach((b) => b.classList.remove('active'));
@@ -788,6 +845,7 @@
           const match = cat === 'all' || card.dataset.cat === cat;
           card.classList.toggle('is-hidden', !match);
         });
+        animateNixie(targetValues[idx % targetValues.length]);
       });
     });
   </script>
