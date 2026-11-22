@@ -3,328 +3,411 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>L;IT Homepage</title>
-  <!-- <meta name="description" content="ITシステム開発・Webサイト制作の個人事業主ポートフォリオ。モノトーン + アクセント1色、情報設計と心地よい体験にこだわったシングルページ。" /> -->
+  <title>L;IT | モバイルアプリ・Webシステム開発ポートフォリオ</title>
+  <meta name="description" content="iOSアプリ開発（Flutter）、Webサービス・業務システム開発（Next.js / TypeScript / Astro）、AI活用による高速なプロダクト開発を手がけるL;ITのポートフォリオサイト。" />
+  <meta property="og:title" content="L;IT | モバイルアプリ・Webシステム開発ポートフォリオ" />
+  <meta property="og:description" content="iOSアプリ4本の開発・運営と、Webサービス・業務システム開発を一気通貫で手がけるL;ITの制作実績と技術スタック。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://laskal05.github.io/" />
   <style>
-    /* ───────────────────────────────────────────
-       Design Tokens (Monotone + 1 Accent)
-       ─────────────────────────────────────────── */
     :root {
-      --accent: #0EA5E9;               /* Sky / 1-color accent */
-      --bg: #ffffff;                    /* Background */
-      --surface: #fafafa;               /* Card background */
-      --text: #111111;                  /* Primary text */
-      --muted: #60636a;                 /* Secondary text */
-      --border: #e6e8eb;                /* Subtle borders */
+      --accent: #0EA5E9;
+      --bg: #ffffff;
+      --surface: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
       --radius: 16px;
-      --shadow: 0 8px 30px rgba(0,0,0,.06);
-      --container: 1200px;              /* Max layout width */
-      --space: clamp(16px, 2vw + 10px, 28px);
-      --h1: clamp(28px, 4vw + 10px, 48px);
+      --shadow: 0 8px 30px rgba(15, 23, 42, .06);
+      --container: 1120px;
+      --h1: clamp(28px, 4vw + 8px, 46px);
       --h2: clamp(22px, 2.2vw + 8px, 32px);
-      --h3: clamp(18px, 1.6vw + 6px, 22px);
-      --lead: clamp(15px, 1.2vw + 6px, 18px);
+      --h3: clamp(17px, 1.4vw + 6px, 20px);
+      --lead: clamp(15px, 1.1vw + 6px, 18px);
     }
 
-    /* Typography */
+    * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
       color: var(--text);
       background: var(--bg);
-      line-height: 1.6;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
     }
-    h1, h2 { letter-spacing: -0.02em; }
-    h1 { font-size: var(--h1); line-height: 1.15; margin: 0 0 12px; }
-    h2 { font-size: var(--h2); line-height: 1.25; margin: 0 0 8px; }
-    h3 { font-size: var(--h3); margin: 0 0 6px; }
-    p.lead { font-size: var(--lead); color: var(--muted); }
+    h1, h2, h3 { letter-spacing: -0.02em; margin-top: 0; }
+    h1 { font-size: var(--h1); line-height: 1.18; margin-bottom: 14px; }
+    h2 { font-size: var(--h2); line-height: 1.25; margin-bottom: 10px; }
+    h3 { font-size: var(--h3); margin-bottom: 8px; }
+    p.lead { font-size: var(--lead); color: var(--muted); margin-top: 0; }
 
-    /* Utilities */
     .container { max-width: var(--container); margin-inline: auto; padding-inline: max(16px, 4vw); }
-    .section { padding-block: clamp(40px, 8vw, 96px); }
+    .section { padding-block: clamp(44px, 7vw, 88px); }
     .muted { color: var(--muted); }
-    .btn {
-      display: inline-flex; align-items: center; gap: .6rem;
-      padding: 12px 18px; border-radius: 999px; border: 1px solid var(--border);
-      background: #111; color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;
-      box-shadow: var(--shadow); transition: transform .2s ease, opacity .2s ease, background .2s ease;
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .tag {
+      font-size: 12px; font-weight: 600; color: #0369a1;
+      background: #f0f9ff; border: 1px solid #bae6fd;
+      padding: 3px 9px; border-radius: 999px;
     }
-    .btn:hover { transform: translateY(-1px); opacity: .95; }
-    .btn.ghost { background: transparent; color: #111; }
-    .btn.accent { background: var(--accent); border-color: color-mix(in srgb, var(--accent), #000 12%); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: 12px 20px; border-radius: 999px; border: 1px solid var(--border);
+      background: #0f172a; color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;
+      box-shadow: var(--shadow); transition: transform .2s ease, opacity .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); opacity: .94; }
+    .btn.ghost { background: #fff; color: var(--text); }
+    .btn.accent { background: var(--accent); border-color: #0284c7; }
 
     /* Header */
     .site-header {
       position: sticky; top: 0; z-index: 40;
-      backdrop-filter: saturate(1.2) blur(8px);
-      background: rgba(255,255,255,.78);
-      border-bottom: 1px solid rgba(0,0,0,.06);
+      backdrop-filter: saturate(1.2) blur(10px);
+      background: rgba(255, 255, 255, .85);
+      border-bottom: 1px solid var(--border);
     }
     .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
     .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
-    .brand-mark { width: 24px; height: 24px; border-radius: 8px; background: #111; box-shadow: inset 0 0 0 2px #111; }
-    .brand-text { line-height: 1.1; }
-    .brand-text small { color: var(--muted); font-weight: 600; }
-    .nav-links { display: none; gap: 22px; font-weight: 600; font-size: 14px; }
-    .nav-links a { color: #222; text-decoration: none; position: relative; }
-    .nav-links a::after { content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
-    .nav-links a:hover::after { transform: scaleX(1); }
-
-    .nav-cta { display:none; }
-    .menu-btn { display:inline-flex; gap:.5rem; align-items:center; border:1px solid var(--border); background:#fff; padding:8px 12px; border-radius:10px; }
-
-    @media (min-width: 880px) {
+    .brand-mark {
+      width: 28px; height: 28px; border-radius: 8px; background: #0f172a;
+      display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 13px;
+    }
+    .brand-text { line-height: 1.15; }
+    .brand-text small { color: var(--muted); font-weight: 600; font-size: 11px; }
+    .nav-links { display: none; gap: 24px; font-weight: 600; font-size: 14px; }
+    .nav-links a { color: var(--text); text-decoration: none; }
+    .nav-links a:hover { color: var(--accent); }
+    .menu-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      border: 1px solid var(--border); background: #fff; padding: 8px 12px;
+      border-radius: 10px; font-weight: 600; cursor: pointer;
+    }
+    @media (min-width: 820px) {
       .nav-links { display: flex; }
-      .nav-cta { display: inline-flex; }
-      .menu-btn { display:none; }
+      .menu-btn { display: none; }
     }
 
-    /* Mobile Drawer */
-    .drawer { position: fixed; inset: 0; background: rgba(0,0,0,.28); display: none; }
+    /* Drawer */
+    .drawer { position: fixed; inset: 0; background: rgba(15, 23, 42, .32); display: none; z-index: 50; }
     .drawer.open { display: block; }
-    .drawer-panel { position: absolute; right: 0; top: 0; height: 100%; width: 78%; max-width: 360px; background:#fff; box-shadow: var(--shadow); padding: 24px; display: grid; gap: 18px; }
-    .drawer a { text-decoration: none; color: #111; font-weight: 700; padding: 12px 6px; border-bottom: 1px solid var(--border); }
+    .drawer-panel {
+      position: absolute; right: 0; top: 0; height: 100%; width: 78%; max-width: 320px;
+      background: #fff; padding: 24px; display: flex; flex-direction: column; gap: 8px;
+      box-shadow: var(--shadow);
+    }
+    .drawer a {
+      text-decoration: none; color: var(--text); font-weight: 700;
+      padding: 12px 6px; border-bottom: 1px solid var(--border);
+    }
 
     /* Hero */
     .hero { display: grid; gap: 32px; align-items: center; }
-    .hero .eyebrow { display:inline-flex; align-items:center; gap:.5rem; background: #f3f7fb; border:1px solid #e6f0f7; color: #066aa6; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
-    .accent { color: var(--accent); }
-    .hero-actions { display:flex; gap:12px; flex-wrap: wrap; margin-top: 18px; }
-    .hero-visual { position: relative; height: clamp(220px, 35vw, 380px); border-radius: var(--radius); background: radial-gradient(60% 60% at 70% 30%, color-mix(in srgb, var(--accent), #fff 80%) 0%, transparent 60%), linear-gradient(135deg, #f6f7f9 0%, #ffffff 60%); border:1px solid var(--border); box-shadow: var(--shadow); }
-    .hero-visual::after { content:""; position:absolute; inset: 0; border-radius: inherit; background: radial-gradient(40% 40% at 20% 80%, color-mix(in srgb, var(--accent), #fff 85%), transparent 60%); opacity:.8; }
-    @media (min-width: 960px){ .hero { grid-template-columns: 1.08fr .92fr; } }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1;
+      padding: 6px 12px; border-radius: 999px; font-weight: 700; font-size: 12px; margin-bottom: 14px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .hero-visual {
+      position: relative; min-height: 240px; border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden;
+      background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+    }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    @media (min-width: 900px) { .hero { grid-template-columns: 1.1fr .9fr; } }
 
-    /* Sections: cards / grids */
-    .grid { display: grid; gap: 18px; }
-    .grid.cols-3 { grid-template-columns: 1fr; }
-    @media (min-width: 780px) { .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
-    .card { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); transition: transform .22s ease, box-shadow .22s ease; }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 10px 36px rgba(0,0,0,.08); }
-
-    .icon-ring { width: 42px; height: 42px; display:grid; place-items:center; border-radius: 12px; background: #fff; border:1px solid var(--border); box-shadow: var(--shadow); }
-    .icon-ring svg { width: 20px; height: 20px; color: var(--accent); }
-
-    /* Works */
-    .work-thumb { aspect-ratio: 16 / 10; border-radius: 12px; background: linear-gradient(180deg, #f7f7f8, #eee); border: 1px solid var(--border); position: relative; overflow: hidden; }
-    .work-thumb::before { content:""; position:absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,.6), transparent); transform: translateX(-100%); }
-    .card:hover .work-thumb::before { animation: shine 1.3s ease; }
-    @keyframes shine { to { transform: translateX(100%); } }
+    /* Grid & Cards */
+    .grid { display: grid; gap: 20px; }
+    .cols-3 { grid-template-columns: 1fr; }
+    @media (min-width: 760px) { .cols-3 { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 760px) { .cols-2 { grid-template-columns: repeat(2, 1fr); } }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease;
+      display: flex; flex-direction: column;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(15, 23, 42, .08); }
+    .work-thumb {
+      aspect-ratio: 16 / 9; border-radius: 12px; background: #fff;
+      border: 1px solid var(--border); overflow: hidden; margin-bottom: 14px;
+      display: grid; place-items: center;
+    }
+    .work-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+    .work-badge {
+      display: inline-block; font-size: 11px; font-weight: 700; color: #475569;
+      background: #e2e8f0; padding: 2px 8px; border-radius: 6px; margin-bottom: 8px; width: fit-content;
+    }
+    .card-desc { font-size: 14px; color: var(--muted); margin: 0; flex-grow: 1; }
 
     /* About */
-    .about { display:grid; gap: 22px; }
-    @media (min-width: 960px) { .about { grid-template-columns: .9fr 1.1fr; } }
-    .avatar { aspect-ratio: 1; width: 100%; max-width: 320px; border-radius: 20px; background: linear-gradient(135deg, #f0f2f5, #fff); border:1px solid var(--border); box-shadow: var(--shadow); }
+    .about { display: grid; gap: 28px; align-items: center; }
+    @media (min-width: 860px) { .about { grid-template-columns: .8fr 1.2fr; } }
+    .avatar {
+      width: 100%; max-width: 280px; aspect-ratio: 1; border-radius: 20px;
+      border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; background: #f8fafc;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .spec-list { padding-left: 1.2em; margin: 14px 0 0; color: var(--muted); }
+    .spec-list li { margin-bottom: 8px; }
 
     /* Process */
-    .steps { display:grid; gap:14px; }
-    .step { display:grid; grid-template-columns: 40px 1fr; gap: 14px; align-items:flex-start; padding: 16px; border:1px solid var(--border); border-radius: 14px; background:#fff; }
-    .step .num { width:40px; height:40px; border-radius: 12px; display:grid; place-items:center; background: color-mix(in srgb, var(--accent), #fff 85%); font-weight: 800; color: #066aa6; border:1px solid #d8ecf7; }
-
-    /* CTA */
-    .cta { background: linear-gradient(180deg, #f6fbff, #ffffff); border:1px solid var(--border); border-radius: 18px; padding: clamp(20px, 6vw, 40px); box-shadow: var(--shadow); text-align: center; }
-
-    /* Footer */
-    footer { border-top: 1px solid var(--border); padding: 24px 0 36px; color: var(--muted); }
-    .social { display:flex; gap: 10px; }
-    .social a { width: 36px; height: 36px; display:grid; place-items:center; border-radius: 10px; border:1px solid var(--border); background:#fff; color:#111; text-decoration:none; }
-    .social svg { width:18px; height:18px; }
-
-    /* Reveal on scroll */
-    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
-    .reveal.in { opacity: 1; transform: translateY(0); }
-
-    /* Accessibility: prefers-reduced-motion */
-    @media (prefers-reduced-motion: reduce) {
-      .btn, .card, .reveal { transition: none !important; }
-      .card:hover { transform: none !important; }
+    .steps { display: grid; gap: 14px; }
+    .step {
+      display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: flex-start;
+      padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: #fff;
+    }
+    .step .num {
+      width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+      background: #e0f2fe; font-weight: 800; color: #0369a1;
     }
 
-    #profile_img {
-      width: 100%;
-      height: 100%;
-      border-radius: 20px;
-      box-shadow: var(--shadow);
+    /* CTA */
+    .cta {
+      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
+      border: 1px solid #bae6fd; border-radius: 20px;
+      padding: clamp(24px, 5vw, 44px); text-align: center; box-shadow: var(--shadow);
+    }
+
+    footer { border-top: 1px solid var(--border); padding: 24px 0 36px; color: var(--muted); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .social { display: flex; gap: 10px; }
+    .social a {
+      width: 38px; height: 38px; display: grid; place-items: center;
+      border-radius: 10px; border: 1px solid var(--border); background: #fff; color: var(--text);
+    }
+    .social svg { width: 18px; height: 18px; }
+
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .btn, .card, .reveal { transition: none !important; opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header class="site-header">
     <div class="container nav">
-      <a class="brand" href="/" aria-label="Home">
-        <span class="brand-mark" aria-hidden="true"></span>
+      <a class="brand" href="#top" aria-label="L;IT Home">
+        <span class="brand-mark" aria-hidden="true">L</span>
         <span class="brand-text">
-          <strong>L;IT</strong><br>
-          <small>IT個人事業主 / Web制作・業務システム</small>
+          <strong>L;IT</strong><br />
+          <small>Mobile App &amp; Web Engineering</small>
         </span>
       </a>
       <nav class="nav-links" aria-label="主要メニュー">
+        <a href="#services">提供領域</a>
         <a href="#works">制作実績</a>
         <a href="#about">プロフィール</a>
-        <a href="#process">進め方</a>
+        <a href="#process">開発スタイル</a>
+        <a href="#contact">お問い合わせ</a>
       </nav>
-      <!-- <a href="#contact" class="btn nav-cta accent" aria-label="お問い合わせへ移動">お問い合わせ</a> -->
       <button class="menu-btn" id="menuBtn" aria-controls="drawer" aria-expanded="false">メニュー</button>
     </div>
     <div class="drawer" id="drawer" aria-hidden="true">
       <div class="drawer-panel" role="dialog" aria-label="モバイルメニュー">
-        <a href="#services">サービス</a>
+        <a href="#services">提供領域</a>
         <a href="#works">制作実績</a>
         <a href="#about">プロフィール</a>
-        <a href="#process">進め方</a>
-        <a href="#contact" style="border-bottom:none">お問い合わせ</a>
+        <a href="#process">開発スタイル</a>
+        <a href="#contact" style="border-bottom:none;">お問い合わせ</a>
       </div>
     </div>
   </header>
 
-  <main id="main">
-    <!-- Hero -->
-    <section id="top" class="section">
+  <main id="top">
+    <section class="section">
       <div class="container hero">
         <div>
-          <span class="eyebrow">ミニマル × 情報設計 × 心地よい体験</span>
-          <h1>
-            価値の最大化を目指して
-          </h1>
-          <p class="lead">ユーザーの価値を最大化するために、優先度を考えながら進めていきます。</p>
+          <span class="eyebrow">Mobile Apps × Web Systems × AI Automation</span>
+          <h1>価値の最大化を、<br />最短サイクルで形にする。</h1>
+          <p class="lead">iOSアプリの開発・運営から、Webサービス、業務システム、SEO自動化まで。ユーザー価値と事業成果に直結するプロダクトを一気通貫で構築します。</p>
           <div class="hero-actions">
-            <!-- <a class="btn accent" href="#contact">無料相談する</a> -->
-            <a class="btn ghost" href="#works">制作実績を見る</a>
+            <a class="btn accent" href="#works">制作実績を見る</a>
+            <a class="btn ghost" href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer">GitHub</a>
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
-          <img src="/public/img/hero-visual.png" alt="Hero Visual" style="width:100%; height:100%; object-fit:cover; border-radius:var(--radius);" />
+          <img src="/public/img/hero-visual.png" alt="L;IT プロダクト開発イメージ" />
         </div>
       </div>
     </section>
 
-    <!-- Services -->
-    <!-- <section id="services" class="section">
+    <section id="services" class="section" style="background: var(--surface); border-block: 1px solid var(--border);">
       <div class="container">
-        <header class="reveal"><h2>提供サービス</h2><p class="lead muted">要件ヒアリングから情報設計、デザイン、構築、公開後の改善までワンストップで対応します。</p></header>
-        <div class="grid cols-3" style="margin-top: 22px;">
-          <article class="card reveal">
-            <div class="icon-ring" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18"/></svg>
+        <header class="reveal">
+          <h2>提供領域</h2>
+          <p class="lead">要件整理から設計・実装・計測・継続改善までワンストップで推進します。</p>
+        </header>
+        <div class="grid cols-3" style="margin-top: 24px;">
+          <article class="card reveal" style="background:#fff;">
+            <h3>iOS / モバイルアプリ開発</h3>
+            <p class="card-desc">Flutterを用いたiOSアプリの設計・開発・ストア申請・課金（RevenueCat）/広告（AdMob）/分析（GA4）連携まで対応。</p>
+            <div class="tag-list">
+              <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">RevenueCat</span>
             </div>
-            <h3>Webサイト制作</h3>
-            <p class="muted">コーポレート/LP/ブログ。タイポグラフィと余白を意識したミニマル設計で、ビジュアルと情報の一貫性を保ちます。</p>
           </article>
-          <article class="card reveal">
-            <div class="icon-ring" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <article class="card reveal" style="background:#fff;">
+            <h3>Webアプリ・業務システム開発</h3>
+            <p class="card-desc">Next.js / TypeScript を中心とした業務管理画面・図面/在庫システム開発や、CRM移行・データ整合性検証を実行。</p>
+            <div class="tag-list">
+              <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span>
             </div>
-            <h3>業務システム開発</h3>
-            <p class="muted">業務フローに合わせたWebアプリや管理画面。見やすく扱いやすいUIで、毎日の作業効率を高めます。</p>
           </article>
-          <article class="card reveal">
-            <div class="icon-ring" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>
+          <article class="card reveal" style="background:#fff;">
+            <h3>Webメディア・SEO/自動化</h3>
+            <p class="card-desc">Astro × Cloudflare Pages/Workers を活用した高速サイト構築、構造化データ最適化、日次自動更新パイプラインを構築。</p>
+            <div class="tag-list">
+              <span class="tag">Astro</span><span class="tag">Cloudflare</span><span class="tag">SEO / AI</span>
             </div>
-            <h3>UI/UX設計・改善</h3>
-            <p class="muted">情報の優先度設計、ナビゲーション、フォーム最適化。滑らかなアニメーションで快適な体験を提供します。</p>
           </article>
         </div>
       </div>
-    </section> -->
+    </section>
 
-    <!-- Works -->
     <section id="works" class="section">
       <div class="container">
-        <header class="reveal"><h2>制作実績</h2>
-          <p class="lead muted">Webサービスから、ホームページ、アプリ制作などをおこなっています。</p>
+        <header class="reveal">
+          <h2>制作実績・自社プロダクト</h2>
+          <p class="lead">自社運営のiOSアプリ・Webメディアから、受託開発のWebサービス・業務システムまで幅広く手がけています。</p>
         </header>
-        <div class="grid cols-3" style="margin-top: 22px;">
+        <div class="grid cols-3" style="margin-top: 24px;">
           <article class="card reveal">
-            <div class="work-thumb" aria-hidden="true">
-              <img src="/public/img/logo_naiyoo.webp" width="100%" />
+            <div class="work-thumb">
+              <img src="/public/img/logo_naiyoo.webp" alt="内容証明オンライン" />
             </div>
+            <span class="work-badge">Webサービス</span>
             <h3>内容証明オンライン</h3>
-            <p class="muted">内容証明郵便の書き方が分からなくても大丈夫。豊富なテンプレートから無料で作成することができます。</p>
+            <p class="card-desc">内容証明郵便の作成を支援するWebサービス。構造化データやSEO/AEO最適化、安定運用の継続改善を担当。</p>
+            <div class="tag-list"><span class="tag">Next.js</span><span class="tag">SEO / AEO</span></div>
           </article>
+
           <article class="card reveal">
-            <div class="work-thumb" aria-hidden="true">
-              <img src="/public/img/logo_fsk0303.png" width="100%" />
+            <div class="work-thumb">
+              <img src="/public/img/logo_tsuminaoshi.png" alt="つみなおし" />
             </div>
-            <h3>有限会社FSK</h3>
-            <p class="muted">精密板金から板金加工、組み立てまで一貫した生産体制を敷く板金加工メーカーです。</p>
-          </article>
-          <article class="card reveal">
-            <div class="work-thumb" aria-hidden="true">
-              <img src="/public/img/logo_tsuminaoshi.png" width="100%" />
-            </div>
+            <span class="work-badge">自社 iOSアプリ</span>
             <h3>つみなおし</h3>
-            <p class="muted">固定費と投資の見える化を通じて、無駄を省き、資産形成をサポートします。</p>
+            <p class="card-desc">固定費と投資の見える化を通じて無駄を省き、無理のない資産形成をサポートするiOSアプリ。</p>
+            <div class="tag-list"><span class="tag">Flutter</span><span class="tag">iOS</span></div>
+          </article>
+
+          <article class="card reveal">
+            <div class="work-thumb">
+              <img src="/public/img/logo_fsk0303.png" alt="有限会社FSK" />
+            </div>
+            <span class="work-badge">コーポレートサイト</span>
+            <h3>有限会社FSK</h3>
+            <p class="card-desc">精密板金から板金加工・組み立てまで一貫生産体制を敷くメーカーのコーポレートサイト制作。</p>
+            <div class="tag-list"><span class="tag">Web制作</span><span class="tag">情報設計</span></div>
+          </article>
+
+          <article class="card reveal">
+            <span class="work-badge">自社 iOSアプリ（主軸）</span>
+            <h3>でいとらっく（DayTrack）</h3>
+            <p class="card-desc">日々のトレード収支をカレンダーと統計で直感的に記録・分析できるiOSアプリ。OCR入力・診断・サブスク課金まで実装。</p>
+            <div class="tag-list"><span class="tag">Flutter</span><span class="tag">GA4</span><span class="tag">RevenueCat</span></div>
+          </article>
+
+          <article class="card reveal">
+            <span class="work-badge">自社 iOSアプリ</span>
+            <h3>脂質バランサー / Any Roulette</h3>
+            <p class="card-desc">外食メニュー対応の脂質コントロールアプリ「脂質バランサー」や、意思決定支援アプリ「Any Roulette」を開発・展開。</p>
+            <div class="tag-list"><span class="tag">Flutter</span><span class="tag">SQLite</span><span class="tag">iOS</span></div>
+          </article>
+
+          <article class="card reveal">
+            <span class="work-badge">受託開発 / Webメディア</span>
+            <h3>業務管理Webアプリ・CRM移行・メディア自動化</h3>
+            <p class="card-desc">図面・製品マスタ管理システム開発、CRM移行検証、Cloudflare Workersを用いたWebメディア日次自動更新基盤の構築。</p>
+            <div class="tag-list"><span class="tag">TypeScript</span><span class="tag">Astro</span><span class="tag">Cloudflare</span></div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- About -->
-    <section id="about" class="section">
+    <section id="about" class="section" style="background: var(--surface); border-block: 1px solid var(--border);">
       <div class="container about">
-        <div class="reveal"><div class="avatar" aria-hidden="true"><img id="profile_img" src="/public/img/profile.png" /></div></div>
+        <div class="reveal">
+          <div class="avatar">
+            <img src="/public/img/profile.png" alt="L;IT プロフィール画像" />
+          </div>
+        </div>
         <div class="reveal">
           <h2>プロフィール</h2>
-          <p class="muted">ITシステムやWebサイトを中心に、要件定義から設計、開発、UI/UX改善までを一気通貫で担当します。</p>
-          <ul class="muted">
-            <li>得意領域：Next.js / TypeScript / 自動化</li>
-            <li>利用技術：上記に加え、Gemini,ChatGPTなど生成AIも活用</li>
-            <li>価値観　：細かなサイクルでリリースし、ユーザーの価値の最大化を常に考えます</li>
+          <p class="muted">Webシステム・モバイルアプリを中心に、課題整理から設計、実装、テスト自動化、リリース後のデータ分析・改善までを一気通貫で担当しています。</p>
+          <ul class="spec-list">
+            <li><strong>得意領域</strong>：Next.js / TypeScript / Astro / Flutter / Cloudflare / 業務自動化</li>
+            <li><strong>AI活用</strong>：生成AI（Gemini / Claude / Codex等）を開発・品質検証ワークフローに統合し、少人数でも高い開発速度とテスト品質を両立</li>
+            <li><strong>開発信条</strong>：小さなサイクルで確実にリリースし、実測データに基づいてユーザー価値を最大化する</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- Process -->
     <section id="process" class="section">
       <div class="container">
-        <header class="reveal"><h2>進め方</h2><p class="lead muted">過剰な工程を省き、コミュニケーションのコストを最小化します。</p></header>
-        <div class="steps" style="margin-top: 16px;">
-          <!-- <div class="step reveal"><div class="num">1</div><div><strong>ヒアリング</strong><p class="muted">目的・ターゲット・優先指標（KPI）を共有。競合・参考も確認。</p></div></div>
-          <div class="step reveal"><div class="num">2</div><div><strong>情報設計</strong><p class="muted">サイトマップとワイヤーで視線誘導とヒエラルキーを設計。</p></div></div> -->
-          <div class="step reveal"><div class="num">1</div><div><strong>デザイン</strong><p class="muted">モノトーン + アクセント1色で統一。タイポと余白を丁寧に。</p></div></div>
-          <div class="step reveal"><div class="num">2</div><div><strong>実装</strong><p class="muted">パフォーマンス/アクセシビリティに配慮しながら構築。</p></div></div>
-          <div class="step reveal"><div class="num">3</div><div><strong>公開・改善</strong><p class="muted">解析で仮説検証。必要十分なアニメーションで体験向上。</p></div></div>
+        <header class="reveal">
+          <h2>開発スタイル</h2>
+          <p class="lead">過剰な工程を省き、価値に直結する改善を毎日回し続けます。</p>
+        </header>
+        <div class="steps" style="margin-top: 20px;">
+          <div class="step reveal">
+            <div class="num">1</div>
+            <div>
+              <strong>課題整理と優先度設計</strong>
+              <p class="muted" style="margin:4px 0 0;">目的とKPIを明確化し、最小コストで最大効果が出るスコープを設計します。</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="num">2</div>
+            <div>
+              <strong>高速実装と自動テスト</strong>
+              <p class="muted" style="margin:4px 0 0;">TypeScript / Flutter の堅牢な型設計と単体テストをセットで実装し、後方互換性と品質を守ります。</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="num">3</div>
+            <div>
+              <strong>実測データに基づく継続改善</strong>
+              <p class="muted" style="margin:4px 0 0;">Search Console / GA4 / Cloudflare Analytics 等の実測値をもとに、UI・SEO・収益導線を継続的に磨きます。</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA / Contact -->
     <section id="contact" class="section">
       <div class="container">
         <div class="cta reveal">
-          <h2>まずは、課題と目標をお聞かせください</h2>
-          <p class="lead muted">小さく始めて、素早く磨く。ビジネスを前に進めるためのサイトを一緒につくりましょう。</p>
-          <p>coming soon...</p>
+          <h2>開発のご相談・ポートフォリオ一覧</h2>
+          <p class="lead">アプリ開発・Webサイト構築・業務システム改善など、小さく始めて素早く形にしたい方は GitHub よりお気軽にご覧ください。</p>
+          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:20px;">
+            <a class="btn accent" href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer">GitHub プロフィールへ</a>
+            <a class="btn ghost" href="#works">制作実績に戻る</a>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-      <small>© <span id="year"></span> L;IT</small>
-      <div class="social" aria-label="SNS">
-        <a href="https://github.com/laskal05" aria-label="GitHub">
+    <div class="container footer-inner">
+      <small>&copy; <span id="year"></span> L;IT</small>
+      <div class="social" aria-label="Links">
+        <a href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58l-.01-2.03c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.86 1.27 1.86 1.27 1.08 1.85 2.82 1.31 3.51 1 .11-.79.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.51.12-3.15 0 0 1.01-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02.01 2.04.14 3 .41 2.28-1.55 3.29-1.23 3.29-1.23.66 1.64.25 2.85.12 3.15.77.84 1.23 1.92 1.23 3.23 0 4.61-2.81 5.63-5.49 5.93.43.37.82 1.1.82 2.22l-.01 3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z"/></svg>
         </a>
-        <!-- <a href="#" aria-label="Website">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
-        </a> -->
       </div>
     </div>
   </footer>
 
   <script>
-    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Drawer toggle
     const menuBtn = document.getElementById('menuBtn');
     const drawer = document.getElementById('drawer');
     const toggleDrawer = () => {
@@ -334,26 +417,19 @@
       drawer.setAttribute('aria-hidden', String(!open));
     };
     menuBtn.addEventListener('click', toggleDrawer);
-    drawer.addEventListener('click', (e) => { if (e.target === drawer) toggleDrawer(); });
+    drawer.addEventListener('click', (e) => {
+      if (e.target === drawer || e.target.tagName === 'A') toggleDrawer();
+    });
 
-    // Reveal on scroll
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('in');
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // Copy email
-    const emailText = document.getElementById('emailText').textContent;
-    document.getElementById('copyEmail').addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(emailText); alert('メールアドレスをコピーしました'); }
-      catch { prompt('コピーできない場合は手動でコピーしてください:', emailText); }
-    });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
   </script>
 </body>
 </html>
-
