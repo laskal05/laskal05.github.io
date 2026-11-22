@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>L;IT — Engineering Lab. // Branch &amp; Build</title>
+  <title>L;IT — Future Gadget &amp; Engineering Lab.</title>
   <meta name="description" content="iOSアプリ開発（Flutter）、Webサービス・業務システム開発（Next.js / TypeScript / Astro）、AI活用による高速なプロダクト開発を手がけるL;ITのポートフォリオサイト。" />
   <meta property="og:title" content="L;IT — Engineering Lab." />
-  <meta property="og:description" content="仮説と実測を高速に回し、最適解へ収束させるエンジニアリング・ラボ L;IT のポートフォリオ。" />
+  <meta property="og:description" content="仮説・実験・観測のループを高速に回し、最適解へ収束させるエンジニアリング・ラボ L;IT。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://laskal05.github.io/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,32 +14,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #040508;
-      --surface: rgba(12, 15, 22, 0.74);
-      --surface-strong: rgba(15, 19, 28, 0.94);
-      --text: #f3f4f6;
-      --muted: #94a3b8;
-      --accent: #f59e0b;
-      --accent-hot: #fb923c;
-      --accent-glow: rgba(245, 158, 11, 0.55);
-      --sub: #10b981;
-      --sub-glow: rgba(16, 185, 129, 0.45);
-      --border: rgba(255, 255, 255, 0.1);
+      --bg: #080706;
+      --bg-crt: #0b0e0c;
+      --surface: rgba(16, 15, 13, 0.8);
+      --text: #f3efe6;
+      --muted: #9c9588;
+      --accent: #ff7b00;
+      --accent-hot: #ffb703;
+      --accent-glow: rgba(255, 123, 0, 0.65);
+      --phosphor: #22c55e;
+      --phosphor-glow: rgba(34, 197, 94, 0.45);
+      --border: rgba(255, 220, 170, 0.12);
       --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
       --sans: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
     }
 
+    /* Worldline Theme Shifts */
     body[data-branch="1"] {
-      --accent: #10b981;
-      --accent-hot: #34d399;
-      --accent-glow: rgba(16, 185, 129, 0.55);
-      --sub: #f59e0b;
+      --accent: #22c55e;
+      --accent-hot: #4ade80;
+      --accent-glow: rgba(34, 197, 94, 0.6);
+      --phosphor: #ff7b00;
     }
     body[data-branch="2"] {
       --accent: #38bdf8;
-      --accent-hot: #818cf8;
-      --accent-glow: rgba(56, 189, 248, 0.55);
-      --sub: #f59e0b;
+      --accent-hot: #7dd3fc;
+      --accent-glow: rgba(56, 189, 248, 0.6);
+      --phosphor: #ff7b00;
     }
 
     * { box-sizing: border-box; }
@@ -48,23 +49,17 @@
       margin: 0;
       font-family: var(--sans);
       color: var(--text);
-      background: var(--bg);
+      background: radial-gradient(circle at 20% 15%, #16110b 0%, var(--bg) 60%);
       line-height: 1.65;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Fullscreen Interactive Attractor Canvas */
     #attractorCanvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -3;
-      pointer-events: none;
+      position: fixed; inset: 0; width: 100%; height: 100%; z-index: -3; pointer-events: none;
     }
 
-    /* CRT Scanlines & Vignette */
+    /* CRT Scanline + Warm Vignette */
     .crt-overlay {
       position: fixed; inset: 0; z-index: 90; pointer-events: none;
       background:
@@ -72,87 +67,92 @@
           to bottom,
           rgba(255, 255, 255, 0) 0px,
           rgba(255, 255, 255, 0) 2px,
-          rgba(0, 0, 0, 0.18) 3px,
-          rgba(0, 0, 0, 0.18) 4px
+          rgba(0, 0, 0, 0.24) 3px,
+          rgba(0, 0, 0, 0.24) 4px
         ),
-        radial-gradient(circle at center, transparent 58%, rgba(0, 0, 0, 0.65) 100%);
-      opacity: 0.44;
+        radial-gradient(circle at center, transparent 52%, rgba(0, 0, 0, 0.72) 100%);
+      opacity: 0.52;
     }
 
-    /* Phase Shift Flash */
+    /* Reading-Steiner Style Phase Shift Overlay */
     .shift-flash {
       position: fixed; inset: 0; z-index: 95; pointer-events: none; opacity: 0;
-      background: linear-gradient(90deg, rgba(245,158,11,0.2), rgba(16,185,129,0.24), rgba(56,189,248,0.2));
+      background:
+        repeating-linear-gradient(0deg, rgba(255,123,0,0.22) 0 2px, transparent 2px 6px),
+        radial-gradient(circle, rgba(255,183,3,0.35), rgba(34,197,94,0.25), transparent 80%);
       mix-blend-mode: screen;
     }
-    body.is-shifting .shift-flash { animation: phaseFlash 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
-    body.is-shifting main { animation: chromaticJitter 0.36s steps(2, end); }
-    @keyframes phaseFlash { 0% { opacity: 0.95; } 100% { opacity: 0; } }
-    @keyframes chromaticJitter {
-      0% { transform: translate(0, 0); filter: hue-rotate(0deg); }
-      25% { transform: translate(-4px, 1px) skewX(1.2deg); filter: hue-rotate(42deg) contrast(1.22); }
-      50% { transform: translate(4px, -1px) skewX(-1deg); filter: hue-rotate(-32deg); }
-      75% { transform: translate(-2px, 0); }
+    body.is-shifting .shift-flash { animation: steinerFlash 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+    body.is-shifting main { animation: crtTear 0.45s steps(3, end); }
+    @keyframes steinerFlash {
+      0% { opacity: 1; }
+      40% { opacity: 0.65; }
+      100% { opacity: 0; }
+    }
+    @keyframes crtTear {
+      0% { transform: translate(0, 0); filter: blur(0px); }
+      20% { transform: translate(-8px, 2px) skewX(2.5deg); filter: hue-rotate(45deg) contrast(1.4) blur(1px); }
+      45% { transform: translate(7px, -2px) skewX(-2deg); filter: invert(0.08) saturate(1.8); }
+      70% { transform: translate(-3px, 1px); filter: contrast(1.2); }
       100% { transform: translate(0, 0); filter: none; }
     }
 
     .scroll-bar {
       position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 96;
-      background: linear-gradient(90deg, var(--accent), var(--sub));
+      background: linear-gradient(90deg, var(--accent), var(--phosphor));
       box-shadow: 0 0 14px var(--accent-glow);
     }
 
     .container { max-width: 1180px; margin-inline: auto; padding-inline: max(18px, 4vw); }
     .mono { font-family: var(--mono); }
 
-    /* Floating Command Header */
+    /* Floating Lab HUD Header */
     .hud-header {
       position: sticky; top: 12px; z-index: 80;
       margin-inline: auto; max-width: 1180px; padding-inline: max(14px, 3vw);
     }
     .hud-bar {
       display: flex; align-items: center; justify-content: space-between; gap: 14px;
-      height: 60px; padding: 0 16px;
-      border-radius: 16px;
-      background: rgba(8, 10, 16, 0.8);
-      backdrop-filter: blur(18px) saturate(1.5);
-      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      height: 60px; padding: 0 16px; border-radius: 14px;
+      background: rgba(12, 11, 9, 0.84);
+      backdrop-filter: blur(16px) saturate(1.4);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
       border: 1px solid var(--border);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.58);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65);
     }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
     .brand-badge {
-      width: 34px; height: 34px; border-radius: 9px;
+      width: 36px; height: 36px; border-radius: 8px;
       display: grid; place-items: center;
       font-family: var(--mono); font-weight: 800; font-size: 14px;
-      color: var(--accent); background: rgba(255, 255, 255, 0.04);
+      color: var(--accent); background: rgba(255, 123, 0, 0.08);
       border: 1px solid var(--accent); box-shadow: 0 0 16px var(--accent-glow);
       transition: transform 0.3s ease;
     }
     .brand:hover .brand-badge { transform: rotate(-6deg) scale(1.06); }
-    .brand-meta strong { display: block; font-size: 14px; letter-spacing: 0.06em; line-height: 1.1; }
+    .brand-meta strong { display: block; font-size: 14px; letter-spacing: 0.08em; line-height: 1.1; }
     .brand-meta small { display: block; font-family: var(--mono); font-size: 10px; color: var(--muted); }
 
-    .hud-nav { display: none; gap: 24px; font-family: var(--mono); font-size: 12px; font-weight: 600; }
+    .hud-nav { display: none; gap: 22px; font-family: var(--mono); font-size: 12px; font-weight: 600; }
     .hud-nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .hud-nav a:hover { color: var(--accent); }
     .hud-actions { display: flex; align-items: center; gap: 8px; }
 
     .shift-btn {
       display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 14px; border-radius: 10px; cursor: pointer;
-      font-family: var(--mono); font-size: 11px; font-weight: 700;
-      color: #050608; background: var(--accent); border: none;
+      padding: 8px 14px; border-radius: 9px; cursor: pointer;
+      font-family: var(--mono); font-size: 11px; font-weight: 800;
+      color: #080706; background: var(--accent); border: none;
       box-shadow: 0 0 18px var(--accent-glow);
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
     }
-    .shift-btn:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 0 26px var(--accent-glow); }
+    .shift-btn:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 0 28px var(--accent-glow); }
     .shift-btn:active { transform: scale(0.96); }
 
     .menu-btn {
       display: inline-flex; align-items: center; justify-content: center;
       border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff;
-      padding: 8px 11px; border-radius: 10px; font-family: var(--mono); font-size: 11px; font-weight: 700; cursor: pointer;
+      padding: 8px 11px; border-radius: 9px; font-family: var(--mono); font-size: 11px; font-weight: 700; cursor: pointer;
     }
     @media (min-width: 860px) {
       .hud-nav { display: flex; }
@@ -160,11 +160,11 @@
     }
 
     /* Mobile Drawer */
-    .drawer { position: fixed; inset: 0; background: rgba(3, 5, 9, 0.8); backdrop-filter: blur(8px); display: none; z-index: 98; }
+    .drawer { position: fixed; inset: 0; background: rgba(4, 3, 2, 0.85); backdrop-filter: blur(8px); display: none; z-index: 98; }
     .drawer.open { display: block; }
     .drawer-panel {
       position: absolute; right: 0; top: 0; height: 100%; width: 78%; max-width: 300px;
-      background: #0b0e16; border-left: 1px solid var(--border);
+      background: #100e0b; border-left: 1px solid var(--border);
       padding: 28px 22px; display: flex; flex-direction: column; gap: 6px;
     }
     .drawer a {
@@ -176,172 +176,217 @@
     .hero-section {
       min-height: calc(100vh - 80px);
       display: flex; align-items: center;
-      padding: 46px 0 64px; position: relative;
+      padding: 40px 0 64px; position: relative;
     }
     .hero-grid { display: grid; gap: 42px; align-items: center; width: 100%; }
-    @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.15fr 0.85fr; } }
+    @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.12fr 0.88fr; } }
 
-    .telemetry-pill {
+    .worldline-badge {
       display: inline-flex; align-items: center; gap: 10px;
       font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      color: var(--sub);
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
+      color: var(--phosphor);
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      padding: 6px 14px; border-radius: 8px; margin-bottom: 18px;
     }
     .live-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: var(--sub);
-      box-shadow: 0 0 10px var(--sub); animation: pulse 1.6s infinite;
+      width: 8px; height: 8px; border-radius: 50%; background: var(--phosphor);
+      box-shadow: 0 0 10px var(--phosphor); animation: pulse 1.5s infinite;
     }
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.45); opacity: 0.45; }
+      50% { transform: scale(1.45); opacity: 0.4; }
     }
 
     h1 {
-      font-size: clamp(34px, 5vw + 8px, 64px);
-      line-height: 1.08; font-weight: 900; letter-spacing: -0.03em; margin: 0 0 20px;
+      font-size: clamp(33px, 4.8vw + 8px, 60px);
+      line-height: 1.1; font-weight: 900; letter-spacing: -0.03em; margin: 0 0 18px;
     }
     .hero-highlight {
       color: var(--accent);
       text-shadow: 0 0 28px var(--accent-glow);
       transition: color 0.35s ease, text-shadow 0.35s ease;
     }
-    .hero-desc { font-size: clamp(15px, 1.1vw + 6px, 18px); color: var(--muted); max-width: 580px; margin: 0 0 28px; }
+    .hero-desc { font-size: clamp(15px, 1.1vw + 6px, 17px); color: var(--muted); max-width: 560px; margin: 0 0 26px; }
 
-    /* Real Glass Nixie Tube Rack */
-    .nixie-rack {
-      display: inline-flex; align-items: flex-end; gap: 8px;
-      padding: 16px 20px; border-radius: 18px;
-      background: linear-gradient(180deg, rgba(18, 20, 28, 0.96), rgba(8, 9, 13, 0.99));
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255,255,255,0.08);
-      margin-bottom: 30px; position: relative; cursor: pointer;
+    /* Authentic Divergence-Style Nixie Chassis */
+    .nixie-chassis {
+      display: inline-flex; flex-direction: column; gap: 8px;
+      padding: 18px 20px 14px; border-radius: 16px;
+      background: linear-gradient(180deg, #1b1815 0%, #0d0b09 100%);
+      border: 1px solid rgba(255, 190, 120, 0.22);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+      margin-bottom: 28px; cursor: pointer; position: relative;
+      max-width: 100%;
     }
-    .nixie-rack::after {
-      content: "CLICK TO SHIFT BRANCH";
-      position: absolute; bottom: -20px; right: 8px;
-      font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; color: var(--muted);
+    .nixie-chassis-top {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em;
     }
+    .nixie-greek { color: var(--accent); font-weight: 800; }
+    .nixie-tubes { display: flex; align-items: flex-end; gap: 7px; }
     .tube {
       position: relative;
-      width: clamp(31px, 4.5vw, 44px);
-      height: clamp(52px, 6.8vw, 72px);
-      border-radius: 16px 16px 6px 6px;
-      background: radial-gradient(circle at 50% 45%, rgba(245, 158, 11, 0.14), rgba(5, 6, 9, 0.92) 72%);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: inset 0 6px 14px rgba(255,255,255,0.07), inset 0 -10px 18px rgba(0,0,0,0.85);
+      width: clamp(30px, 4.4vw, 44px);
+      height: clamp(54px, 7vw, 76px);
+      border-radius: 18px 18px 5px 5px;
+      background:
+        radial-gradient(ellipse at 50% 45%, rgba(255, 123, 0, 0.22), rgba(10, 7, 5, 0.96) 72%);
+      border: 1px solid rgba(255, 210, 160, 0.18);
+      box-shadow:
+        inset 0 8px 14px rgba(255, 255, 255, 0.08),
+        inset 0 -10px 18px rgba(0, 0, 0, 0.9),
+        0 0 12px rgba(255, 123, 0, 0.12);
       display: grid; place-items: center; overflow: hidden;
     }
+    /* Anode Hex Mesh + Glass Reflection */
     .tube::before {
-      content: ""; position: absolute; inset: 3px; border-radius: 13px 13px 4px 4px;
-      background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+      content: ""; position: absolute; inset: 3px; border-radius: 14px 14px 3px 3px;
+      background-image: radial-gradient(rgba(255, 190, 120, 0.12) 1px, transparent 1px);
       background-size: 4px 4px; pointer-events: none;
     }
+    .tube::after {
+      content: ""; position: absolute; top: 6px; left: 5px; width: 4px; height: 60%;
+      border-radius: 99px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.28), transparent);
+      pointer-events: none;
+    }
     .tube-char {
-      font-family: var(--mono); font-size: clamp(23px, 3.3vw, 34px); font-weight: 700;
-      color: #ffedd5;
-      text-shadow: 0 0 6px var(--accent), 0 0 16px var(--accent), 0 0 32px var(--accent-hot);
-      z-index: 2; transition: color 0.3s ease;
+      font-family: var(--mono); font-size: clamp(24px, 3.4vw, 36px); font-weight: 700;
+      color: #fff3db;
+      text-shadow:
+        0 0 5px #ff9100,
+        0 0 14px var(--accent),
+        0 0 28px var(--accent-hot);
+      z-index: 2;
+      animation: nixieFlicker 4s infinite alternate;
+    }
+    @keyframes nixieFlicker {
+      0%, 92%, 100% { opacity: 1; }
+      94% { opacity: 0.86; }
+      96% { opacity: 1; }
     }
     .tube-dot {
-      width: 12px; height: clamp(52px, 6.8vw, 72px);
-      display: grid; align-items: end; justify-items: center; padding-bottom: 10px;
+      width: 10px; height: clamp(54px, 7vw, 76px);
+      display: grid; align-items: end; justify-items: center; padding-bottom: 12px;
       font-family: var(--mono); font-size: 26px; font-weight: 800;
-      color: var(--accent); text-shadow: 0 0 12px var(--accent-glow);
+      color: var(--accent); text-shadow: 0 0 14px var(--accent-glow);
     }
 
     .cta-row { display: flex; flex-wrap: wrap; gap: 14px; }
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 24px; border-radius: 12px; text-decoration: none;
+      padding: 13px 22px; border-radius: 10px; text-decoration: none;
       font-weight: 700; font-size: 14px;
       transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
     }
-    .btn-primary { background: var(--accent); color: #050608; box-shadow: 0 10px 30px var(--accent-glow); }
+    .btn-primary { background: var(--accent); color: #080706; box-shadow: 0 10px 28px var(--accent-glow); }
     .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 38px var(--accent-glow); }
     .btn-ghost { background: rgba(255, 255, 255, 0.04); color: #fff; border: 1px solid var(--border); }
     .btn-ghost:hover { transform: translateY(-3px); border-color: var(--accent); }
 
-    /* Hero Right: Interactive 3D Lab Core + Live Oscilloscope */
-    .core-card-wrap { perspective: 1100px; }
-    .core-card {
-      position: relative; border-radius: 24px; padding: 18px;
-      background: linear-gradient(145deg, rgba(20, 24, 36, 0.88), rgba(8, 10, 16, 0.94));
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.75);
-      transform-style: preserve-3d;
-      transition: transform 0.15s ease-out;
+    /* Hero Right: Retro-Future CRT Monitor Frame */
+    .crt-monitor-wrap { perspective: 1100px; }
+    .crt-bezel {
+      position: relative; border-radius: 22px; padding: 18px;
+      background: linear-gradient(145deg, #24211c, #12100d);
+      border: 2px solid rgba(255, 220, 170, 0.16);
+      box-shadow: 0 32px 75px rgba(0, 0, 0, 0.85), inset 0 2px 3px rgba(255,255,255,0.08);
+      transform-style: preserve-3d; transition: transform 0.15s ease-out;
     }
-    .core-visual {
-      border-radius: 16px; overflow: hidden; aspect-ratio: 16/10;
-      border: 1px solid rgba(255, 255, 255, 0.08); transform: translateZ(20px);
+    .crt-screen {
+      border-radius: 14px; overflow: hidden;
+      background: #050a07; border: 2px solid #020302;
+      box-shadow: inset 0 0 28px rgba(0,0,0,0.9);
+      position: relative;
+      transform: translateZ(18px);
     }
-    .core-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .crt-screen-img { aspect-ratio: 16/10; overflow: hidden; position: relative; }
+    .crt-screen-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: contrast(1.08) sepia(0.18) saturate(0.95);
+    }
+    .crt-screen-img::after {
+      content: "CH-04 // LAB_MONITOR";
+      position: absolute; top: 10px; right: 12px;
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      color: var(--phosphor); background: rgba(0,0,0,0.72);
+      padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(34,197,94,0.35);
+    }
     .oscilloscope-box {
-      margin-top: 12px; padding: 10px 12px; border-radius: 12px;
-      background: rgba(2, 4, 8, 0.8); border: 1px solid rgba(16, 185, 129, 0.25);
-      transform: translateZ(28px);
+      padding: 10px 14px; background: rgba(4, 12, 7, 0.95);
+      border-top: 1px solid rgba(34, 197, 94, 0.25);
     }
     .osc-head {
       display: flex; justify-content: space-between; align-items: center;
-      font-family: var(--mono); font-size: 10px; color: var(--sub); margin-bottom: 6px;
+      font-family: var(--mono); font-size: 10px; color: var(--phosphor); margin-bottom: 4px;
     }
-    #oscCanvas { width: 100%; height: 52px; display: block; }
-    .core-console {
-      margin-top: 10px; padding: 10px 12px; border-radius: 12px;
-      background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.08);
-      font-family: var(--mono); font-size: 11px; color: #cbd5e1; transform: translateZ(34px);
+    #oscCanvas { width: 100%; height: 50px; display: block; }
+    .crt-console {
+      padding: 10px 14px; background: #030604;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-family: var(--mono); font-size: 11px; color: #cbd5e1;
     }
     .console-line { display: flex; justify-content: space-between; gap: 10px; }
-    .console-line span.ok { color: var(--sub); }
+    .console-line span.ok { color: var(--phosphor); }
+    .crt-plate {
+      margin-top: 12px; display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em;
+    }
+    .crt-led {
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .crt-led i {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 8px var(--accent); display: inline-block;
+    }
 
-    /* Infinite Velocity Marquee */
+    /* Marquee */
     .marquee-wrap {
       border-block: 1px solid var(--border);
-      background: rgba(10, 12, 18, 0.82); overflow: hidden; padding: 14px 0;
+      background: rgba(14, 12, 10, 0.88); overflow: hidden; padding: 13px 0;
     }
     .marquee-track { display: flex; width: max-content; animation: scrollMarquee 26s linear infinite; }
     .marquee-track:hover { animation-play-state: paused; }
     .marquee-group { display: flex; align-items: center; gap: 38px; padding-right: 38px; }
     .marquee-item {
-      font-family: var(--mono); font-size: 13px; font-weight: 700;
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
       color: var(--muted); display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;
     }
     .marquee-item b { color: var(--accent); }
     @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
     /* Sections */
-    .section { padding: clamp(64px, 9vw, 112px) 0; position: relative; }
+    .section { padding: clamp(64px, 9vw, 110px) 0; position: relative; }
     .sec-head { margin-bottom: 36px; }
     .sec-code {
       font-family: var(--mono); font-size: 12px; font-weight: 700;
       color: var(--accent); letter-spacing: 0.1em; display: block; margin-bottom: 8px;
     }
-    h2 { font-size: clamp(26px, 3vw + 6px, 40px); margin: 0 0 10px; font-weight: 900; letter-spacing: -0.02em; }
+    h2 { font-size: clamp(26px, 3vw + 6px, 38px); margin: 0 0 10px; font-weight: 900; letter-spacing: -0.02em; }
     .sec-sub { color: var(--muted); max-width: 640px; margin: 0; }
 
     /* Filter Pills */
     .filter-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
     .pill-btn {
       font-family: var(--mono); font-size: 12px; font-weight: 700;
-      padding: 9px 18px; border-radius: 10px; cursor: pointer;
+      padding: 9px 18px; border-radius: 9px; cursor: pointer;
       background: var(--surface); color: var(--muted); border: 1px solid var(--border);
       transition: all 0.2s ease;
     }
     .pill-btn:hover { color: #fff; border-color: var(--accent); }
     .pill-btn.active {
-      background: var(--accent); color: #050608; border-color: var(--accent);
+      background: var(--accent); color: #080706; border-color: var(--accent);
       box-shadow: 0 0 20px var(--accent-glow);
     }
 
-    /* 3D Tilt Dossier Cards */
+    /* Gadget Dossier Cards */
     .dossier-grid {
       display: grid; gap: 24px;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
     .dossier-card {
-      position: relative; border-radius: 20px; padding: 24px;
+      position: relative; border-radius: 18px; padding: 24px;
       background: var(--surface); backdrop-filter: blur(14px);
       border: 1px solid var(--border);
       display: flex; flex-direction: column; cursor: pointer;
@@ -350,7 +395,7 @@
     }
     .dossier-card:hover {
       border-color: var(--accent);
-      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65), 0 0 24px rgba(245, 158, 11, 0.14);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.72), 0 0 24px rgba(255, 123, 0, 0.16);
     }
     .dossier-card.is-hidden { display: none; }
     .dossier-top {
@@ -358,13 +403,13 @@
       font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 14px;
     }
     .dossier-status {
-      color: var(--sub); background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3); padding: 2px 8px; border-radius: 6px;
+      color: var(--phosphor); background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.32); padding: 2px 8px; border-radius: 5px;
     }
     .thumb-box {
-      aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
+      aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden;
       border: 1px solid var(--border); margin-bottom: 16px;
-      background: linear-gradient(135deg, #0b0e16, #151b2b);
+      background: linear-gradient(135deg, #100e0c, #1a1713);
       display: grid; place-items: center;
     }
     .thumb-box.light { background: #f8fafc; }
@@ -387,17 +432,17 @@
     }
     .inspect-hint { font-family: var(--mono); font-size: 10px; color: var(--accent); white-space: nowrap; }
 
-    /* Interactive Dossier Modal */
+    /* Modal */
     .modal-backdrop {
       position: fixed; inset: 0; z-index: 99;
-      background: rgba(3, 5, 10, 0.82); backdrop-filter: blur(10px);
+      background: rgba(5, 4, 3, 0.85); backdrop-filter: blur(10px);
       display: none; align-items: center; justify-content: center; padding: 18px;
     }
     .modal-backdrop.open { display: flex; }
     .modal-box {
-      width: 100%; max-width: 580px; border-radius: 22px; padding: 28px;
-      background: #0b0e17; border: 1px solid var(--accent);
-      box-shadow: 0 30px 80px rgba(0,0,0,0.85), 0 0 40px var(--accent-glow);
+      width: 100%; max-width: 580px; border-radius: 20px; padding: 28px;
+      background: #100e0b; border: 1px solid var(--accent);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.88), 0 0 40px var(--accent-glow);
       animation: modalIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
     }
     @keyframes modalIn {
@@ -413,7 +458,7 @@
       width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-weight: 700;
     }
 
-    /* Animated Scroll Timeline */
+    /* Timeline */
     .timeline-box { position: relative; padding-left: 36px; display: grid; gap: 26px; }
     .timeline-rail {
       position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px;
@@ -421,11 +466,11 @@
     }
     .timeline-fill {
       position: absolute; top: 0; left: 0; width: 100%; height: 0%;
-      background: linear-gradient(180deg, var(--accent), var(--sub));
+      background: linear-gradient(180deg, var(--accent), var(--phosphor));
       box-shadow: 0 0 12px var(--accent-glow); transition: height 0.2s ease-out;
     }
     .tl-item {
-      position: relative; padding: 22px 24px; border-radius: 18px;
+      position: relative; padding: 22px 24px; border-radius: 16px;
       background: var(--surface); border: 1px solid var(--border);
       transition: border-color 0.3s ease, transform 0.3s ease;
     }
@@ -441,30 +486,30 @@
     /* Profile */
     .profile-panel {
       display: grid; gap: 36px; align-items: center;
-      padding: clamp(24px, 4vw, 44px); border-radius: 24px;
+      padding: clamp(24px, 4vw, 44px); border-radius: 22px;
       background: var(--surface); border: 1px solid var(--border);
     }
     @media (min-width: 860px) { .profile-panel { grid-template-columns: 0.72fr 1.28fr; } }
     .avatar-frame {
       position: relative; max-width: 260px; width: 100%; margin-inline: auto;
-      border-radius: 22px; padding: 4px;
-      background: linear-gradient(135deg, var(--accent), var(--sub));
+      border-radius: 20px; padding: 4px;
+      background: linear-gradient(135deg, var(--accent), var(--phosphor));
     }
-    .avatar-frame img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 18px; display: block; }
+    .avatar-frame img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16px; display: block; }
     .spec-grid { display: grid; gap: 12px; margin-top: 18px; }
     .spec-row {
-      padding: 12px 16px; border-radius: 12px;
-      background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border);
+      padding: 12px 16px; border-radius: 10px;
+      background: rgba(0, 0, 0, 0.38); border: 1px solid var(--border);
       font-size: 14px; color: var(--muted);
     }
     .spec-row strong { color: #fff; }
 
-    /* Branch Toast */
+    /* Toast */
     .branch-toast {
       position: fixed; bottom: 22px; right: 22px; z-index: 97;
-      padding: 12px 18px; border-radius: 12px;
-      background: rgba(8, 10, 16, 0.94); border: 1px solid var(--accent);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.65), 0 0 20px var(--accent-glow);
+      padding: 12px 18px; border-radius: 10px;
+      background: rgba(12, 11, 9, 0.96); border: 1px solid var(--accent);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.75), 0 0 20px var(--accent-glow);
       font-family: var(--mono); font-size: 12px; color: #fff;
       opacity: 0; transform: translateY(16px); pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease;
@@ -478,13 +523,13 @@
     .footer-flex { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
 
     .reveal {
-      opacity: 0; transform: translateY(26px) scale(0.98);
+      opacity: 0; transform: translateY(24px) scale(0.98);
       transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .reveal.in { opacity: 1; transform: translateY(0) scale(1); }
 
     @media (prefers-reduced-motion: reduce) {
-      .marquee-track, .live-dot { animation: none !important; }
+      .marquee-track, .live-dot, .tube-char { animation: none !important; }
       .reveal { opacity: 1; transform: none; transition: none !important; }
       #attractorCanvas, #oscCanvas { display: none; }
     }
@@ -502,17 +547,17 @@
         <span class="brand-badge">L;</span>
         <span class="brand-meta">
           <strong>L;IT</strong>
-          <small>ENGINEERING LAB.</small>
+          <small>FUTURE GADGET &amp; LAB.</small>
         </span>
       </a>
       <nav class="hud-nav" aria-label="メインナビゲーション">
-        <a href="#works">01.ARTIFACTS</a>
-        <a href="#loop">02.LOOP</a>
-        <a href="#profile">03.ARCHITECT</a>
+        <a href="#works">01.GADGETS</a>
+        <a href="#loop">02.PROTOCOL</a>
+        <a href="#profile">03.LAB_MEMBER_001</a>
       </nav>
       <div class="hud-actions">
-        <button type="button" class="shift-btn" id="branchShiftBtn" title="分岐モードを切り替える">
-          <span>⚡ SHIFT BRANCH</span>
+        <button type="button" class="shift-btn" id="branchShiftBtn" title="観測ラインを切り替える">
+          <span>⚡ WORLDLINE SHIFT</span>
         </button>
         <button type="button" class="menu-btn" id="menuBtn" aria-controls="drawer" aria-expanded="false">MENU</button>
       </div>
@@ -521,9 +566,9 @@
 
   <div class="drawer" id="drawer" aria-hidden="true">
     <div class="drawer-panel" role="dialog" aria-label="モバイルメニュー">
-      <a href="#works">01.ARTIFACTS</a>
-      <a href="#loop">02.LOOP</a>
-      <a href="#profile">03.ARCHITECT</a>
+      <a href="#works">01.GADGETS</a>
+      <a href="#loop">02.PROTOCOL</a>
+      <a href="#profile">03.LAB_MEMBER_001</a>
       <a href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer" style="border-bottom:none;">GITHUB // laskal05</a>
     </div>
   </div>
@@ -532,54 +577,67 @@
     <section class="hero-section">
       <div class="container hero-grid">
         <div>
-          <div class="telemetry-pill">
+          <div class="worldline-badge">
             <span class="live-dot" aria-hidden="true"></span>
-            <span id="telemetryText">SYS.ACTIVE // CONVERGENCE_01</span>
+            <span id="telemetryText">ATTRACTOR_FIELD // α-LINE ACTIVE</span>
           </div>
 
           <h1>
-            <span class="scramble" data-text="最適解への分岐を、">最適解への分岐を、</span><br />
-            <span class="hero-highlight scramble" data-text="最短サイクルで実装する。">最短サイクルで実装する。</span>
+            <span class="scramble" data-text="最適解の世界線へ、">最適解の世界線へ、</span><br />
+            <span class="hero-highlight scramble" data-text="最短サイクルで跳躍する。">最短サイクルで跳躍する。</span>
           </h1>
 
           <p class="hero-desc">
             iOSアプリ開発から、Webサービス、業務システム、SEO自動化まで。<br />
-            仮説・実験・実測を高速に反復し、価値が最大化するラインへ収束させます。
+            仮説と実測のループを高速に回し、価値が最大化する収束点へプロダクトを導きます。
           </p>
 
-          <div class="nixie-rack" id="nixieRack" role="button" tabindex="0" aria-label="分岐インデックス切り替え">
-            <div class="tube"><span class="tube-char">1</span></div>
-            <div class="tube-dot">.</div>
-            <div class="tube"><span class="tube-char">1</span></div>
-            <div class="tube"><span class="tube-char">1</span></div>
-            <div class="tube"><span class="tube-char">2</span></div>
-            <div class="tube"><span class="tube-char">2</span></div>
-            <div class="tube"><span class="tube-char">0</span></div>
-            <div class="tube"><span class="tube-char">2</span></div>
+          <!-- Divergence-Style Nixie Chassis -->
+          <div class="nixie-chassis" id="nixieRack" role="button" tabindex="0" aria-label="分岐メータ切り替え">
+            <div class="nixie-chassis-top">
+              <span>DIVERGENCE // ITERATION METER</span>
+              <span class="nixie-greek" id="greekBadge">α-0.571046</span>
+            </div>
+            <div class="nixie-tubes">
+              <div class="tube"><span class="tube-char">0</span></div>
+              <div class="tube-dot">.</div>
+              <div class="tube"><span class="tube-char">5</span></div>
+              <div class="tube"><span class="tube-char">7</span></div>
+              <div class="tube"><span class="tube-char">1</span></div>
+              <div class="tube"><span class="tube-char">0</span></div>
+              <div class="tube"><span class="tube-char">4</span></div>
+              <div class="tube"><span class="tube-char">6</span></div>
+            </div>
           </div>
 
           <div class="cta-row">
-            <a class="btn btn-primary" href="#works">実験アーカイブを見る →</a>
+            <a class="btn btn-primary" href="#works">開発ガジェット一覧 →</a>
             <a class="btn btn-ghost" href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer">GitHub // laskal05</a>
           </div>
         </div>
 
-        <div class="core-card-wrap">
-          <div class="core-card" id="heroCoreCard">
-            <div class="core-visual">
-              <img src="/public/img/hero-visual.png" alt="L;IT Engineering Lab Visual" />
-            </div>
-            <div class="oscilloscope-box">
-              <div class="osc-head">
-                <span>SIGNAL // CONVERGENCE_WAVE</span>
-                <span id="oscFreq">60.0 Hz</span>
+        <div class="crt-monitor-wrap">
+          <div class="crt-bezel" id="heroCoreCard">
+            <div class="crt-screen">
+              <div class="crt-screen-img">
+                <img src="/public/img/hero-visual.png" alt="L;IT Lab CRT Monitor" />
               </div>
-              <canvas id="oscCanvas" width="420" height="52"></canvas>
+              <div class="oscilloscope-box">
+                <div class="osc-head">
+                  <span>CRT_SIGNAL // CONVERGENCE_WAVE</span>
+                  <span id="oscFreq">60.0 Hz</span>
+                </div>
+                <canvas id="oscCanvas" width="420" height="50"></canvas>
+              </div>
+              <div class="crt-console">
+                <div class="console-line"><span>STATUS: PRODUCTION_SYNC</span><span class="ok">[ONLINE]</span></div>
+                <div class="console-line"><span>STACK: FLUTTER / NEXT.JS / ASTRO</span><span class="ok">[VERIFIED]</span></div>
+                <div class="console-line"><span>MAIL_ARCHIVE: 36BYTE_TELEMETRY</span><span class="ok">[ACTIVE]</span></div>
+              </div>
             </div>
-            <div class="core-console">
-              <div class="console-line"><span>STATUS: PRODUCTION_SYNC</span><span class="ok">[ONLINE]</span></div>
-              <div class="console-line"><span>STACK: FLUTTER / NEXT.JS / ASTRO</span><span class="ok">[VERIFIED]</span></div>
-              <div class="console-line"><span>TELEMETRY: GA4 + GSC + CF_ANALYTICS</span><span class="ok">[ACTIVE]</span></div>
+            <div class="crt-plate">
+              <span>MODEL: CRT-L5100 // LAB_UNIT</span>
+              <span class="crt-led"><i></i><span>POWER ON</span></span>
             </div>
           </div>
         </div>
@@ -589,20 +647,20 @@
     <div class="marquee-wrap" aria-hidden="true">
       <div class="marquee-track">
         <div class="marquee-group">
+          <span class="marquee-item"><b>//</b> LAB_MEMBER_001</span>
           <span class="marquee-item"><b>//</b> FLUTTER iOS APPS</span>
           <span class="marquee-item"><b>//</b> NEXT.JS &amp; TYPESCRIPT</span>
           <span class="marquee-item"><b>//</b> ASTRO + CLOUDFLARE WORKERS</span>
-          <span class="marquee-item"><b>//</b> AI-NATIVE WORKFLOW</span>
-          <span class="marquee-item"><b>//</b> DATA-DRIVEN SEO / CVR</span>
-          <span class="marquee-item"><b>//</b> AUTOMATED UNIT TESTING</span>
+          <span class="marquee-item"><b>//</b> ATTRACTOR CONVERGENCE SEO</span>
+          <span class="marquee-item"><b>//</b> AI-NATIVE EXPERIMENTATION</span>
         </div>
         <div class="marquee-group">
+          <span class="marquee-item"><b>//</b> LAB_MEMBER_001</span>
           <span class="marquee-item"><b>//</b> FLUTTER iOS APPS</span>
           <span class="marquee-item"><b>//</b> NEXT.JS &amp; TYPESCRIPT</span>
           <span class="marquee-item"><b>//</b> ASTRO + CLOUDFLARE WORKERS</span>
-          <span class="marquee-item"><b>//</b> AI-NATIVE WORKFLOW</span>
-          <span class="marquee-item"><b>//</b> DATA-DRIVEN SEO / CVR</span>
-          <span class="marquee-item"><b>//</b> AUTOMATED UNIT TESTING</span>
+          <span class="marquee-item"><b>//</b> ATTRACTOR CONVERGENCE SEO</span>
+          <span class="marquee-item"><b>//</b> AI-NATIVE EXPERIMENTATION</span>
         </div>
       </div>
     </div>
@@ -610,9 +668,9 @@
     <section id="works" class="section">
       <div class="container">
         <header class="sec-head reveal">
-          <span class="sec-code">// 01. ARTIFACT ARCHIVES</span>
-          <h2>制作実績・自社プロダクト</h2>
-          <p class="sec-sub">カードをクリックすると実験詳細（DOSSIER）を開けます。</p>
+          <span class="sec-code">// 01. LAB_ARTIFACTS</span>
+          <h2>開発ガジェット・制作実績</h2>
+          <p class="sec-sub">カードをクリックすると実験記録（DOSSIER）を展開します。</p>
           <div class="filter-row" role="tablist">
             <button type="button" class="pill-btn active" data-cat="all">ALL [06]</button>
             <button type="button" class="pill-btn" data-cat="app">iOS APPS [03]</button>
@@ -621,69 +679,69 @@
         </header>
 
         <div class="dossier-grid" id="worksGrid">
-          <article class="dossier-card tilt-card reveal" data-cat="web" data-id="LAB_FILE // 001" data-title="内容証明オンライン" data-detail="内容証明郵便の作成をオンラインで完結させるWebサービス。Next.jsをベースに構造化データ・SEO/AEO最適化および継続的な品質改善・脆弱性対策を担当。">
-            <div class="dossier-top"><span>LAB_FILE // 001</span><span class="dossier-status">LIVE</span></div>
+          <article class="dossier-card tilt-card reveal" data-cat="web" data-id="GADGET_NO // 001" data-title="内容証明オンライン" data-detail="内容証明郵便の作成をオンラインで完結させるWebサービス。Next.jsをベースに構造化データ・SEO/AEO最適化および継続的な品質改善・脆弱性対策を担当。">
+            <div class="dossier-top"><span>GADGET_NO // 001</span><span class="dossier-status">LIVE</span></div>
             <div class="thumb-box light"><img src="/public/img/logo_naiyoo.webp" alt="内容証明オンライン" /></div>
             <h3>内容証明オンライン</h3>
             <p>内容証明郵便の作成を支援するWebサービス。構造化データやSEO/AEO最適化、安定運用の継続改善を担当。</p>
             <div class="card-foot">
               <div class="tags"><span>Next.js</span><span>SEO / AEO</span></div>
-              <span class="inspect-hint">OPEN ›</span>
+              <span class="inspect-hint">INSPECT ›</span>
             </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="app" data-id="LAB_FILE // 002" data-title="つみなおし" data-detail="毎月の固定費と積立投資を見える化し、家計の無駄を省いて長期的な資産形成をサポートする自社開発iOSアプリ。">
-            <div class="dossier-top"><span>LAB_FILE // 002</span><span class="dossier-status">APP STORE</span></div>
+          <article class="dossier-card tilt-card reveal" data-cat="app" data-id="GADGET_NO // 002" data-title="つみなおし" data-detail="毎月の固定費と積立投資を見える化し、家計の無駄を省いて長期的な資産形成をサポートする自社開発iOSアプリ。">
+            <div class="dossier-top"><span>GADGET_NO // 002</span><span class="dossier-status">APP STORE</span></div>
             <div class="thumb-box light"><img src="/public/img/logo_tsuminaoshi.png" alt="つみなおし" /></div>
             <h3>つみなおし</h3>
             <p>固定費と投資の見える化を通じて無駄を省き、無理のない資産形成をサポートするiOSアプリ。</p>
             <div class="card-foot">
               <div class="tags"><span>Flutter</span><span>iOS</span></div>
-              <span class="inspect-hint">OPEN ›</span>
+              <span class="inspect-hint">INSPECT ›</span>
             </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="web" data-id="LAB_FILE // 003" data-title="有限会社FSK" data-detail="精密板金から板金加工・組み立てまで一貫生産体制を敷く板金加工メーカーのコーポレートサイト。技術力と信頼性が伝わる情報設計を実施。">
-            <div class="dossier-top"><span>LAB_FILE // 003</span><span class="dossier-status">DELIVERED</span></div>
+          <article class="dossier-card tilt-card reveal" data-cat="web" data-id="GADGET_NO // 003" data-title="有限会社FSK" data-detail="精密板金から板金加工・組み立てまで一貫生産体制を敷く板金加工メーカーのコーポレートサイト。技術力と信頼性が伝わる情報設計を実施。">
+            <div class="dossier-top"><span>GADGET_NO // 003</span><span class="dossier-status">DELIVERED</span></div>
             <div class="thumb-box light"><img src="/public/img/logo_fsk0303.png" alt="有限会社FSK" /></div>
             <h3>有限会社FSK</h3>
             <p>精密板金から板金加工・組み立てまで一貫生産体制を敷くメーカーのコーポレートサイト制作。</p>
             <div class="card-foot">
               <div class="tags"><span>Web制作</span><span>情報設計</span></div>
-              <span class="inspect-hint">OPEN ›</span>
+              <span class="inspect-hint">INSPECT ›</span>
             </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="app" data-id="LAB_FILE // 004" data-title="でいとらっく（DayTrack）" data-detail="日々のトレード収支をカレンダーと統計グラフで記録・分析できる主力iOSアプリ。ML Kit OCR入力、トレード診断、GA4行動計測、RevenueCat課金・AdMob広告まで一気通貫で実装。">
-            <div class="dossier-top"><span>LAB_FILE // 004</span><span class="dossier-status">FLAGSHIP</span></div>
+          <article class="dossier-card tilt-card reveal" data-cat="app" data-id="GADGET_NO // 004" data-title="でいとらっく（DayTrack）" data-detail="日々のトレード収支をカレンダーと統計グラフで記録・分析できる主力iOSアプリ。ML Kit OCR入力、トレード診断、GA4行動計測、RevenueCat課金・AdMob広告まで一気通貫で実装。">
+            <div class="dossier-top"><span>GADGET_NO // 004</span><span class="dossier-status">FLAGSHIP</span></div>
             <div class="thumb-box"><div class="thumb-art"><span class="icon">📈</span><span class="code">DAYTRACK // TELEMETRY</span></div></div>
             <h3>でいとらっく（DayTrack）</h3>
             <p>日々のトレード収支をカレンダーと統計で記録・分析できるiOSアプリ。OCR入力・診断・課金まで実装。</p>
             <div class="card-foot">
               <div class="tags"><span>Flutter</span><span>GA4</span><span>RevenueCat</span></div>
-              <span class="inspect-hint">OPEN ›</span>
+              <span class="inspect-hint">INSPECT ›</span>
             </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="app" data-id="LAB_FILE // 005" data-title="脂質バランサー / Any Roulette" data-detail="外食チェーンメニュー対応のオンデバイス完結型脂質管理アプリ「脂質バランサー」と、カスタマイズ可能な意思決定支援アプリ「Any Roulette」の2本を開発・展開。">
-            <div class="dossier-top"><span>LAB_FILE // 005</span><span class="dossier-status">RELEASE READY</span></div>
+          <article class="dossier-card tilt-card reveal" data-cat="app" data-id="GADGET_NO // 005" data-title="脂質バランサー / Any Roulette" data-detail="外食チェーンメニュー対応のオンデバイス完結型脂質管理アプリ「脂質バランサー」と、カスタマイズ可能な意思決定支援アプリ「Any Roulette」の2本を開発・展開。">
+            <div class="dossier-top"><span>GADGET_NO // 005</span><span class="dossier-status">RELEASE READY</span></div>
             <div class="thumb-box"><div class="thumb-art"><span class="icon">🥗</span><span class="code">LIPID BALANCER / ROULETTE</span></div></div>
             <h3>脂質バランサー / Any Roulette</h3>
             <p>外食メニュー対応の脂質コントロールアプリ「脂質バランサー」と、意思決定支援アプリ「Any Roulette」。</p>
             <div class="card-foot">
               <div class="tags"><span>Flutter</span><span>SQLite</span><span>iOS</span></div>
-              <span class="inspect-hint">OPEN ›</span>
+              <span class="inspect-hint">INSPECT ›</span>
             </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="web" data-id="LAB_FILE // 006" data-title="業務Webアプリ・CRM移行・メディア自動化" data-detail="受託開発の図面・製品マスタ管理Webアプリ開発やCRMデータ移行検証に加え、Astro × Cloudflare Pages/Workersによる自動更新Webメディア基盤を構築・運営。">
-            <div class="dossier-top"><span>LAB_FILE // 006</span><span class="dossier-status">AUTOMATED</span></div>
+          <article class="dossier-card tilt-card reveal" data-cat="web" data-id="GADGET_NO // 006" data-title="業務Webアプリ・CRM移行・メディア自動化" data-detail="受託開発の図面・製品マスタ管理Webアプリ開発やCRMデータ移行検証に加え、Astro × Cloudflare Pages/Workersによる自動更新Webメディア基盤を構築・運営。">
+            <div class="dossier-top"><span>GADGET_NO // 006</span><span class="dossier-status">AUTOMATED</span></div>
             <div class="thumb-box"><div class="thumb-art"><span class="icon">⚡</span><span class="code">ENTERPRISE &amp; MEDIA ENGINE</span></div></div>
             <h3>業務Webアプリ・CRM移行・メディア自動化</h3>
             <p>図面・製品マスタ管理システム開発、CRM移行検証、Cloudflare Workersを用いたWebメディア日次更新基盤。</p>
             <div class="card-foot">
               <div class="tags"><span>TypeScript</span><span>Astro</span><span>Cloudflare</span></div>
-              <span class="inspect-hint">OPEN ›</span>
+              <span class="inspect-hint">INSPECT ›</span>
             </div>
           </article>
         </div>
@@ -693,9 +751,9 @@
     <section id="loop" class="section">
       <div class="container">
         <header class="sec-head reveal">
-          <span class="sec-code">// 02. CONVERGENCE LOOP</span>
-          <h2>開発スタイル</h2>
-          <p class="sec-sub">スクロールと同期する実験・観測・収束の3フェーズで、毎日プロダクトを前進させます。</p>
+          <span class="sec-code">// 02. EXPERIMENT PROTOCOL</span>
+          <h2>開発プロトコル</h2>
+          <p class="sec-sub">仮説・実験・収束の3段階を高速に反復し、最適世界線へと収束させます。</p>
         </header>
 
         <div class="timeline-box" id="timelineBox">
@@ -703,22 +761,22 @@
 
           <div class="tl-item active reveal">
             <div class="tl-node"></div>
-            <div class="mono" style="font-size:11px; color:var(--accent); font-weight:700;">PHASE 01 // HYPOTHESIS</div>
-            <h3 style="margin:6px 0;">課題整理と優先度設計</h3>
+            <div class="mono" style="font-size:11px; color:var(--accent); font-weight:700;">STAGE 01 // HYPOTHESIS</div>
+            <h3 style="margin:6px 0;">課題整理と分岐設計</h3>
             <p style="margin:0; color:var(--muted); font-size:14px;">目的とKPIを明確化し、最小コストで最大効果が出るスコープを設計します。</p>
           </div>
 
           <div class="tl-item reveal">
             <div class="tl-node"></div>
-            <div class="mono" style="font-size:11px; color:var(--accent); font-weight:700;">PHASE 02 // EXPERIMENT</div>
-            <h3 style="margin:6px 0;">高速実装と自動テスト</h3>
+            <div class="mono" style="font-size:11px; color:var(--accent); font-weight:700;">STAGE 02 // EXPERIMENT</div>
+            <h3 style="margin:6px 0;">高速実装と自動検証</h3>
             <p style="margin:0; color:var(--muted); font-size:14px;">TypeScript / Flutter の堅牢な型設計と単体テストをセットで実装し、後方互換性と品質を守ります。</p>
           </div>
 
           <div class="tl-item reveal">
             <div class="tl-node"></div>
-            <div class="mono" style="font-size:11px; color:var(--accent); font-weight:700;">PHASE 03 // CONVERGENCE</div>
-            <h3 style="margin:6px 0;">実測データに基づく継続改善</h3>
+            <div class="mono" style="font-size:11px; color:var(--accent); font-weight:700;">STAGE 03 // CONVERGENCE</div>
+            <h3 style="margin:6px 0;">実測観測に基づく最適収束</h3>
             <p style="margin:0; color:var(--muted); font-size:14px;">Search Console / GA4 / Cloudflare Analytics 等の実測値をもとに、UI・SEO・収益導線を最適値へ収束させます。</p>
           </div>
         </div>
@@ -729,10 +787,10 @@
       <div class="container">
         <div class="profile-panel reveal">
           <div class="avatar-frame">
-            <img src="/public/img/profile.png" alt="L;IT Architect" />
+            <img src="/public/img/profile.png" alt="L;IT Lab Member 001" />
           </div>
           <div>
-            <span class="sec-code">// 03. ARCHITECT</span>
+            <span class="sec-code">// 03. LAB_MEMBER_001</span>
             <h2>プロフィール</h2>
             <p style="color:var(--muted); margin:0;">Webシステム・モバイルアプリを中心に、課題整理から設計、実装、テスト自動化、リリース後のデータ分析・改善までを一気通貫で担当しています。</p>
             <div class="spec-grid">
@@ -752,7 +810,7 @@
   <div class="modal-backdrop" id="dossierModal" aria-hidden="true">
     <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-head">
-        <span id="modalCode">LAB_FILE // 001</span>
+        <span id="modalCode">GADGET_NO // 001</span>
         <button type="button" class="modal-close" id="modalClose" aria-label="閉じる">✕</button>
       </div>
       <h3 id="modalTitle" style="font-size:22px; margin:0 0 12px;"></h3>
@@ -765,15 +823,14 @@
 
   <footer>
     <div class="container footer-flex">
-      <span>&copy; <span id="year"></span> L;IT — ENGINEERING LAB.</span>
-      <span>BUILT WITH ZERO-DEPENDENCY MOTION ENGINE</span>
+      <span>&copy; <span id="year"></span> L;IT — FUTURE GADGET &amp; ENGINEERING LAB.</span>
+      <span>OBSERVER_MODE // ACTIVE</span>
     </div>
   </footer>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile Drawer
     const menuBtn = document.getElementById('menuBtn');
     const drawer = document.getElementById('drawer');
     if (menuBtn && drawer) {
@@ -789,7 +846,6 @@
       });
     }
 
-    // 1. Scroll Progress & Timeline Fill
     const scrollBar = document.getElementById('scrollBar');
     const timelineBox = document.getElementById('timelineBox');
     const timelineFill = document.getElementById('timelineFill');
@@ -814,7 +870,6 @@
     window.addEventListener('scroll', updateScrollEffects, { passive: true });
     updateScrollEffects();
 
-    // 2. Cipher Scramble Effect
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ+-/*=;';
     function scrambleElement(el, customText) {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -842,16 +897,17 @@
       });
     });
 
-    // 3. Nixie Tube Branch Shift + Toast + Spike
+    // Worldline Divergence Shift
     const branches = [
-      { id: '0', num: '1.112202', msg: 'SYS.ACTIVE // CONVERGENCE_01', freq: '60.0 Hz' },
-      { id: '1', num: '1.048596', msg: 'SYS.OPTIMAL // ZERO_FRICTION', freq: '72.4 Hz' },
-      { id: '2', num: '0.571046', msg: 'SYS.TELEMETRY // OBSERVATION', freq: '48.8 Hz' },
+      { id: '0', greek: 'α', num: '0.571046', msg: 'ATTRACTOR_FIELD // α-LINE ACTIVE', freq: '60.0 Hz' },
+      { id: '1', greek: 'β', num: '1.130205', msg: 'ATTRACTOR_FIELD // β-LINE SCALE', freq: '72.4 Hz' },
+      { id: '2', greek: 'Ω', num: '1.048912', msg: 'ATTRACTOR_FIELD // Ω-CONVERGENCE', freq: '88.8 Hz' },
     ];
     let branchIdx = 0;
     let oscSpike = 0;
     const tubes = document.querySelectorAll('#nixieRack .tube-char');
     const telemetryText = document.getElementById('telemetryText');
+    const greekBadge = document.getElementById('greekBadge');
     const branchToast = document.getElementById('branchToast');
     const oscFreq = document.getElementById('oscFreq');
     let toastTimer;
@@ -860,7 +916,7 @@
       branchToast.textContent = msg;
       branchToast.classList.add('show');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => branchToast.classList.remove('show'), 2200);
+      toastTimer = setTimeout(() => branchToast.classList.remove('show'), 2400);
     }
 
     function shiftBranch(nextIdx, silent) {
@@ -868,12 +924,13 @@
       const b = branches[branchIdx];
       document.body.setAttribute('data-branch', b.id);
       oscFreq.textContent = b.freq;
+      greekBadge.textContent = `${b.greek}-${b.num}`;
       oscSpike = 1.0;
 
       if (!silent) {
         document.body.classList.add('is-shifting');
-        setTimeout(() => document.body.classList.remove('is-shifting'), 450);
-        showToast(`BRANCH SHIFTED -> ${b.num}`);
+        setTimeout(() => document.body.classList.remove('is-shifting'), 550);
+        showToast(`WORLDLINE SHIFTED -> ${b.greek} [ ${b.num} ]`);
       }
 
       telemetryText.textContent = b.msg;
@@ -893,7 +950,6 @@
     document.getElementById('nixieRack').addEventListener('click', () => shiftBranch());
     window.addEventListener('load', () => shiftBranch(0, true));
 
-    // 4. 3D Parallax Tilt
     if (window.matchMedia('(pointer: fine)').matches) {
       const bindTilt = (el, strength) => {
         el.addEventListener('mousemove', (e) => {
@@ -905,11 +961,10 @@
         el.addEventListener('mouseleave', () => { el.style.transform = ''; });
       };
       const heroCore = document.getElementById('heroCoreCard');
-      if (heroCore) bindTilt(heroCore, 10);
+      if (heroCore) bindTilt(heroCore, 9);
       document.querySelectorAll('.tilt-card').forEach((c) => bindTilt(c, 7));
     }
 
-    // 5. Category Filter & Dossier Modal
     const filterBtns = document.querySelectorAll('.pill-btn');
     const workCards = document.querySelectorAll('#worksGrid .dossier-card');
     filterBtns.forEach((btn, idx) => {
@@ -933,7 +988,7 @@
 
     workCards.forEach((card) => {
       card.addEventListener('click', () => {
-        modalCode.textContent = card.dataset.id || 'LAB_FILE';
+        modalCode.textContent = card.dataset.id || 'GADGET_NO';
         modalTitle.textContent = card.dataset.title || '';
         scrambleElement(modalDesc, card.dataset.detail || '');
         modalTags.innerHTML = '';
@@ -957,7 +1012,6 @@
       }
     });
 
-    // 6. Scroll Reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -971,7 +1025,7 @@
       observer.observe(el);
     });
 
-    // 7. Live Oscilloscope Waveform Canvas
+    // CRT Oscilloscope Waveform
     const oscCanvas = document.getElementById('oscCanvas');
     if (oscCanvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const octx = oscCanvas.getContext('2d');
@@ -982,11 +1036,11 @@
         octx.clearRect(0, 0, ow, oh);
         oscSpike *= 0.92;
         const b = document.body.getAttribute('data-branch');
-        const strokeColor = b === '1' ? '#34d399' : b === '2' ? '#38bdf8' : '#f59e0b';
+        const strokeColor = b === '1' ? '#22c55e' : b === '2' ? '#38bdf8' : '#22c55e';
 
         octx.beginPath();
         for (let x = 0; x < ow; x += 2) {
-          const amp = (10 + oscSpike * 14) * Math.sin(x * 0.03 + phase);
+          const amp = (10 + oscSpike * 15) * Math.sin(x * 0.032 + phase);
           const harmonic = 5 * Math.cos(x * 0.09 - phase * 1.7);
           const y = oh / 2 + amp + harmonic;
           if (x === 0) octx.moveTo(x, y);
@@ -997,13 +1051,13 @@
         octx.shadowColor = strokeColor;
         octx.shadowBlur = 10;
         octx.stroke();
-        phase += 0.08 + oscSpike * 0.15;
+        phase += 0.08 + oscSpike * 0.16;
         requestAnimationFrame(drawOsc);
       }
       drawOsc();
     }
 
-    // 8. Fullscreen Interactive Attractor Canvas (Flowing Worldlines + Particles + Click Pulse)
+    // Fullscreen Interactive Worldline Attractor Canvas
     const canvas = document.getElementById('attractorCanvas');
     if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const ctx = canvas.getContext('2d');
@@ -1035,9 +1089,9 @@
 
       function getAccentRgb() {
         const b = document.body.getAttribute('data-branch');
-        if (b === '1') return '16, 185, 129';
+        if (b === '1') return '34, 197, 94';
         if (b === '2') return '56, 189, 248';
-        return '245, 158, 11';
+        return '255, 123, 0';
       }
 
       function draw() {
@@ -1045,7 +1099,6 @@
         const rgb = getAccentRgb();
         t += 0.012;
 
-        // Flowing Convergent Worldline Curves
         for (let line = 0; line < 4; line++) {
           ctx.beginPath();
           const baseY = h * (0.22 + line * 0.19);
@@ -1056,12 +1109,11 @@
             if (x === 0) ctx.moveTo(x, y);
             else ctx.lineTo(x, y);
           }
-          ctx.strokeStyle = `rgba(${rgb}, 0.09)`;
+          ctx.strokeStyle = `rgba(${rgb}, 0.11)`;
           ctx.lineWidth = 1.2;
           ctx.stroke();
         }
 
-        // Click ripples
         for (let i = pulses.length - 1; i >= 0; i--) {
           const p = pulses[i];
           p.r += 7.5;
@@ -1074,7 +1126,6 @@
           if (p.alpha < 0.03) pulses.splice(i, 1);
         }
 
-        // Attractor particles
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
           const dxm = mouse.x - p.x;
