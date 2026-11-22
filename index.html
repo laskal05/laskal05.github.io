@@ -15,15 +15,15 @@
   <style>
     :root {
       --bg: #040508;
-      --surface: rgba(12, 15, 22, 0.72);
-      --surface-strong: rgba(16, 20, 30, 0.9);
+      --surface: rgba(12, 15, 22, 0.74);
+      --surface-strong: rgba(15, 19, 28, 0.94);
       --text: #f3f4f6;
       --muted: #94a3b8;
       --accent: #f59e0b;
       --accent-hot: #fb923c;
       --accent-glow: rgba(245, 158, 11, 0.55);
       --sub: #10b981;
-      --sub-glow: rgba(16, 185, 129, 0.4);
+      --sub-glow: rgba(16, 185, 129, 0.45);
       --border: rgba(255, 255, 255, 0.1);
       --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
       --sans: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
@@ -66,10 +66,7 @@
 
     /* CRT Scanlines & Vignette */
     .crt-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 90;
-      pointer-events: none;
+      position: fixed; inset: 0; z-index: 90; pointer-events: none;
       background:
         repeating-linear-gradient(
           to bottom,
@@ -78,39 +75,27 @@
           rgba(0, 0, 0, 0.18) 3px,
           rgba(0, 0, 0, 0.18) 4px
         ),
-        radial-gradient(circle at center, transparent 58%, rgba(0, 0, 0, 0.62) 100%);
-      opacity: 0.45;
+        radial-gradient(circle at center, transparent 58%, rgba(0, 0, 0, 0.65) 100%);
+      opacity: 0.44;
     }
 
-    /* Phase Shift Flash (on Branch Shift) */
+    /* Phase Shift Flash */
     .shift-flash {
-      position: fixed;
-      inset: 0;
-      z-index: 95;
-      pointer-events: none;
-      opacity: 0;
-      background: linear-gradient(90deg, rgba(245,158,11,0.18), rgba(16,185,129,0.22), rgba(56,189,248,0.18));
+      position: fixed; inset: 0; z-index: 95; pointer-events: none; opacity: 0;
+      background: linear-gradient(90deg, rgba(245,158,11,0.2), rgba(16,185,129,0.24), rgba(56,189,248,0.2));
       mix-blend-mode: screen;
     }
-    body.is-shifting .shift-flash {
-      animation: phaseFlash 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    body.is-shifting main {
-      animation: chromaticJitter 0.36s steps(2, end);
-    }
-    @keyframes phaseFlash {
-      0% { opacity: 0.95; }
-      100% { opacity: 0; }
-    }
+    body.is-shifting .shift-flash { animation: phaseFlash 0.48s cubic-bezier(0.22, 1, 0.36, 1); }
+    body.is-shifting main { animation: chromaticJitter 0.36s steps(2, end); }
+    @keyframes phaseFlash { 0% { opacity: 0.95; } 100% { opacity: 0; } }
     @keyframes chromaticJitter {
       0% { transform: translate(0, 0); filter: hue-rotate(0deg); }
-      25% { transform: translate(-4px, 1px) skewX(1.2deg); filter: hue-rotate(40deg) contrast(1.2); }
-      50% { transform: translate(4px, -1px) skewX(-1deg); filter: hue-rotate(-30deg); }
+      25% { transform: translate(-4px, 1px) skewX(1.2deg); filter: hue-rotate(42deg) contrast(1.22); }
+      50% { transform: translate(4px, -1px) skewX(-1deg); filter: hue-rotate(-32deg); }
       75% { transform: translate(-2px, 0); }
       100% { transform: translate(0, 0); filter: none; }
     }
 
-    /* Scroll Progress */
     .scroll-bar {
       position: fixed; top: 0; left: 0; height: 3px; width: 0%; z-index: 96;
       background: linear-gradient(90deg, var(--accent), var(--sub));
@@ -126,24 +111,22 @@
       margin-inline: auto; max-width: 1180px; padding-inline: max(14px, 3vw);
     }
     .hud-bar {
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      height: 60px; padding: 0 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      height: 60px; padding: 0 16px;
       border-radius: 16px;
-      background: rgba(8, 10, 16, 0.78);
+      background: rgba(8, 10, 16, 0.8);
       backdrop-filter: blur(18px) saturate(1.5);
       -webkit-backdrop-filter: blur(18px) saturate(1.5);
       border: 1px solid var(--border);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.58);
     }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
     .brand-badge {
       width: 34px; height: 34px; border-radius: 9px;
       display: grid; place-items: center;
       font-family: var(--mono); font-weight: 800; font-size: 14px;
-      color: var(--accent);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--accent);
-      box-shadow: 0 0 16px var(--accent-glow);
+      color: var(--accent); background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--accent); box-shadow: 0 0 16px var(--accent-glow);
       transition: transform 0.3s ease;
     }
     .brand:hover .brand-badge { transform: rotate(-6deg) scale(1.06); }
@@ -153,9 +136,10 @@
     .hud-nav { display: none; gap: 24px; font-family: var(--mono); font-size: 12px; font-weight: 600; }
     .hud-nav a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .hud-nav a:hover { color: var(--accent); }
+    .hud-actions { display: flex; align-items: center; gap: 8px; }
 
     .shift-btn {
-      display: inline-flex; align-items: center; gap: 8px;
+      display: inline-flex; align-items: center; gap: 6px;
       padding: 8px 14px; border-radius: 10px; cursor: pointer;
       font-family: var(--mono); font-size: 11px; font-weight: 700;
       color: #050608; background: var(--accent); border: none;
@@ -165,22 +149,37 @@
     .shift-btn:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 0 26px var(--accent-glow); }
     .shift-btn:active { transform: scale(0.96); }
 
-    @media (min-width: 860px) { .hud-nav { display: flex; } }
+    .menu-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff;
+      padding: 8px 11px; border-radius: 10px; font-family: var(--mono); font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    @media (min-width: 860px) {
+      .hud-nav { display: flex; }
+      .menu-btn { display: none; }
+    }
 
-    /* Hero Stage (Immersive Full-Viewport Feel) */
+    /* Mobile Drawer */
+    .drawer { position: fixed; inset: 0; background: rgba(3, 5, 9, 0.8); backdrop-filter: blur(8px); display: none; z-index: 98; }
+    .drawer.open { display: block; }
+    .drawer-panel {
+      position: absolute; right: 0; top: 0; height: 100%; width: 78%; max-width: 300px;
+      background: #0b0e16; border-left: 1px solid var(--border);
+      padding: 28px 22px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .drawer a {
+      font-family: var(--mono); font-size: 13px; text-decoration: none; color: #fff;
+      padding: 14px 6px; border-bottom: 1px solid var(--border);
+    }
+
+    /* Hero Stage */
     .hero-section {
       min-height: calc(100vh - 80px);
-      display: flex;
-      align-items: center;
-      padding: 48px 0 64px;
-      position: relative;
+      display: flex; align-items: center;
+      padding: 46px 0 64px; position: relative;
     }
-    .hero-grid {
-      display: grid; gap: 42px; align-items: center; width: 100%;
-    }
-    @media (min-width: 960px) {
-      .hero-grid { grid-template-columns: 1.15fr 0.85fr; }
-    }
+    .hero-grid { display: grid; gap: 42px; align-items: center; width: 100%; }
+    @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.15fr 0.85fr; } }
 
     .telemetry-pill {
       display: inline-flex; align-items: center; gap: 10px;
@@ -188,7 +187,7 @@
       color: var(--sub);
       background: rgba(16, 185, 129, 0.08);
       border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 6px 14px; border-radius: 999px; margin-bottom: 22px;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
     }
     .live-dot {
       width: 8px; height: 8px; border-radius: 50%; background: var(--sub);
@@ -200,70 +199,53 @@
     }
 
     h1 {
-      font-size: clamp(36px, 5vw + 8px, 66px);
-      line-height: 1.08; font-weight: 900; letter-spacing: -0.03em;
-      margin: 0 0 20px;
+      font-size: clamp(34px, 5vw + 8px, 64px);
+      line-height: 1.08; font-weight: 900; letter-spacing: -0.03em; margin: 0 0 20px;
     }
     .hero-highlight {
       color: var(--accent);
       text-shadow: 0 0 28px var(--accent-glow);
       transition: color 0.35s ease, text-shadow 0.35s ease;
     }
-    .hero-desc {
-      font-size: clamp(15px, 1.1vw + 6px, 18px);
-      color: var(--muted); max-width: 580px; margin: 0 0 30px;
-    }
+    .hero-desc { font-size: clamp(15px, 1.1vw + 6px, 18px); color: var(--muted); max-width: 580px; margin: 0 0 28px; }
 
     /* Real Glass Nixie Tube Rack */
     .nixie-rack {
       display: inline-flex; align-items: flex-end; gap: 8px;
       padding: 16px 20px; border-radius: 18px;
-      background: linear-gradient(180deg, rgba(18, 20, 28, 0.95), rgba(8, 9, 13, 0.98));
+      background: linear-gradient(180deg, rgba(18, 20, 28, 0.96), rgba(8, 9, 13, 0.99));
       border: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255,255,255,0.08);
-      margin-bottom: 28px;
-      position: relative;
-      cursor: pointer;
+      margin-bottom: 30px; position: relative; cursor: pointer;
     }
     .nixie-rack::after {
-      content: "CLICK TO SHIFT";
+      content: "CLICK TO SHIFT BRANCH";
       position: absolute; bottom: -20px; right: 8px;
       font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; color: var(--muted);
     }
     .tube {
       position: relative;
-      width: clamp(32px, 4.6vw, 44px);
-      height: clamp(54px, 7vw, 72px);
+      width: clamp(31px, 4.5vw, 44px);
+      height: clamp(52px, 6.8vw, 72px);
       border-radius: 16px 16px 6px 6px;
       background: radial-gradient(circle at 50% 45%, rgba(245, 158, 11, 0.14), rgba(5, 6, 9, 0.92) 72%);
       border: 1px solid rgba(255, 255, 255, 0.14);
       box-shadow: inset 0 6px 14px rgba(255,255,255,0.07), inset 0 -10px 18px rgba(0,0,0,0.85);
-      display: grid; place-items: center;
-      overflow: hidden;
+      display: grid; place-items: center; overflow: hidden;
     }
     .tube::before {
-      /* Anode wire mesh illusion */
-      content: "";
-      position: absolute; inset: 3px;
-      border-radius: 13px 13px 4px 4px;
+      content: ""; position: absolute; inset: 3px; border-radius: 13px 13px 4px 4px;
       background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
-      background-size: 4px 4px;
-      pointer-events: none;
+      background-size: 4px 4px; pointer-events: none;
     }
     .tube-char {
-      font-family: var(--mono);
-      font-size: clamp(24px, 3.4vw, 34px);
-      font-weight: 700;
+      font-family: var(--mono); font-size: clamp(23px, 3.3vw, 34px); font-weight: 700;
       color: #ffedd5;
-      text-shadow:
-        0 0 6px var(--accent),
-        0 0 16px var(--accent),
-        0 0 32px var(--accent-hot);
-      z-index: 2;
-      transition: color 0.3s ease;
+      text-shadow: 0 0 6px var(--accent), 0 0 16px var(--accent), 0 0 32px var(--accent-hot);
+      z-index: 2; transition: color 0.3s ease;
     }
     .tube-dot {
-      width: 12px; height: clamp(54px, 7vw, 72px);
+      width: 12px; height: clamp(52px, 6.8vw, 72px);
       display: grid; align-items: end; justify-items: center; padding-bottom: 10px;
       font-family: var(--mono); font-size: 26px; font-weight: 800;
       color: var(--accent); text-shadow: 0 0 12px var(--accent-glow);
@@ -276,40 +258,40 @@
       font-weight: 700; font-size: 14px;
       transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
     }
-    .btn-primary {
-      background: var(--accent); color: #050608;
-      box-shadow: 0 10px 30px var(--accent-glow);
-    }
+    .btn-primary { background: var(--accent); color: #050608; box-shadow: 0 10px 30px var(--accent-glow); }
     .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 38px var(--accent-glow); }
-    .btn-ghost {
-      background: rgba(255, 255, 255, 0.04); color: #fff;
-      border: 1px solid var(--border);
-    }
+    .btn-ghost { background: rgba(255, 255, 255, 0.04); color: #fff; border: 1px solid var(--border); }
     .btn-ghost:hover { transform: translateY(-3px); border-color: var(--accent); }
 
-    /* Hero Right: Interactive 3D Lab Core Card */
+    /* Hero Right: Interactive 3D Lab Core + Live Oscilloscope */
     .core-card-wrap { perspective: 1100px; }
     .core-card {
-      position: relative;
-      border-radius: 24px;
-      padding: 18px;
-      background: linear-gradient(145deg, rgba(20, 24, 36, 0.85), rgba(8, 10, 16, 0.92));
+      position: relative; border-radius: 24px; padding: 18px;
+      background: linear-gradient(145deg, rgba(20, 24, 36, 0.88), rgba(8, 10, 16, 0.94));
       border: 1px solid rgba(255, 255, 255, 0.14);
       box-shadow: 0 30px 70px rgba(0, 0, 0, 0.75);
       transform-style: preserve-3d;
       transition: transform 0.15s ease-out;
     }
     .core-visual {
-      border-radius: 16px; overflow: hidden; aspect-ratio: 4/3;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transform: translateZ(22px);
+      border-radius: 16px; overflow: hidden; aspect-ratio: 16/10;
+      border: 1px solid rgba(255, 255, 255, 0.08); transform: translateZ(20px);
     }
     .core-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .oscilloscope-box {
+      margin-top: 12px; padding: 10px 12px; border-radius: 12px;
+      background: rgba(2, 4, 8, 0.8); border: 1px solid rgba(16, 185, 129, 0.25);
+      transform: translateZ(28px);
+    }
+    .osc-head {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 10px; color: var(--sub); margin-bottom: 6px;
+    }
+    #oscCanvas { width: 100%; height: 52px; display: block; }
     .core-console {
-      margin-top: 14px; padding: 12px 14px; border-radius: 12px;
+      margin-top: 10px; padding: 10px 12px; border-radius: 12px;
       background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255, 255, 255, 0.08);
-      font-family: var(--mono); font-size: 11px; color: #cbd5e1;
-      transform: translateZ(34px);
+      font-family: var(--mono); font-size: 11px; color: #cbd5e1; transform: translateZ(34px);
     }
     .console-line { display: flex; justify-content: space-between; gap: 10px; }
     .console-line span.ok { color: var(--sub); }
@@ -317,25 +299,17 @@
     /* Infinite Velocity Marquee */
     .marquee-wrap {
       border-block: 1px solid var(--border);
-      background: rgba(10, 12, 18, 0.8);
-      overflow: hidden; padding: 14px 0;
+      background: rgba(10, 12, 18, 0.82); overflow: hidden; padding: 14px 0;
     }
-    .marquee-track {
-      display: flex; width: max-content;
-      animation: scrollMarquee 26s linear infinite;
-    }
+    .marquee-track { display: flex; width: max-content; animation: scrollMarquee 26s linear infinite; }
     .marquee-track:hover { animation-play-state: paused; }
     .marquee-group { display: flex; align-items: center; gap: 38px; padding-right: 38px; }
     .marquee-item {
       font-family: var(--mono); font-size: 13px; font-weight: 700;
-      color: var(--muted); display: inline-flex; align-items: center; gap: 10px;
-      white-space: nowrap;
+      color: var(--muted); display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;
     }
     .marquee-item b { color: var(--accent); }
-    @keyframes scrollMarquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
+    @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
     /* Sections */
     .section { padding: clamp(64px, 9vw, 112px) 0; position: relative; }
@@ -370,13 +344,13 @@
       position: relative; border-radius: 20px; padding: 24px;
       background: var(--surface); backdrop-filter: blur(14px);
       border: 1px solid var(--border);
-      display: flex; flex-direction: column;
+      display: flex; flex-direction: column; cursor: pointer;
       transform-style: preserve-3d;
       transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
     }
     .dossier-card:hover {
       border-color: var(--accent);
-      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65), 0 0 24px rgba(245, 158, 11, 0.12);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.65), 0 0 24px rgba(245, 158, 11, 0.14);
     }
     .dossier-card.is-hidden { display: none; }
     .dossier-top {
@@ -401,17 +375,46 @@
     .thumb-art .code { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; }
     .dossier-card h3 { font-size: 19px; margin: 0 0 8px; }
     .dossier-card p { font-size: 14px; color: var(--muted); margin: 0; flex-grow: 1; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .card-foot {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+      margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .tags span {
       font-family: var(--mono); font-size: 11px; color: #e2e8f0;
       background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border);
-      padding: 3px 9px; border-radius: 6px;
+      padding: 3px 8px; border-radius: 6px;
+    }
+    .inspect-hint { font-family: var(--mono); font-size: 10px; color: var(--accent); white-space: nowrap; }
+
+    /* Interactive Dossier Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 99;
+      background: rgba(3, 5, 10, 0.82); backdrop-filter: blur(10px);
+      display: none; align-items: center; justify-content: center; padding: 18px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      width: 100%; max-width: 580px; border-radius: 22px; padding: 28px;
+      background: #0b0e17; border: 1px solid var(--accent);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.85), 0 0 40px var(--accent-glow);
+      animation: modalIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(14px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-head {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 11px; color: var(--accent); margin-bottom: 12px;
+    }
+    .modal-close {
+      background: rgba(255,255,255,0.08); color: #fff; border: 1px solid var(--border);
+      width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-weight: 700;
     }
 
-    /* Animated Scroll Timeline (Experiment Loop) */
-    .timeline-box {
-      position: relative; padding-left: 36px; display: grid; gap: 26px;
-    }
+    /* Animated Scroll Timeline */
+    .timeline-box { position: relative; padding-left: 36px; display: grid; gap: 26px; }
     .timeline-rail {
       position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px;
       background: rgba(255, 255, 255, 0.1);
@@ -419,8 +422,7 @@
     .timeline-fill {
       position: absolute; top: 0; left: 0; width: 100%; height: 0%;
       background: linear-gradient(180deg, var(--accent), var(--sub));
-      box-shadow: 0 0 12px var(--accent-glow);
-      transition: height 0.2s ease-out;
+      box-shadow: 0 0 12px var(--accent-glow); transition: height 0.2s ease-out;
     }
     .tl-item {
       position: relative; padding: 22px 24px; border-radius: 18px;
@@ -430,15 +432,13 @@
     .tl-item.active { border-color: var(--accent); transform: translateX(6px); }
     .tl-node {
       position: absolute; left: -32px; top: 26px; width: 16px; height: 16px;
-      border-radius: 50%; background: var(--bg); border: 2px solid var(--muted);
-      transition: all 0.3s ease;
+      border-radius: 50%; background: var(--bg); border: 2px solid var(--muted); transition: all 0.3s ease;
     }
     .tl-item.active .tl-node {
-      background: var(--accent); border-color: #fff;
-      box-shadow: 0 0 16px var(--accent-glow);
+      background: var(--accent); border-color: #fff; box-shadow: 0 0 16px var(--accent-glow);
     }
 
-    /* Profile Grid */
+    /* Profile */
     .profile-panel {
       display: grid; gap: 36px; align-items: center;
       padding: clamp(24px, 4vw, 44px); border-radius: 24px;
@@ -459,14 +459,24 @@
     }
     .spec-row strong { color: #fff; }
 
-    /* Footer */
+    /* Branch Toast */
+    .branch-toast {
+      position: fixed; bottom: 22px; right: 22px; z-index: 97;
+      padding: 12px 18px; border-radius: 12px;
+      background: rgba(8, 10, 16, 0.94); border: 1px solid var(--accent);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.65), 0 0 20px var(--accent-glow);
+      font-family: var(--mono); font-size: 12px; color: #fff;
+      opacity: 0; transform: translateY(16px); pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .branch-toast.show { opacity: 1; transform: translateY(0); }
+
     footer {
       border-top: 1px solid var(--border); padding: 30px 0 44px;
       font-family: var(--mono); font-size: 12px; color: var(--muted);
     }
     .footer-flex { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
 
-    /* Reveal */
     .reveal {
       opacity: 0; transform: translateY(26px) scale(0.98);
       transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
@@ -476,7 +486,7 @@
     @media (prefers-reduced-motion: reduce) {
       .marquee-track, .live-dot { animation: none !important; }
       .reveal { opacity: 1; transform: none; transition: none !important; }
-      #attractorCanvas { display: none; }
+      #attractorCanvas, #oscCanvas { display: none; }
     }
   </style>
 </head>
@@ -500,11 +510,23 @@
         <a href="#loop">02.LOOP</a>
         <a href="#profile">03.ARCHITECT</a>
       </nav>
-      <button type="button" class="shift-btn" id="branchShiftBtn" title="世界線（表示モード）を切り替える">
-        <span>⚡ SHIFT BRANCH</span>
-      </button>
+      <div class="hud-actions">
+        <button type="button" class="shift-btn" id="branchShiftBtn" title="分岐モードを切り替える">
+          <span>⚡ SHIFT BRANCH</span>
+        </button>
+        <button type="button" class="menu-btn" id="menuBtn" aria-controls="drawer" aria-expanded="false">MENU</button>
+      </div>
     </div>
   </header>
+
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-panel" role="dialog" aria-label="モバイルメニュー">
+      <a href="#works">01.ARTIFACTS</a>
+      <a href="#loop">02.LOOP</a>
+      <a href="#profile">03.ARCHITECT</a>
+      <a href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer" style="border-bottom:none;">GITHUB // laskal05</a>
+    </div>
+  </div>
 
   <main id="top">
     <section class="hero-section">
@@ -512,7 +534,7 @@
         <div>
           <div class="telemetry-pill">
             <span class="live-dot" aria-hidden="true"></span>
-            <span id="telemetryText">SYS.ACTIVE // WORLDLINE CONVERGENCE</span>
+            <span id="telemetryText">SYS.ACTIVE // CONVERGENCE_01</span>
           </div>
 
           <h1>
@@ -525,7 +547,6 @@
             仮説・実験・実測を高速に反復し、価値が最大化するラインへ収束させます。
           </p>
 
-          <!-- Real Glass Nixie Meter -->
           <div class="nixie-rack" id="nixieRack" role="button" tabindex="0" aria-label="分岐インデックス切り替え">
             <div class="tube"><span class="tube-char">1</span></div>
             <div class="tube-dot">.</div>
@@ -548,6 +569,13 @@
             <div class="core-visual">
               <img src="/public/img/hero-visual.png" alt="L;IT Engineering Lab Visual" />
             </div>
+            <div class="oscilloscope-box">
+              <div class="osc-head">
+                <span>SIGNAL // CONVERGENCE_WAVE</span>
+                <span id="oscFreq">60.0 Hz</span>
+              </div>
+              <canvas id="oscCanvas" width="420" height="52"></canvas>
+            </div>
             <div class="core-console">
               <div class="console-line"><span>STATUS: PRODUCTION_SYNC</span><span class="ok">[ONLINE]</span></div>
               <div class="console-line"><span>STACK: FLUTTER / NEXT.JS / ASTRO</span><span class="ok">[VERIFIED]</span></div>
@@ -558,7 +586,6 @@
       </div>
     </section>
 
-    <!-- Infinite Velocity Marquee -->
     <div class="marquee-wrap" aria-hidden="true">
       <div class="marquee-track">
         <div class="marquee-group">
@@ -585,7 +612,7 @@
         <header class="sec-head reveal">
           <span class="sec-code">// 01. ARTIFACT ARCHIVES</span>
           <h2>制作実績・自社プロダクト</h2>
-          <p class="sec-sub">自社運営のiOSアプリ4本・Webメディアから、受託開発のWebサービス・業務システムまで。</p>
+          <p class="sec-sub">カードをクリックすると実験詳細（DOSSIER）を開けます。</p>
           <div class="filter-row" role="tablist">
             <button type="button" class="pill-btn active" data-cat="all">ALL [06]</button>
             <button type="button" class="pill-btn" data-cat="app">iOS APPS [03]</button>
@@ -594,52 +621,70 @@
         </header>
 
         <div class="dossier-grid" id="worksGrid">
-          <article class="dossier-card tilt-card reveal" data-cat="web">
+          <article class="dossier-card tilt-card reveal" data-cat="web" data-id="LAB_FILE // 001" data-title="内容証明オンライン" data-detail="内容証明郵便の作成をオンラインで完結させるWebサービス。Next.jsをベースに構造化データ・SEO/AEO最適化および継続的な品質改善・脆弱性対策を担当。">
             <div class="dossier-top"><span>LAB_FILE // 001</span><span class="dossier-status">LIVE</span></div>
             <div class="thumb-box light"><img src="/public/img/logo_naiyoo.webp" alt="内容証明オンライン" /></div>
             <h3>内容証明オンライン</h3>
             <p>内容証明郵便の作成を支援するWebサービス。構造化データやSEO/AEO最適化、安定運用の継続改善を担当。</p>
-            <div class="tags"><span>Next.js</span><span>SEO / AEO</span></div>
+            <div class="card-foot">
+              <div class="tags"><span>Next.js</span><span>SEO / AEO</span></div>
+              <span class="inspect-hint">OPEN ›</span>
+            </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="app">
+          <article class="dossier-card tilt-card reveal" data-cat="app" data-id="LAB_FILE // 002" data-title="つみなおし" data-detail="毎月の固定費と積立投資を見える化し、家計の無駄を省いて長期的な資産形成をサポートする自社開発iOSアプリ。">
             <div class="dossier-top"><span>LAB_FILE // 002</span><span class="dossier-status">APP STORE</span></div>
             <div class="thumb-box light"><img src="/public/img/logo_tsuminaoshi.png" alt="つみなおし" /></div>
             <h3>つみなおし</h3>
             <p>固定費と投資の見える化を通じて無駄を省き、無理のない資産形成をサポートするiOSアプリ。</p>
-            <div class="tags"><span>Flutter</span><span>iOS</span></div>
+            <div class="card-foot">
+              <div class="tags"><span>Flutter</span><span>iOS</span></div>
+              <span class="inspect-hint">OPEN ›</span>
+            </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="web">
+          <article class="dossier-card tilt-card reveal" data-cat="web" data-id="LAB_FILE // 003" data-title="有限会社FSK" data-detail="精密板金から板金加工・組み立てまで一貫生産体制を敷く板金加工メーカーのコーポレートサイト。技術力と信頼性が伝わる情報設計を実施。">
             <div class="dossier-top"><span>LAB_FILE // 003</span><span class="dossier-status">DELIVERED</span></div>
             <div class="thumb-box light"><img src="/public/img/logo_fsk0303.png" alt="有限会社FSK" /></div>
             <h3>有限会社FSK</h3>
             <p>精密板金から板金加工・組み立てまで一貫生産体制を敷くメーカーのコーポレートサイト制作。</p>
-            <div class="tags"><span>Web制作</span><span>情報設計</span></div>
+            <div class="card-foot">
+              <div class="tags"><span>Web制作</span><span>情報設計</span></div>
+              <span class="inspect-hint">OPEN ›</span>
+            </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="app">
+          <article class="dossier-card tilt-card reveal" data-cat="app" data-id="LAB_FILE // 004" data-title="でいとらっく（DayTrack）" data-detail="日々のトレード収支をカレンダーと統計グラフで記録・分析できる主力iOSアプリ。ML Kit OCR入力、トレード診断、GA4行動計測、RevenueCat課金・AdMob広告まで一気通貫で実装。">
             <div class="dossier-top"><span>LAB_FILE // 004</span><span class="dossier-status">FLAGSHIP</span></div>
             <div class="thumb-box"><div class="thumb-art"><span class="icon">📈</span><span class="code">DAYTRACK // TELEMETRY</span></div></div>
             <h3>でいとらっく（DayTrack）</h3>
             <p>日々のトレード収支をカレンダーと統計で記録・分析できるiOSアプリ。OCR入力・診断・課金まで実装。</p>
-            <div class="tags"><span>Flutter</span><span>GA4</span><span>RevenueCat</span></div>
+            <div class="card-foot">
+              <div class="tags"><span>Flutter</span><span>GA4</span><span>RevenueCat</span></div>
+              <span class="inspect-hint">OPEN ›</span>
+            </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="app">
+          <article class="dossier-card tilt-card reveal" data-cat="app" data-id="LAB_FILE // 005" data-title="脂質バランサー / Any Roulette" data-detail="外食チェーンメニュー対応のオンデバイス完結型脂質管理アプリ「脂質バランサー」と、カスタマイズ可能な意思決定支援アプリ「Any Roulette」の2本を開発・展開。">
             <div class="dossier-top"><span>LAB_FILE // 005</span><span class="dossier-status">RELEASE READY</span></div>
             <div class="thumb-box"><div class="thumb-art"><span class="icon">🥗</span><span class="code">LIPID BALANCER / ROULETTE</span></div></div>
             <h3>脂質バランサー / Any Roulette</h3>
             <p>外食メニュー対応の脂質コントロールアプリ「脂質バランサー」と、意思決定支援アプリ「Any Roulette」。</p>
-            <div class="tags"><span>Flutter</span><span>SQLite</span><span>iOS</span></div>
+            <div class="card-foot">
+              <div class="tags"><span>Flutter</span><span>SQLite</span><span>iOS</span></div>
+              <span class="inspect-hint">OPEN ›</span>
+            </div>
           </article>
 
-          <article class="dossier-card tilt-card reveal" data-cat="web">
+          <article class="dossier-card tilt-card reveal" data-cat="web" data-id="LAB_FILE // 006" data-title="業務Webアプリ・CRM移行・メディア自動化" data-detail="受託開発の図面・製品マスタ管理Webアプリ開発やCRMデータ移行検証に加え、Astro × Cloudflare Pages/Workersによる自動更新Webメディア基盤を構築・運営。">
             <div class="dossier-top"><span>LAB_FILE // 006</span><span class="dossier-status">AUTOMATED</span></div>
             <div class="thumb-box"><div class="thumb-art"><span class="icon">⚡</span><span class="code">ENTERPRISE &amp; MEDIA ENGINE</span></div></div>
             <h3>業務Webアプリ・CRM移行・メディア自動化</h3>
             <p>図面・製品マスタ管理システム開発、CRM移行検証、Cloudflare Workersを用いたWebメディア日次更新基盤。</p>
-            <div class="tags"><span>TypeScript</span><span>Astro</span><span>Cloudflare</span></div>
+            <div class="card-foot">
+              <div class="tags"><span>TypeScript</span><span>Astro</span><span>Cloudflare</span></div>
+              <span class="inspect-hint">OPEN ›</span>
+            </div>
           </article>
         </div>
       </div>
@@ -704,6 +749,20 @@
     </section>
   </main>
 
+  <div class="modal-backdrop" id="dossierModal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <span id="modalCode">LAB_FILE // 001</span>
+        <button type="button" class="modal-close" id="modalClose" aria-label="閉じる">✕</button>
+      </div>
+      <h3 id="modalTitle" style="font-size:22px; margin:0 0 12px;"></h3>
+      <p id="modalDesc" style="color:var(--muted); font-size:14px; line-height:1.75; margin:0 0 20px;"></p>
+      <div id="modalTags" class="tags"></div>
+    </div>
+  </div>
+
+  <div class="branch-toast" id="branchToast" role="status" aria-live="polite"></div>
+
   <footer>
     <div class="container footer-flex">
       <span>&copy; <span id="year"></span> L;IT — ENGINEERING LAB.</span>
@@ -713,6 +772,22 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile Drawer
+    const menuBtn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    if (menuBtn && drawer) {
+      const toggleDrawer = () => {
+        const open = !drawer.classList.contains('open');
+        drawer.classList.toggle('open', open);
+        menuBtn.setAttribute('aria-expanded', String(open));
+        drawer.setAttribute('aria-hidden', String(!open));
+      };
+      menuBtn.addEventListener('click', toggleDrawer);
+      drawer.addEventListener('click', (e) => {
+        if (e.target === drawer || e.target.tagName === 'A') toggleDrawer();
+      });
+    }
 
     // 1. Scroll Progress & Timeline Fill
     const scrollBar = document.getElementById('scrollBar');
@@ -730,7 +805,6 @@
         const vh = window.innerHeight;
         const progress = Math.min(1, Math.max(0, (vh * 0.65 - rect.top) / Math.max(1, rect.height)));
         timelineFill.style.height = (progress * 100).toFixed(1) + '%';
-
         tlItems.forEach((item) => {
           const ir = item.getBoundingClientRect();
           item.classList.toggle('active', ir.top < vh * 0.68);
@@ -740,11 +814,14 @@
     window.addEventListener('scroll', updateScrollEffects, { passive: true });
     updateScrollEffects();
 
-    // 2. Cipher Scramble Text Effect
+    // 2. Cipher Scramble Effect
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ+-/*=;';
-    function scrambleElement(el) {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const target = el.dataset.text || el.textContent;
+    function scrambleElement(el, customText) {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (customText) el.textContent = customText;
+        return;
+      }
+      const target = customText || el.dataset.text || el.textContent;
       let iter = 0;
       const timer = setInterval(() => {
         el.textContent = target.split('').map((c, idx) => {
@@ -752,35 +829,52 @@
           if (idx < iter) return target[idx];
           return chars[Math.floor(Math.random() * chars.length)];
         }).join('');
-        iter += 0.7;
+        iter += 0.9;
         if (iter >= target.length) {
           el.textContent = target;
           clearInterval(timer);
         }
-      }, 28);
+      }, 24);
     }
     window.addEventListener('load', () => {
       document.querySelectorAll('.scramble').forEach((el, i) => {
-        setTimeout(() => scrambleElement(el), i * 180);
+        setTimeout(() => scrambleElement(el), i * 160);
       });
     });
 
-    // 3. Nixie Tube Branch Shift
+    // 3. Nixie Tube Branch Shift + Toast + Spike
     const branches = [
-      { id: '0', num: '1.112202', msg: 'SYS.ACTIVE // WORLDLINE CONVERGENCE' },
-      { id: '1', num: '1.048596', msg: 'SYS.OPTIMAL // ZERO-FRICTION PIPELINE' },
-      { id: '2', num: '0.571046', msg: 'SYS.TELEMETRY // REALTIME OBSERVATION' },
+      { id: '0', num: '1.112202', msg: 'SYS.ACTIVE // CONVERGENCE_01', freq: '60.0 Hz' },
+      { id: '1', num: '1.048596', msg: 'SYS.OPTIMAL // ZERO_FRICTION', freq: '72.4 Hz' },
+      { id: '2', num: '0.571046', msg: 'SYS.TELEMETRY // OBSERVATION', freq: '48.8 Hz' },
     ];
     let branchIdx = 0;
+    let oscSpike = 0;
     const tubes = document.querySelectorAll('#nixieRack .tube-char');
     const telemetryText = document.getElementById('telemetryText');
+    const branchToast = document.getElementById('branchToast');
+    const oscFreq = document.getElementById('oscFreq');
+    let toastTimer;
 
-    function shiftBranch(nextIdx) {
+    function showToast(msg) {
+      branchToast.textContent = msg;
+      branchToast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => branchToast.classList.remove('show'), 2200);
+    }
+
+    function shiftBranch(nextIdx, silent) {
       branchIdx = nextIdx !== undefined ? nextIdx : (branchIdx + 1) % branches.length;
       const b = branches[branchIdx];
       document.body.setAttribute('data-branch', b.id);
-      document.body.classList.add('is-shifting');
-      setTimeout(() => document.body.classList.remove('is-shifting'), 450);
+      oscFreq.textContent = b.freq;
+      oscSpike = 1.0;
+
+      if (!silent) {
+        document.body.classList.add('is-shifting');
+        setTimeout(() => document.body.classList.remove('is-shifting'), 450);
+        showToast(`BRANCH SHIFTED -> ${b.num}`);
+      }
 
       telemetryText.textContent = b.msg;
       const digits = b.num.replace('.', '').split('');
@@ -792,14 +886,14 @@
           else t.textContent = String(Math.floor(Math.random() * 10));
         });
         if (frame > 22) clearInterval(timer);
-      }, 30);
+      }, 28);
     }
 
     document.getElementById('branchShiftBtn').addEventListener('click', () => shiftBranch());
     document.getElementById('nixieRack').addEventListener('click', () => shiftBranch());
-    window.addEventListener('load', () => shiftBranch(0));
+    window.addEventListener('load', () => shiftBranch(0, true));
 
-    // 4. 3D Parallax Tilt for Hero Card & Dossier Cards
+    // 4. 3D Parallax Tilt
     if (window.matchMedia('(pointer: fine)').matches) {
       const bindTilt = (el, strength) => {
         el.addEventListener('mousemove', (e) => {
@@ -808,16 +902,14 @@
           const y = (e.clientY - r.top) / r.height - 0.5;
           el.style.transform = `perspective(950px) rotateX(${(-y * strength).toFixed(2)}deg) rotateY(${(x * strength).toFixed(2)}deg) translateY(-4px)`;
         });
-        el.addEventListener('mouseleave', () => {
-          el.style.transform = '';
-        });
+        el.addEventListener('mouseleave', () => { el.style.transform = ''; });
       };
       const heroCore = document.getElementById('heroCoreCard');
       if (heroCore) bindTilt(heroCore, 10);
       document.querySelectorAll('.tilt-card').forEach((c) => bindTilt(c, 7));
     }
 
-    // 5. Category Filter
+    // 5. Category Filter & Dossier Modal
     const filterBtns = document.querySelectorAll('.pill-btn');
     const workCards = document.querySelectorAll('#worksGrid .dossier-card');
     filterBtns.forEach((btn, idx) => {
@@ -831,6 +923,38 @@
         });
         shiftBranch(idx % branches.length);
       });
+    });
+
+    const modal = document.getElementById('dossierModal');
+    const modalCode = document.getElementById('modalCode');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalTags = document.getElementById('modalTags');
+
+    workCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        modalCode.textContent = card.dataset.id || 'LAB_FILE';
+        modalTitle.textContent = card.dataset.title || '';
+        scrambleElement(modalDesc, card.dataset.detail || '');
+        modalTags.innerHTML = '';
+        card.querySelectorAll('.tags span').forEach((t) => {
+          const s = document.createElement('span');
+          s.textContent = t.textContent;
+          modalTags.appendChild(s);
+        });
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+      });
+    });
+    document.getElementById('modalClose').addEventListener('click', () => {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    });
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+      }
     });
 
     // 6. Scroll Reveal
@@ -847,15 +971,47 @@
       observer.observe(el);
     });
 
-    // 7. Fullscreen Interactive Attractor Particle Network + Click Ripple
+    // 7. Live Oscilloscope Waveform Canvas
+    const oscCanvas = document.getElementById('oscCanvas');
+    if (oscCanvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const octx = oscCanvas.getContext('2d');
+      let phase = 0;
+      function drawOsc() {
+        const ow = oscCanvas.width;
+        const oh = oscCanvas.height;
+        octx.clearRect(0, 0, ow, oh);
+        oscSpike *= 0.92;
+        const b = document.body.getAttribute('data-branch');
+        const strokeColor = b === '1' ? '#34d399' : b === '2' ? '#38bdf8' : '#f59e0b';
+
+        octx.beginPath();
+        for (let x = 0; x < ow; x += 2) {
+          const amp = (10 + oscSpike * 14) * Math.sin(x * 0.03 + phase);
+          const harmonic = 5 * Math.cos(x * 0.09 - phase * 1.7);
+          const y = oh / 2 + amp + harmonic;
+          if (x === 0) octx.moveTo(x, y);
+          else octx.lineTo(x, y);
+        }
+        octx.strokeStyle = strokeColor;
+        octx.lineWidth = 2;
+        octx.shadowColor = strokeColor;
+        octx.shadowBlur = 10;
+        octx.stroke();
+        phase += 0.08 + oscSpike * 0.15;
+        requestAnimationFrame(drawOsc);
+      }
+      drawOsc();
+    }
+
+    // 8. Fullscreen Interactive Attractor Canvas (Flowing Worldlines + Particles + Click Pulse)
     const canvas = document.getElementById('attractorCanvas');
     if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const ctx = canvas.getContext('2d');
-      let w = 0, h = 0;
+      let w = 0, h = 0, t = 0;
       const mouse = { x: -9999, y: -9999 };
       const pulses = [];
       const particles = [];
-      const COUNT = 64;
+      const COUNT = 58;
 
       function resize() {
         w = canvas.width = window.innerWidth;
@@ -866,10 +1022,8 @@
 
       for (let i = 0; i < COUNT; i++) {
         particles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.75,
-          vy: (Math.random() - 0.5) * 0.75,
+          x: Math.random() * w, y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.75, vy: (Math.random() - 0.5) * 0.75,
           r: Math.random() * 1.8 + 0.8,
         });
       }
@@ -889,11 +1043,28 @@
       function draw() {
         ctx.clearRect(0, 0, w, h);
         const rgb = getAccentRgb();
+        t += 0.012;
 
-        // Update & draw click ripples
+        // Flowing Convergent Worldline Curves
+        for (let line = 0; line < 4; line++) {
+          ctx.beginPath();
+          const baseY = h * (0.22 + line * 0.19);
+          for (let x = 0; x <= w; x += 28) {
+            const wave = Math.sin(x * 0.004 + t + line * 1.4) * 32 + Math.cos(x * 0.002 - t * 0.7) * 18;
+            const pull = mouse.x > 0 ? Math.exp(-Math.hypot(x - mouse.x, baseY - mouse.y) / 260) * (mouse.y - baseY) * 0.25 : 0;
+            const y = baseY + wave + pull;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = `rgba(${rgb}, 0.09)`;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+        }
+
+        // Click ripples
         for (let i = pulses.length - 1; i >= 0; i--) {
           const p = pulses[i];
-          p.r += 7;
+          p.r += 7.5;
           p.alpha *= 0.94;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -903,21 +1074,18 @@
           if (p.alpha < 0.03) pulses.splice(i, 1);
         }
 
-        // Update & draw attractor particles + connections
+        // Attractor particles
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
           const dxm = mouse.x - p.x;
           const dym = mouse.y - p.y;
           const dm = Math.hypot(dxm, dym);
-          if (dm < 180 && dm > 1) {
-            p.vx += (dxm / dm) * 0.035;
-            p.vy += (dym / dm) * 0.035;
+          if (dm < 190 && dm > 1) {
+            p.vx += (dxm / dm) * 0.038;
+            p.vy += (dym / dm) * 0.038;
           }
-          p.vx *= 0.99;
-          p.vy *= 0.99;
-          p.x += p.vx;
-          p.y += p.vy;
-
+          p.vx *= 0.99; p.vy *= 0.99;
+          p.x += p.vx; p.y += p.vy;
           if (p.x < 0 || p.x > w) p.vx *= -1;
           if (p.y < 0 || p.y > h) p.vy *= -1;
 
@@ -933,7 +1101,7 @@
               ctx.beginPath();
               ctx.moveTo(p.x, p.y);
               ctx.lineTo(q.x, q.y);
-              ctx.strokeStyle = `rgba(${rgb}, ${((1 - dist / 135) * 0.24).toFixed(3)})`;
+              ctx.strokeStyle = `rgba(${rgb}, ${((1 - dist / 135) * 0.22).toFixed(3)})`;
               ctx.lineWidth = 1;
               ctx.stroke();
             }
