@@ -957,17 +957,19 @@
         return;
       }
       const target = customText || el.dataset.text || el.textContent;
+      if (el._scrambleTimer) clearInterval(el._scrambleTimer);
       let iter = 0;
-      const timer = setInterval(() => {
+      el._scrambleTimer = setInterval(() => {
         el.textContent = target.split('').map((c, idx) => {
           if (c === ' ' || c === '、' || c === '。') return c;
           if (idx < iter) return target[idx];
           return chars[Math.floor(Math.random() * chars.length)];
         }).join('');
-        iter += 0.9;
+        iter += 0.75;
         if (iter >= target.length) {
           el.textContent = target;
-          clearInterval(timer);
+          clearInterval(el._scrambleTimer);
+          el._scrambleTimer = null;
         }
       }, 24);
     }
@@ -991,6 +993,7 @@
     const branchToast = document.getElementById('branchToast');
     const oscFreq = document.getElementById('oscFreq');
     let toastTimer;
+    let nixieTimer;
 
     function showToast(msg) {
       branchToast.textContent = msg;
@@ -1011,18 +1014,25 @@
         document.body.classList.add('is-shifting');
         setTimeout(() => document.body.classList.remove('is-shifting'), 550);
         showToast(`WORLDLINE SHIFTED -> ${b.greek} [ ${b.num} ]`);
+        document.querySelectorAll('.scramble').forEach((el, i) => {
+          setTimeout(() => scrambleElement(el), i * 110);
+        });
       }
 
       telemetryText.textContent = b.msg;
       const digits = b.num.replace('.', '').split('');
       let frame = 0;
-      const timer = setInterval(() => {
+      if (nixieTimer) clearInterval(nixieTimer);
+      nixieTimer = setInterval(() => {
         frame++;
         tubes.forEach((t, i) => {
           if (frame > 5 + i * 2) t.textContent = digits[i] || '0';
           else t.textContent = String(Math.floor(Math.random() * 10));
         });
-        if (frame > 22) clearInterval(timer);
+        if (frame > 22) {
+          clearInterval(nixieTimer);
+          nixieTimer = null;
+        }
       }, 28);
     }
 
