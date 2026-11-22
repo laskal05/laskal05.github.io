@@ -288,57 +288,129 @@
     /* Hero Right: Retro-Future CRT Monitor Frame */
     .crt-monitor-wrap { perspective: 1100px; }
     .crt-bezel {
-      position: relative; border-radius: 22px; padding: 18px;
-      background: linear-gradient(145deg, #24211c, #12100d);
-      border: 2px solid rgba(255, 220, 170, 0.16);
-      box-shadow: 0 32px 75px rgba(0, 0, 0, 0.85), inset 0 2px 3px rgba(255,255,255,0.08);
+      position: relative; border-radius: 28px; padding: 22px 22px 16px;
+      background: linear-gradient(160deg, #332e27 0%, #1c1915 55%, #110f0c 100%);
+      border: 2px solid #453d33;
+      box-shadow:
+        0 34px 80px rgba(0, 0, 0, 0.9),
+        inset 0 2px 3px rgba(255, 240, 210, 0.16),
+        inset 0 -8px 18px rgba(0, 0, 0, 0.85);
       transform-style: preserve-3d; transition: transform 0.15s ease-out;
     }
+    /* Deep recessed CRT plastic bezel */
+    .crt-cavity {
+      padding: 10px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, #090807, #171411);
+      box-shadow:
+        inset 0 10px 22px rgba(0, 0, 0, 0.95),
+        inset 0 -2px 6px rgba(255, 255, 255, 0.06);
+      transform: translateZ(12px);
+    }
     .crt-screen {
-      border-radius: 14px; overflow: hidden;
-      background: #050a07; border: 2px solid #020302;
-      box-shadow: inset 0 0 28px rgba(0,0,0,0.9);
+      border-radius: 24px / 18px;
+      overflow: hidden;
+      background: #040906;
+      border: 3px solid #050504;
+      box-shadow: inset 0 0 42px rgba(0, 0, 0, 0.95), inset 0 0 10px rgba(34, 197, 94, 0.12);
       position: relative;
       transform: translateZ(18px);
+    }
+    /* Curved glass reflection + RGB phosphor aperture grille + moving refresh bar */
+    .crt-screen::before {
+      content: ""; position: absolute; inset: 0; z-index: 6; pointer-events: none;
+      background:
+        radial-gradient(120% 90% at 22% 14%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.03) 32%, transparent 56%),
+        repeating-linear-gradient(90deg, rgba(255,0,0,0.045) 0 1px, rgba(0,255,0,0.045) 1px 2px, rgba(0,120,255,0.045) 2px 3px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.28) 0 2px, transparent 2px 4px);
+      box-shadow: inset 0 0 36px rgba(0, 0, 0, 0.82);
+    }
+    .crt-refresh-bar {
+      position: absolute; left: 0; right: 0; height: 22px; z-index: 7; pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      animation: crtRefresh 4.2s linear infinite;
+    }
+    @keyframes crtRefresh {
+      0% { top: -24px; }
+      100% { top: 105%; }
+    }
+    .crt-screen.is-zapping {
+      animation: crtZap 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes crtZap {
+      0% { transform: translateZ(18px) scaleY(0.04) scaleX(1.12); filter: brightness(2.6); }
+      55% { transform: translateZ(18px) scaleY(1.03) scaleX(0.98); filter: brightness(1.3); }
+      100% { transform: translateZ(18px) scaleY(1) scaleX(1); filter: none; }
     }
     .crt-screen-img { aspect-ratio: 16/10; overflow: hidden; position: relative; }
     .crt-screen-img img {
       width: 100%; height: 100%; object-fit: cover; display: block;
-      filter: contrast(1.08) sepia(0.18) saturate(0.95);
+      filter: contrast(1.12) sepia(0.22) saturate(0.92);
     }
-    .crt-screen-img::after {
-      content: "CH-04 // LAB_MONITOR";
-      position: absolute; top: 10px; right: 12px;
-      font-family: var(--mono); font-size: 10px; font-weight: 700;
-      color: var(--phosphor); background: rgba(0,0,0,0.72);
-      padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(34,197,94,0.35);
+    .crt-osd {
+      position: absolute; top: 12px; left: 14px; z-index: 8;
+      font-family: var(--mono); font-size: 13px; font-weight: 800; letter-spacing: 0.08em;
+      color: #4ade80; text-shadow: 0 0 8px rgba(74, 222, 128, 0.85);
+      background: rgba(0, 12, 4, 0.55); padding: 2px 8px; border-radius: 4px;
     }
     .oscilloscope-box {
-      padding: 10px 14px; background: rgba(4, 12, 7, 0.95);
+      padding: 8px 14px; background: rgba(4, 12, 7, 0.96);
       border-top: 1px solid rgba(34, 197, 94, 0.25);
     }
     .osc-head {
       display: flex; justify-content: space-between; align-items: center;
       font-family: var(--mono); font-size: 10px; color: var(--phosphor); margin-bottom: 4px;
     }
-    #oscCanvas { width: 100%; height: 50px; display: block; }
+    #oscCanvas { width: 100%; height: 46px; display: block; }
     .crt-console {
-      padding: 10px 14px; background: #030604;
+      padding: 9px 14px; background: #030604;
       border-top: 1px solid rgba(255,255,255,0.06);
-      font-family: var(--mono); font-size: 11px; color: #cbd5e1;
+      font-family: var(--mono); font-size: 10.5px; color: #cbd5e1;
     }
     .console-line { display: flex; justify-content: space-between; gap: 10px; }
     .console-line span.ok { color: var(--phosphor); }
-    .crt-plate {
-      margin-top: 12px; display: flex; justify-content: space-between; align-items: center;
-      font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em;
+    /* CRT Front Control Deck (Speaker Grille + Rotary Dials + Red Power LED) */
+    .crt-deck {
+      margin-top: 14px; padding: 10px 12px; border-radius: 12px;
+      background: linear-gradient(180deg, #171411, #0e0c0a);
+      border: 1px solid rgba(255, 220, 170, 0.12);
+      display: flex; justify-content: space-between; align-items: center; gap: 14px;
+      transform: translateZ(14px);
     }
+    .crt-speaker {
+      flex: 1; height: 22px; border-radius: 4px;
+      background: repeating-linear-gradient(
+        90deg,
+        #070605 0px, #070605 3px,
+        #26221c 3px, #26221c 6px
+      );
+      border: 1px solid rgba(255,255,255,0.06);
+      max-width: 140px;
+    }
+    .crt-controls { display: flex; align-items: center; gap: 12px; }
+    .crt-dial {
+      width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+      background: radial-gradient(circle at 35% 30%, #4b453d, #191612 75%);
+      border: 2px solid #090806;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.8), inset 0 1px 2px rgba(255,255,255,0.2);
+      position: relative; transition: transform 0.25s ease;
+    }
+    .crt-dial::after {
+      content: ""; position: absolute; top: 3px; left: 50%; transform: translateX(-50%);
+      width: 3px; height: 9px; border-radius: 2px; background: var(--accent);
+    }
+    .crt-plate-txt {
+      font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 0.08em;
+      display: none;
+    }
+    @media (min-width: 520px) { .crt-plate-txt { display: inline; } }
     .crt-led {
-      display: inline-flex; align-items: center; gap: 6px;
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--mono); font-size: 9px; color: var(--muted);
     }
     .crt-led i {
-      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
-      box-shadow: 0 0 8px var(--accent); display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%; background: #ef4444;
+      box-shadow: 0 0 8px #ef4444; display: inline-block;
     }
 
     /* Marquee */
@@ -618,26 +690,34 @@
 
         <div class="crt-monitor-wrap">
           <div class="crt-bezel" id="heroCoreCard">
-            <div class="crt-screen">
-              <div class="crt-screen-img">
-                <img src="/public/img/hero-visual.png" alt="L;IT Lab CRT Monitor" />
-              </div>
-              <div class="oscilloscope-box">
-                <div class="osc-head">
-                  <span>CRT_SIGNAL // CONVERGENCE_WAVE</span>
-                  <span id="oscFreq">60.0 Hz</span>
+            <div class="crt-cavity">
+              <div class="crt-screen" id="crtScreen">
+                <div class="crt-refresh-bar" aria-hidden="true"></div>
+                <div class="crt-screen-img">
+                  <div class="crt-osd" id="crtOsd">CH-04</div>
+                  <img src="/public/img/hero-visual.png" alt="L;IT Lab CRT Monitor" />
                 </div>
-                <canvas id="oscCanvas" width="420" height="50"></canvas>
-              </div>
-              <div class="crt-console">
-                <div class="console-line"><span>STATUS: PRODUCTION_SYNC</span><span class="ok">[ONLINE]</span></div>
-                <div class="console-line"><span>STACK: FLUTTER / NEXT.JS / ASTRO</span><span class="ok">[VERIFIED]</span></div>
-                <div class="console-line"><span>MAIL_ARCHIVE: 36BYTE_TELEMETRY</span><span class="ok">[ACTIVE]</span></div>
+                <div class="oscilloscope-box">
+                  <div class="osc-head">
+                    <span>CRT_SIGNAL // CONVERGENCE_WAVE</span>
+                    <span id="oscFreq">60.0 Hz</span>
+                  </div>
+                  <canvas id="oscCanvas" width="420" height="46"></canvas>
+                </div>
+                <div class="crt-console">
+                  <div class="console-line"><span>STATUS: PRODUCTION_SYNC</span><span class="ok">[ONLINE]</span></div>
+                  <div class="console-line"><span>STACK: FLUTTER / NEXT.JS / ASTRO</span><span class="ok">[VERIFIED]</span></div>
+                  <div class="console-line"><span>MAIL_ARCHIVE: 36BYTE_TELEMETRY</span><span class="ok">[ACTIVE]</span></div>
+                </div>
               </div>
             </div>
-            <div class="crt-plate">
-              <span>MODEL: CRT-L5100 // LAB_UNIT</span>
-              <span class="crt-led"><i></i><span>POWER ON</span></span>
+            <div class="crt-deck">
+              <div class="crt-speaker" aria-hidden="true"></div>
+              <span class="crt-plate-txt">TRINITRON-STYLE // L5100</span>
+              <div class="crt-controls">
+                <button type="button" class="crt-dial" id="crtChannelDial" title="チャンネル切り替え" aria-label="ブラウン管チャンネル切り替え"></button>
+                <span class="crt-led"><i></i><span>PWR</span></span>
+              </div>
             </div>
           </div>
         </div>
@@ -949,6 +1029,25 @@
     document.getElementById('branchShiftBtn').addEventListener('click', () => shiftBranch());
     document.getElementById('nixieRack').addEventListener('click', () => shiftBranch());
     window.addEventListener('load', () => shiftBranch(0, true));
+
+    // CRT Rotary Channel Dial Interaction
+    const crtDial = document.getElementById('crtChannelDial');
+    const crtScreen = document.getElementById('crtScreen');
+    const crtOsd = document.getElementById('crtOsd');
+    const channels = ['CH-04', 'CH-08', 'VIDEO-1', 'AUX-LAB'];
+    let chIdx = 0;
+    if (crtDial && crtScreen && crtOsd) {
+      crtDial.addEventListener('click', (e) => {
+        e.stopPropagation();
+        chIdx = (chIdx + 1) % channels.length;
+        crtDial.style.transform = `rotate(${chIdx * 45}deg)`;
+        crtScreen.classList.remove('is-zapping');
+        void crtScreen.offsetWidth;
+        crtScreen.classList.add('is-zapping');
+        crtOsd.textContent = channels[chIdx];
+        shiftBranch();
+      });
+    }
 
     if (window.matchMedia('(pointer: fine)').matches) {
       const bindTilt = (el, strength) => {
