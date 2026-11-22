@@ -979,13 +979,9 @@
       });
     });
 
-    // Worldline Divergence Shift
-    const branches = [
-      { id: '0', greek: 'α', num: '0.571046', msg: 'ATTRACTOR_FIELD // α-LINE ACTIVE', freq: '60.0 Hz' },
-      { id: '1', greek: 'β', num: '1.130205', msg: 'ATTRACTOR_FIELD // β-LINE SCALE', freq: '72.4 Hz' },
-      { id: '2', greek: 'Ω', num: '1.048912', msg: 'ATTRACTOR_FIELD // Ω-CONVERGENCE', freq: '88.8 Hz' },
-    ];
-    let branchIdx = 0;
+    // Worldline Divergence Shift (Dynamic Random Generation based on Attractor Field Definition)
+    // α (0.xxxxxx): ~60%, β (1.xxxxxx): ~35%, TRUE OPTIMAL CONVERGENCE (Rare 5%): 1.048912
+    const TRUE_CONVERGENCE_NUM = '1.048912';
     let oscSpike = 0;
     const tubes = document.querySelectorAll('#nixieRack .tube-char');
     const telemetryText = document.getElementById('telemetryText');
@@ -995,25 +991,66 @@
     let toastTimer;
     let nixieTimer;
 
+    function randomSixDigits() {
+      return String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
+    }
+
+    function generateWorldline(forceNormal) {
+      const roll = Math.random();
+      if (!forceNormal && roll < 0.05) {
+        return {
+          id: '2',
+          greek: 'Ω',
+          num: TRUE_CONVERGENCE_NUM,
+          msg: 'TRUE_CONVERGENCE // OPTIMAL WORLDLINE REACHED',
+          freq: '104.8 Hz',
+          isTrue: true,
+        };
+      }
+      if (roll < 0.63) {
+        const num = `0.${randomSixDigits()}`;
+        return {
+          id: '0',
+          greek: 'α',
+          num,
+          msg: 'ATTRACTOR_FIELD // α-LINE (0% RANGE)',
+          freq: (55 + Math.random() * 10).toFixed(1) + ' Hz',
+          isTrue: false,
+        };
+      }
+      const num = `1.${randomSixDigits()}`;
+      return {
+        id: '1',
+        greek: 'β',
+        num,
+        msg: 'ATTRACTOR_FIELD // β-LINE (1%+ WALL CROSSED)',
+        freq: (70 + Math.random() * 12).toFixed(1) + ' Hz',
+        isTrue: false,
+      };
+    }
+
     function showToast(msg) {
       branchToast.textContent = msg;
       branchToast.classList.add('show');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => branchToast.classList.remove('show'), 2400);
+      toastTimer = setTimeout(() => branchToast.classList.remove('show'), 2600);
     }
 
-    function shiftBranch(nextIdx, silent) {
-      branchIdx = nextIdx !== undefined ? nextIdx : (branchIdx + 1) % branches.length;
-      const b = branches[branchIdx];
+    function shiftBranch(silent, forceNormal) {
+      const b = generateWorldline(forceNormal);
       document.body.setAttribute('data-branch', b.id);
       oscFreq.textContent = b.freq;
       greekBadge.textContent = `${b.greek}-${b.num}`;
-      oscSpike = 1.0;
+      oscSpike = b.isTrue ? 1.5 : 1.0;
 
       if (!silent) {
         document.body.classList.add('is-shifting');
         setTimeout(() => document.body.classList.remove('is-shifting'), 550);
-        showToast(`WORLDLINE SHIFTED -> ${b.greek} [ ${b.num} ]`);
+        showToast(
+          b.isTrue
+            ? `★ TRUE CONVERGENCE REACHED! -> ${b.greek} [ ${b.num} ]`
+            : `WORLDLINE SHIFTED -> ${b.greek} [ ${b.num} ]`
+        );
         document.querySelectorAll('.scramble').forEach((el, i) => {
           setTimeout(() => scrambleElement(el), i * 110);
         });
@@ -1036,9 +1073,9 @@
       }, 28);
     }
 
-    document.getElementById('branchShiftBtn').addEventListener('click', () => shiftBranch());
-    document.getElementById('nixieRack').addEventListener('click', () => shiftBranch());
-    window.addEventListener('load', () => shiftBranch(0, true));
+    document.getElementById('branchShiftBtn').addEventListener('click', () => shiftBranch(false));
+    document.getElementById('nixieRack').addEventListener('click', () => shiftBranch(false));
+    window.addEventListener('load', () => shiftBranch(true, true));
 
     // CRT Rotary Channel Dial Interaction
     const crtDial = document.getElementById('crtChannelDial');
@@ -1055,7 +1092,7 @@
         void crtScreen.offsetWidth;
         crtScreen.classList.add('is-zapping');
         crtOsd.textContent = channels[chIdx];
-        shiftBranch();
+        shiftBranch(false);
       });
     }
 
@@ -1085,7 +1122,7 @@
           const match = cat === 'all' || card.dataset.cat === cat;
           card.classList.toggle('is-hidden', !match);
         });
-        shiftBranch(idx % branches.length);
+        shiftBranch(false);
       });
     });
 
