@@ -1009,13 +1009,13 @@
           if (idx < iter) return target[idx];
           return chars[Math.floor(Math.random() * chars.length)];
         }).join('');
-        iter += 0.75;
+        iter += 0.34;
         if (iter >= target.length) {
           el.textContent = target;
           clearInterval(el._scrambleTimer);
           el._scrambleTimer = null;
         }
-      }, 24);
+      }, 42);
     }
     window.addEventListener('load', () => {
       document.querySelectorAll('.scramble').forEach((el, i) => {
