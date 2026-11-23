@@ -587,13 +587,16 @@
       border: 1px solid rgba(34, 197, 94, 0.32); padding: 2px 7px; border-radius: 5px;
     }
     .thumb-box {
-      height: 112px; border-radius: 10px; overflow: hidden;
+      height: 116px; border-radius: 10px; overflow: hidden; padding: 10px;
       border: 1px solid var(--border); margin-bottom: 12px;
       background: linear-gradient(135deg, #100e0c, #1a1713);
-      display: grid; place-items: center;
+      display: flex; align-items: center; justify-content: center;
     }
     .thumb-box.light { background: #f8fafc; }
-    .thumb-box img { width: 100%; height: 100%; object-fit: contain; padding: 10px; transition: transform 0.4s ease; }
+    .thumb-box img {
+      display: block; width: auto; height: auto; max-width: 100%; max-height: 100%;
+      object-fit: contain; border-radius: 10px; transition: transform 0.4s ease;
+    }
     .dossier-card:hover .thumb-box img { transform: scale(1.06); }
     .thumb-art { text-align: center; padding: 8px; }
     .thumb-art .icon { font-size: 28px; display: block; margin-bottom: 2px; }
