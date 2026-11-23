@@ -556,11 +556,17 @@
 
     /* Gadget Dossier Cards */
     .dossier-grid {
-      display: grid; gap: 24px;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      display: grid; gap: 18px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) {
+      .dossier-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+      .dossier-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
     .dossier-card {
-      position: relative; border-radius: 18px; padding: 24px;
+      position: relative; border-radius: 18px; padding: 20px;
       background: var(--surface); backdrop-filter: blur(14px);
       border: 1px solid var(--border);
       display: flex; flex-direction: column; cursor: pointer;
