@@ -192,6 +192,16 @@
     .shift-btn:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 0 28px var(--accent-glow); }
     .shift-btn:active { transform: scale(0.96); }
 
+    .mode-toggle-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 7px 12px; border-radius: 9px; cursor: pointer;
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      color: var(--text); background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--border);
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+    .mode-toggle-btn:hover { background: rgba(255, 255, 255, 0.14); border-color: var(--accent); transform: translateY(-1px); }
+
     .menu-btn {
       display: inline-flex; align-items: center; justify-content: center;
       border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: #fff;
@@ -697,6 +707,123 @@
       .reveal { opacity: 1; transform: none; transition: none !important; }
       #attractorCanvas, #oscCanvas { display: none; }
     }
+
+    /* Standard (Clean / High-Contrast Business) Mode */
+    body[data-theme="standard"] {
+      --bg: #f8fafc;
+      --bg-crt: #f1f5f9;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --accent: #0284c7;
+      --accent-hot: #0369a1;
+      --accent-glow: rgba(2, 132, 199, 0.14);
+      --phosphor: #059669;
+      --phosphor-glow: rgba(5, 150, 105, 0.18);
+      --border: #cbd5e1;
+      background: #f8fafc !important;
+      color: #0f172a;
+    }
+    body[data-theme="standard"] .crt-overlay,
+    body[data-theme="standard"] #attractorCanvas,
+    body[data-theme="standard"] .shift-flash,
+    body[data-theme="standard"] .leap-log-overlay,
+    body[data-theme="standard"] .true-banner,
+    body[data-theme="standard"] #branchShiftBtn,
+    body[data-theme="standard"] #dispatcher,
+    body[data-theme="standard"] .osc-box,
+    body[data-theme="standard"] .tube-ghost {
+      display: none !important;
+    }
+    body[data-theme="standard"] .hud-bar {
+      background: rgba(255, 255, 255, 0.94);
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+    }
+    body[data-theme="standard"] .brand { color: #0f172a; }
+    body[data-theme="standard"] .brand-badge {
+      background: #e0f2fe;
+      color: #0284c7;
+      border-color: #7dd3fc;
+      box-shadow: none;
+    }
+    body[data-theme="standard"] .hud-nav a { color: #334155; }
+    body[data-theme="standard"] .hud-nav a:hover { color: #0284c7; }
+    body[data-theme="standard"] .mode-toggle-btn {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+    body[data-theme="standard"] .menu-btn {
+      background: #f1f5f9;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+    body[data-theme="standard"] .drawer { background: rgba(15, 23, 42, 0.45); }
+    body[data-theme="standard"] .drawer-panel { background: #ffffff; border-color: #cbd5e1; }
+    body[data-theme="standard"] .drawer a { color: #0f172a; border-color: #e2e8f0; }
+    body[data-theme="standard"] .worldline-badge {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+      color: #047857;
+    }
+    body[data-theme="standard"] .live-dot { animation: none; box-shadow: none; }
+    body[data-theme="standard"] .hero-highlight { text-shadow: none; }
+    body[data-theme="standard"] .nixie-chassis,
+    body[data-theme="standard"] .dossier-card,
+    body[data-theme="standard"] .lab-panel,
+    body[data-theme="standard"] .profile-card,
+    body[data-theme="standard"] .modal-box,
+    body[data-theme="standard"] .loop-step {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+      color: #0f172a;
+    }
+    body[data-theme="standard"] .tube-glass {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      box-shadow: none;
+    }
+    body[data-theme="standard"] .tube-char {
+      color: #0284c7;
+      text-shadow: none;
+    }
+    body[data-theme="standard"] .greek-badge {
+      background: #e0f2fe;
+      color: #0284c7;
+      border-color: #7dd3fc;
+    }
+    body[data-theme="standard"] .pill-btn {
+      background: #ffffff;
+      color: #334155;
+      border-color: #cbd5e1;
+    }
+    body[data-theme="standard"] .pill-btn.active {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
+    body[data-theme="standard"] .tags span {
+      background: #f1f5f9;
+      color: #334155;
+      border-color: #cbd5e1;
+    }
+    body[data-theme="standard"] .marquee-wrap {
+      background: #ffffff;
+      border-color: #cbd5e1;
+    }
+    body[data-theme="standard"] .marquee-track { animation: none; flex-wrap: wrap; justify-content: center; }
+    body[data-theme="standard"] .btn-primary {
+      background: #0284c7;
+      color: #ffffff;
+      box-shadow: none;
+    }
+    body[data-theme="standard"] .btn-ghost {
+      background: #ffffff;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
   </style>
 </head>
 <body data-branch="0">
@@ -722,6 +849,7 @@
         <a href="#profile">03.LAB_MEMBER_001</a>
       </nav>
       <div class="hud-actions">
+        <button type="button" class="mode-toggle-btn" id="themeModeBtn" title="通常デザインとLAB表示を切り替える">📄 通常表示</button>
         <button type="button" class="shift-btn" id="branchShiftBtn" title="観測ラインを切り替える">
           <span>⚡ WORLDLINE SHIFT</span>
         </button>
@@ -735,7 +863,8 @@
       <a href="#works">01.GADGETS</a>
       <a href="#loop">02.PROTOCOL</a>
       <a href="#profile">03.LAB_MEMBER_001</a>
-      <a href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer" style="border-bottom:none;">GITHUB // laskal05</a>
+      <a href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer">GITHUB // laskal05</a>
+      <button type="button" class="mode-toggle-btn" id="drawerThemeModeBtn" style="margin-top:10px; justify-content:center;">📄 通常表示</button>
     </div>
   </div>
 
@@ -1068,11 +1197,18 @@
 
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ+-/*=;';
     function scrambleElement(el, customText) {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        if (customText) el.textContent = customText;
+      const target = customText || el.dataset.text || el.textContent;
+      if (
+        document.body.getAttribute('data-theme') === 'standard' ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ) {
+        if (el._scrambleTimer) {
+          clearInterval(el._scrambleTimer);
+          el._scrambleTimer = null;
+        }
+        el.textContent = target;
         return;
       }
-      const target = customText || el.dataset.text || el.textContent;
       if (el._scrambleTimer) clearInterval(el._scrambleTimer);
       let iter = 0;
       el._scrambleTimer = setInterval(() => {
@@ -1246,6 +1382,10 @@
     if (window.matchMedia('(pointer: fine)').matches) {
       const bindTilt = (el, strength) => {
         el.addEventListener('mousemove', (e) => {
+          if (document.body.getAttribute('data-theme') === 'standard') {
+            el.style.transform = '';
+            return;
+          }
           const r = el.getBoundingClientRect();
           const x = (e.clientX - r.left) / r.width - 0.5;
           const y = (e.clientY - r.top) / r.height - 0.5;
@@ -1441,7 +1581,12 @@
           ctx.stroke();
         }
 
-        // Plasma Lightning Sparks
+        // Ambient low-frequency lightning sparks (~every 3s on average at 60fps)
+        if (document.body.getAttribute('data-theme') !== 'standard' && Math.random() < 0.0055) {
+          spawnSpark(Math.random() * w, Math.random() * h, 1 + Math.floor(Math.random() * 2));
+        }
+
+        // Plasma Lightning Sparks (outer glow + bright white core)
         for (let i = sparks.length - 1; i >= 0; i--) {
           const sp = sparks[i];
           ctx.beginPath();
@@ -1449,10 +1594,14 @@
             if (idx === 0) ctx.moveTo(pt.x, pt.y);
             else ctx.lineTo(pt.x, pt.y);
           });
-          ctx.strokeStyle = `rgba(180, 245, 255, ${sp.alpha.toFixed(3)})`;
-          ctx.lineWidth = 1.6;
+          ctx.strokeStyle = `rgba(56, 189, 248, ${(sp.alpha * 0.65).toFixed(3)})`;
+          ctx.lineWidth = 3.4;
           ctx.stroke();
-          sp.alpha *= 0.86;
+
+          ctx.strokeStyle = `rgba(235, 250, 255, ${sp.alpha.toFixed(3)})`;
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+          sp.alpha *= 0.87;
           if (sp.alpha < 0.05) sparks.splice(i, 1);
         }
 
@@ -1504,6 +1653,43 @@
       }
       draw();
     }
+
+    // Theme Mode Toggle (LAB <-> Standard High-Contrast Mode)
+    const themeModeBtn = document.getElementById('themeModeBtn');
+    const drawerThemeModeBtn = document.getElementById('drawerThemeModeBtn');
+    function applyThemeMode(mode, persist = true) {
+      const isStandard = mode === 'standard';
+      if (isStandard) {
+        document.body.setAttribute('data-theme', 'standard');
+        document.querySelectorAll('.scramble').forEach((el) => {
+          if (el._scrambleTimer) {
+            clearInterval(el._scrambleTimer);
+            el._scrambleTimer = null;
+          }
+          el.textContent = el.dataset.text || el.textContent;
+        });
+      } else {
+        document.body.removeAttribute('data-theme');
+      }
+      const label = isStandard ? '⚡ LAB表示' : '📄 通常表示';
+      if (themeModeBtn) themeModeBtn.textContent = label;
+      if (drawerThemeModeBtn) drawerThemeModeBtn.textContent = label;
+      if (persist) {
+        try { localStorage.setItem('lit_theme_mode', mode); } catch (_) {}
+      }
+    }
+    const urlMode = new URLSearchParams(window.location.search).get('mode');
+    let savedMode = 'lab';
+    try { savedMode = localStorage.getItem('lit_theme_mode') || 'lab'; } catch (_) {}
+    applyThemeMode(urlMode === 'standard' || urlMode === 'lab' ? urlMode : savedMode, false);
+
+    [themeModeBtn, drawerThemeModeBtn].forEach((btn) => {
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        const next = document.body.getAttribute('data-theme') === 'standard' ? 'lab' : 'standard';
+        applyThemeMode(next, true);
+      });
+    });
 
     // 36-Byte Past Message Dispatcher Logic
     const dispatchForm = document.getElementById('dispatchForm');
