@@ -1716,8 +1716,8 @@
           ctx.stroke();
         }
 
-        // Ambient lightning sparks (~every 1s on average at 60fps)
-        if (document.body.getAttribute('data-theme') !== 'standard' && Math.random() < 0.018) {
+        // Ambient lightning sparks (~2-3 times per sec on average at 60fps)
+        if (document.body.getAttribute('data-theme') !== 'standard' && Math.random() < 0.045) {
           spawnSpark(Math.random() * w, Math.random() * h, 1 + Math.floor(Math.random() * 2));
         }
 
