@@ -304,6 +304,55 @@
       z-index: 2;
       animation: nixieFlicker 4s infinite alternate;
     }
+    .tube-ghost {
+      position: absolute;
+      font-family: var(--mono); font-size: clamp(24px, 3.4vw, 36px); font-weight: 700;
+      color: rgba(255, 190, 120, 0.08);
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    /* Reading-Steiner IBN-style Log Flash */
+    .leap-log-overlay {
+      position: fixed; top: 88px; left: 50%; transform: translateX(-50%);
+      z-index: 96; pointer-events: none; opacity: 0;
+      padding: 10px 18px; border-radius: 8px;
+      background: rgba(4, 14, 8, 0.92);
+      border: 1px solid var(--phosphor);
+      box-shadow: 0 0 28px var(--phosphor-glow);
+      font-family: var(--mono); font-size: 11px; color: #4ade80;
+      letter-spacing: 0.06em; white-space: nowrap;
+      transition: opacity 0.2s ease;
+    }
+    .leap-log-overlay.active { opacity: 1; }
+    /* 36-Byte Past Message Dispatcher */
+    .dispatcher-box {
+      padding: clamp(24px, 4vw, 36px); border-radius: 20px;
+      background: linear-gradient(145deg, rgba(16, 14, 12, 0.92), rgba(8, 12, 10, 0.94));
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.65), inset 0 0 32px rgba(34,197,94,0.06);
+    }
+    .dispatcher-form {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px;
+    }
+    .dispatcher-input {
+      flex: 1; min-width: 220px; padding: 13px 16px; border-radius: 10px;
+      background: rgba(0, 0, 0, 0.65); border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80; font-family: var(--mono); font-size: 14px; outline: none;
+    }
+    .dispatcher-input:focus { border-color: var(--accent); box-shadow: 0 0 16px var(--accent-glow); }
+    .preset-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .preset-chip {
+      font-family: var(--mono); font-size: 11px; color: var(--muted);
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+    }
+    .preset-chip:hover { color: #fff; border-color: var(--accent); }
+    .dispatch-log {
+      margin-top: 16px; padding: 12px 14px; border-radius: 10px;
+      background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(255,255,255,0.08);
+      font-family: var(--mono); font-size: 11px; color: #94a3b8; min-height: 54px;
+    }
     @keyframes nixieFlicker {
       0%, 92%, 100% { opacity: 1; }
       94% { opacity: 0.86; }
@@ -656,6 +705,7 @@
   <canvas id="attractorCanvas" aria-hidden="true"></canvas>
   <div class="crt-overlay" aria-hidden="true"></div>
   <div class="shift-flash" aria-hidden="true"></div>
+  <div class="leap-log-overlay" id="leapLogOverlay" aria-hidden="true">&gt; CAUSALITY_REWRITE... [SYNCING]</div>
 
   <header class="hud-header">
     <div class="hud-bar">
@@ -715,14 +765,14 @@
               <span class="nixie-greek" id="greekBadge">α-0.571046</span>
             </div>
             <div class="nixie-tubes">
-              <div class="tube"><span class="tube-char">0</span></div>
+              <div class="tube"><span class="tube-ghost">8</span><span class="tube-char">0</span></div>
               <div class="tube-dot">.</div>
-              <div class="tube"><span class="tube-char">5</span></div>
-              <div class="tube"><span class="tube-char">7</span></div>
-              <div class="tube"><span class="tube-char">1</span></div>
-              <div class="tube"><span class="tube-char">0</span></div>
-              <div class="tube"><span class="tube-char">4</span></div>
-              <div class="tube"><span class="tube-char">6</span></div>
+              <div class="tube"><span class="tube-ghost">8</span><span class="tube-char">5</span></div>
+              <div class="tube"><span class="tube-ghost">8</span><span class="tube-char">7</span></div>
+              <div class="tube"><span class="tube-ghost">8</span><span class="tube-char">1</span></div>
+              <div class="tube"><span class="tube-ghost">8</span><span class="tube-char">0</span></div>
+              <div class="tube"><span class="tube-ghost">8</span><span class="tube-char">4</span></div>
+              <div class="tube"><span class="tube-ghost">8</span><span class="tube-char">6</span></div>
             </div>
           </div>
 
@@ -929,6 +979,28 @@
         </div>
       </div>
     </section>
+
+    <section id="dispatcher" class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="dispatcher-box reveal">
+          <span class="sec-code" style="color:var(--phosphor);">// 04. 36-BYTE PACKET DISPATCHER (EXPERIMENTAL)</span>
+          <h2 style="font-size:clamp(22px, 2.4vw, 30px); margin-bottom:8px;">因果律パケット送信テスト</h2>
+          <p style="color:var(--muted); font-size:14px; margin:0;">36バイト以内の指令を入力して送信すると、放電エフェクトとともに世界線分岐が再演算されます。</p>
+          <form class="dispatcher-form" id="dispatchForm">
+            <input type="text" maxlength="36" class="dispatcher-input" id="dispatchInput" placeholder="例: OPTIMIZE_CONVERSION_NOW" value="SHIP_VALUE_FASTER" aria-label="送信メッセージ（36文字まで）" />
+            <button type="submit" class="btn btn-primary">⚡ DISPATCH TO PAST</button>
+          </form>
+          <div class="preset-row">
+            <button type="button" class="preset-chip" data-msg="OPTIMIZE_SEO_100YEN">OPTIMIZE_SEO_100YEN</button>
+            <button type="button" class="preset-chip" data-msg="ELIMINATE_ALL_BUGS">ELIMINATE_ALL_BUGS</button>
+            <button type="button" class="preset-chip" data-msg="REACH_TRUE_WORLDLINE">REACH_TRUE_WORLDLINE</button>
+          </div>
+          <div class="dispatch-log" id="dispatchLog">
+            <div>[READY] WAITING FOR 36-BYTE PAYLOAD...</div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <div class="modal-backdrop" id="dossierModal" aria-hidden="true">
@@ -1088,12 +1160,25 @@
       toastTimer = setTimeout(() => branchToast.classList.remove('show'), 2600);
     }
 
+    const leapLogOverlay = document.getElementById('leapLogOverlay');
+    let leapTimer;
+
+    function triggerLeapOverlay(num, isTrue) {
+      if (!leapLogOverlay) return;
+      leapLogOverlay.textContent = isTrue
+        ? `> [0x4F4B] SINGULARITY_CONVERGED -> ${num} // ALL_CONSTRAINTS_BYPASSED`
+        : `> [0x3F2A] CAUSALITY_REWRITE -> ${num} // MEMORY_RECONSTRUCTED`;
+      leapLogOverlay.classList.add('active');
+      clearTimeout(leapTimer);
+      leapTimer = setTimeout(() => leapLogOverlay.classList.remove('active'), 1100);
+    }
+
     function shiftBranch(silent, forceNormal) {
       const b = generateWorldline(forceNormal);
       document.body.setAttribute('data-branch', b.id);
       oscFreq.textContent = b.freq;
       greekBadge.textContent = `${b.greek}-${b.num}`;
-      oscSpike = b.isTrue ? 1.6 : 1.0;
+      oscSpike = b.isTrue ? 1.8 : 1.15;
 
       if (heroLine1 && heroLine2) {
         heroLine1.dataset.text = b.line1;
@@ -1103,13 +1188,15 @@
       if (!silent) {
         document.body.classList.add('is-shifting');
         setTimeout(() => document.body.classList.remove('is-shifting'), 550);
+        if (window.__triggerWarp) window.__triggerWarp(b.isTrue);
+        triggerLeapOverlay(b.num, b.isTrue);
         showToast(
           b.isTrue
             ? `★ TRUE CONVERGENCE REACHED! -> ${b.greek} [ ${b.num} ]`
             : `WORLDLINE SHIFTED -> ${b.greek} [ ${b.num} ]`
         );
         document.querySelectorAll('.scramble').forEach((el, i) => {
-          setTimeout(() => scrambleElement(el, el.dataset.text), i * 110);
+          setTimeout(() => scrambleElement(el, el.dataset.text), i * 160);
         });
       } else if (heroLine1 && heroLine2) {
         heroLine1.textContent = b.line1;
@@ -1263,15 +1350,17 @@
       drawOsc();
     }
 
-    // Fullscreen Interactive Worldline Attractor Canvas
+    // Fullscreen Interactive Worldline Attractor Canvas + Lightning Arc + Time-Leap Warp
     const canvas = document.getElementById('attractorCanvas');
     if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const ctx = canvas.getContext('2d');
       let w = 0, h = 0, t = 0;
       const mouse = { x: -9999, y: -9999 };
       const pulses = [];
+      const sparks = [];
       const particles = [];
-      const COUNT = 58;
+      const COUNT = 64;
+      let warpEnergy = 0;
 
       function resize() {
         w = canvas.width = window.innerWidth;
@@ -1284,13 +1373,44 @@
         particles.push({
           x: Math.random() * w, y: Math.random() * h,
           vx: (Math.random() - 0.5) * 0.75, vy: (Math.random() - 0.5) * 0.75,
-          r: Math.random() * 1.8 + 0.8,
+          r: Math.random() * 1.9 + 0.8,
         });
       }
+
+      function spawnSpark(cx, cy, count) {
+        for (let k = 0; k < count; k++) {
+          const angle = Math.random() * Math.PI * 2;
+          const len = 90 + Math.random() * 220;
+          const pts = [{ x: cx, y: cy }];
+          for (let s = 1; s <= 5; s++) {
+            const prog = s / 5;
+            pts.push({
+              x: cx + Math.cos(angle) * len * prog + (Math.random() - 0.5) * 34,
+              y: cy + Math.sin(angle) * len * prog + (Math.random() - 0.5) * 34,
+            });
+          }
+          sparks.push({ pts, alpha: 1.0 });
+        }
+      }
+
+      window.__triggerWarp = (isTrue) => {
+        warpEnergy = isTrue ? 1.8 : 1.0;
+        const cx = w / 2, cy = h / 2;
+        pulses.push({ x: cx, y: cy, r: 12, alpha: 1.0 });
+        spawnSpark(cx, cy, isTrue ? 10 : 5);
+        particles.forEach((p) => {
+          const dx = p.x - cx;
+          const dy = p.y - cy;
+          const dist = Math.max(20, Math.hypot(dx, dy));
+          p.vx += (dx / dist) * (isTrue ? 9.5 : 5.5);
+          p.vy += (dy / dist) * (isTrue ? 9.5 : 5.5);
+        });
+      };
 
       window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
       window.addEventListener('click', (e) => {
         pulses.push({ x: e.clientX, y: e.clientY, r: 6, alpha: 0.85 });
+        spawnSpark(e.clientX, e.clientY, 2);
       });
 
       function getAccentRgb() {
@@ -1303,31 +1423,47 @@
       function draw() {
         ctx.clearRect(0, 0, w, h);
         const rgb = getAccentRgb();
-        t += 0.012;
+        t += 0.012 + warpEnergy * 0.03;
+        warpEnergy *= 0.93;
 
         for (let line = 0; line < 4; line++) {
           ctx.beginPath();
           const baseY = h * (0.22 + line * 0.19);
           for (let x = 0; x <= w; x += 28) {
-            const wave = Math.sin(x * 0.004 + t + line * 1.4) * 32 + Math.cos(x * 0.002 - t * 0.7) * 18;
+            const wave = Math.sin(x * 0.004 + t + line * 1.4) * (32 + warpEnergy * 24) + Math.cos(x * 0.002 - t * 0.7) * 18;
             const pull = mouse.x > 0 ? Math.exp(-Math.hypot(x - mouse.x, baseY - mouse.y) / 260) * (mouse.y - baseY) * 0.25 : 0;
             const y = baseY + wave + pull;
             if (x === 0) ctx.moveTo(x, y);
             else ctx.lineTo(x, y);
           }
-          ctx.strokeStyle = `rgba(${rgb}, 0.11)`;
-          ctx.lineWidth = 1.2;
+          ctx.strokeStyle = `rgba(${rgb}, ${(0.11 + warpEnergy * 0.12).toFixed(3)})`;
+          ctx.lineWidth = 1.2 + warpEnergy * 0.8;
           ctx.stroke();
+        }
+
+        // Plasma Lightning Sparks
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          const sp = sparks[i];
+          ctx.beginPath();
+          sp.pts.forEach((pt, idx) => {
+            if (idx === 0) ctx.moveTo(pt.x, pt.y);
+            else ctx.lineTo(pt.x, pt.y);
+          });
+          ctx.strokeStyle = `rgba(180, 245, 255, ${sp.alpha.toFixed(3)})`;
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+          sp.alpha *= 0.86;
+          if (sp.alpha < 0.05) sparks.splice(i, 1);
         }
 
         for (let i = pulses.length - 1; i >= 0; i--) {
           const p = pulses[i];
-          p.r += 7.5;
+          p.r += 8 + warpEnergy * 4;
           p.alpha *= 0.94;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
           ctx.strokeStyle = `rgba(${rgb}, ${p.alpha.toFixed(3)})`;
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 1.6;
           ctx.stroke();
           if (p.alpha < 0.03) pulses.splice(i, 1);
         }
@@ -1341,14 +1477,14 @@
             p.vx += (dxm / dm) * 0.038;
             p.vy += (dym / dm) * 0.038;
           }
-          p.vx *= 0.99; p.vy *= 0.99;
+          p.vx *= 0.975; p.vy *= 0.975;
           p.x += p.vx; p.y += p.vy;
           if (p.x < 0 || p.x > w) p.vx *= -1;
           if (p.y < 0 || p.y > h) p.vy *= -1;
 
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${rgb}, 0.72)`;
+          ctx.fillStyle = `rgba(${rgb}, 0.74)`;
           ctx.fill();
 
           for (let j = i + 1; j < particles.length; j++) {
@@ -1367,6 +1503,30 @@
         requestAnimationFrame(draw);
       }
       draw();
+    }
+
+    // 36-Byte Past Message Dispatcher Logic
+    const dispatchForm = document.getElementById('dispatchForm');
+    const dispatchInput = document.getElementById('dispatchInput');
+    const dispatchLog = document.getElementById('dispatchLog');
+    document.querySelectorAll('.preset-chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        if (dispatchInput) dispatchInput.value = chip.dataset.msg || '';
+      });
+    });
+    if (dispatchForm && dispatchInput && dispatchLog) {
+      dispatchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const msg = (dispatchInput.value || 'PING').trim().slice(0, 36);
+        const bytes = new Blob([msg]).size;
+        dispatchLog.innerHTML = `<div style="color:#4ade80;">[DISPATCHED] PAYLOAD="${msg.replace(/</g, '&lt;')}" (${bytes} bytes) -> PAST_BRANCH</div>`;
+        shiftBranch(false);
+        const curBranch = greekBadge ? greekBadge.textContent : 'UPDATED';
+        const line = document.createElement('div');
+        line.style.color = 'var(--accent)';
+        line.textContent = `[CONFIRMED] CAUSALITY UPDATED -> ${curBranch}`;
+        dispatchLog.appendChild(line);
+      });
     }
   </script>
 </body>
