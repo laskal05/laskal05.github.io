@@ -566,7 +566,7 @@
       .dossier-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
     .dossier-card {
-      position: relative; border-radius: 18px; padding: 20px;
+      position: relative; border-radius: 14px; padding: 16px;
       background: var(--surface); backdrop-filter: blur(14px);
       border: 1px solid var(--border);
       display: flex; flex-direction: column;
@@ -580,35 +580,38 @@
     .dossier-card.is-hidden { display: none; }
     .dossier-top {
       display: flex; justify-content: space-between; align-items: center;
-      font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 14px;
+      font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 10px;
     }
     .dossier-status {
       color: var(--phosphor); background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.32); padding: 2px 8px; border-radius: 5px;
+      border: 1px solid rgba(34, 197, 94, 0.32); padding: 2px 7px; border-radius: 5px;
     }
     .thumb-box {
-      aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden;
-      border: 1px solid var(--border); margin-bottom: 16px;
+      height: 112px; border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border); margin-bottom: 12px;
       background: linear-gradient(135deg, #100e0c, #1a1713);
       display: grid; place-items: center;
     }
     .thumb-box.light { background: #f8fafc; }
-    .thumb-box img { width: 100%; height: 100%; object-fit: contain; padding: 14px; transition: transform 0.4s ease; }
+    .thumb-box img { width: 100%; height: 100%; object-fit: contain; padding: 10px; transition: transform 0.4s ease; }
     .dossier-card:hover .thumb-box img { transform: scale(1.06); }
-    .thumb-art { text-align: center; padding: 14px; }
-    .thumb-art .icon { font-size: 34px; display: block; margin-bottom: 4px; }
-    .thumb-art .code { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; }
-    .dossier-card h3 { font-size: 19px; margin: 0 0 8px; }
-    .dossier-card p { font-size: 14px; color: var(--muted); margin: 0; flex-grow: 1; }
-    .card-foot {
-      display: flex; justify-content: space-between; align-items: center; gap: 10px;
-      margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06);
+    .thumb-art { text-align: center; padding: 8px; }
+    .thumb-art .icon { font-size: 28px; display: block; margin-bottom: 2px; }
+    .thumb-art .code { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.08em; }
+    .dossier-card h3 { font-size: 16px; line-height: 1.35; margin: 0 0 6px; }
+    .dossier-card p {
+      font-size: 13px; line-height: 1.5; color: var(--muted); margin: 0; flex-grow: 1;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .card-foot {
+      display: flex; justify-content: space-between; align-items: center; gap: 8px;
+      margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; }
     .tags span {
-      font-family: var(--mono); font-size: 11px; color: #e2e8f0;
+      font-family: var(--mono); font-size: 10px; color: #e2e8f0;
       background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border);
-      padding: 3px 8px; border-radius: 6px;
+      padding: 2px 6px; border-radius: 5px;
     }
     .inspect-hint {
       font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent);
