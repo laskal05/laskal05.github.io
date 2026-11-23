@@ -569,7 +569,7 @@
       position: relative; border-radius: 18px; padding: 20px;
       background: var(--surface); backdrop-filter: blur(14px);
       border: 1px solid var(--border);
-      display: flex; flex-direction: column; cursor: pointer;
+      display: flex; flex-direction: column;
       transform-style: preserve-3d;
       transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
     }
@@ -610,7 +610,13 @@
       background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border);
       padding: 3px 8px; border-radius: 6px;
     }
-    .inspect-hint { font-family: var(--mono); font-size: 10px; color: var(--accent); white-space: nowrap; }
+    .inspect-hint {
+      font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent);
+      background: transparent; border: 1px solid var(--border); border-radius: 7px;
+      padding: 4px 10px; cursor: pointer; white-space: nowrap;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .inspect-hint:hover { background: var(--accent-glow); border-color: var(--accent); }
 
     /* Modal */
     .modal-backdrop {
@@ -986,7 +992,7 @@
         <header class="sec-head reveal">
           <span class="sec-code" data-std="WORKS" data-lab="// 01. FUTURE_GADGETS">// 01. FUTURE_GADGETS</span>
           <h2 data-std="制作実績・開発事例" data-lab="開発ガジェット・実験成果">開発ガジェット・実験成果</h2>
-          <p class="sec-sub" data-std="各項目をクリックすると詳しい内容をご覧いただけます。" data-lab="カードをクリックすると機密実験記録（DOSSIER）を開示します。">カードをクリックすると機密実験記録（DOSSIER）を開示します。</p>
+          <p class="sec-sub" data-std="各項目の「詳しく見る」ボタンをクリックすると詳しい内容をご覧いただけます。" data-lab="各カードの「機密開示」をクリックすると実験記録（DOSSIER）を展開します。">各カードの「機密開示」をクリックすると実験記録（DOSSIER）を展開します。</p>
           <div class="filter-row" role="tablist">
             <button type="button" class="pill-btn active" data-cat="all" data-std="すべて (8)" data-lab="ALL [08]">ALL [08]</button>
             <button type="button" class="pill-btn" data-cat="app" data-std="スマホアプリ (4)" data-lab="iOS GADGETS [04]">iOS GADGETS [04]</button>
@@ -1014,26 +1020,26 @@
                 <p data-std="内容証明郵便の作成を支援するWebサービス。画面改善や品質向上のための継続的な保守・運用を担当。" data-lab="内容証明郵便の作成をオンラインで完結させるWebサービス。テスト自動化とCI/CD高速化を担当。">内容証明郵便の作成をオンラインで完結させるWebサービス。テスト自動化とCI/CD高速化を担当。</p>
                 <div class="card-foot">
                   <div class="tags"><span>Next.js</span><span>TypeScript</span><span>Playwright</span></div>
-                  <span class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</span>
+                  <button type="button" class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</button>
                 </div>
               </article>
 
               <!-- 2. 有限会社FSK -->
               <article class="dossier-card tilt-card reveal" data-cat="web"
                 data-id-std="WEB 02 // 企業サイト" data-id-lab="GADGET_NO // 002"
-                data-title-std="有限会社FSK 公式サイト" data-title-lab="有限会社FSK // 精密加工拠点"
-                data-detail-std="精密板金から板金加工・組み立てまで社内一貫生産を行う製造業様のコーポレートサイト。得意先や新規取引先に加工スペックや強みが一目で伝わる4ページ構成・最新Next.js基盤への刷新を進めています。"
-                data-detail-lab="精密板金から組立まで社内一貫生産を誇る製造業の公式拠点。加工スペック早見表や取引フローを統合し、最新のNext.js 16基盤への再構築を進行中。">
+                data-title-std="有限会社FSK ホームページ" data-title-lab="有限会社FSK // 精密加工拠点"
+                data-detail-std="精密板金から板金加工・組み立てまで社内一貫生産を行う製造業様のホームページ。得意先や新規取引先に加工スペックや強みが一目で伝わる4ページ構成・最新Next.js基盤への刷新を進めています。"
+                data-detail-lab="精密板金から組立まで社内一貫生産を誇る製造業の公式拠点。加工スペック早見表や取引フローを統合し、最新のNext.js基盤への再構築を進行中。">
                 <div class="dossier-top">
                   <span data-std="WEB 02 // コーポレート" data-lab="GADGET_NO // 002">GADGET_NO // 002</span>
                   <span class="dossier-status" data-std="刷新中" data-lab="UPGRADING">UPGRADING</span>
                 </div>
                 <div class="thumb-box light"><img src="/public/img/logo_fsk0303.png" alt="有限会社FSK" /></div>
-                <h3 data-std="有限会社FSK 公式サイト" data-lab="有限会社FSK // 精密加工拠点">有限会社FSK // 精密加工拠点</h3>
-                <p data-std="板金加工メーカー様の企業サイトリニューアルを推進中。技術力と取引の流れがわかりやすく伝わる構成へ刷新しています。" data-lab="精密板金メーカーの公式サイトを刷新中。BtoB向けの加工スペック訴求と最新Next.js構成への移行を推進。">精密板金メーカーの公式サイトを刷新中。BtoB向けの加工スペック訴求と最新Next.js構成への移行を推進。</p>
+                <h3 data-std="有限会社FSK ホームページ" data-lab="有限会社FSK // 精密加工拠点">有限会社FSK // 精密加工拠点</h3>
+                <p data-std="板金加工メーカー様のホームページリニューアルを推進中。技術力と取引の流れがわかりやすく伝わる構成へ刷新しています。" data-lab="精密板金メーカーのホームページを刷新中。BtoB向けの加工スペック訴求と最新Next.js構成への移行を推進。">精密板金メーカーのホームページを刷新中。BtoB向けの加工スペック訴求と最新Next.js構成への移行を推進。</p>
                 <div class="card-foot">
-                  <div class="tags"><span>Next.js 16</span><span>Web制作</span></div>
-                  <span class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</span>
+                  <div class="tags"><span>Next.js</span><span>Web制作</span></div>
+                  <button type="button" class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</button>
                 </div>
               </article>
 
@@ -1052,7 +1058,7 @@
                 <p data-std="図面・製品マスタ・在庫管理を行うWebアプリの継続改善を担当。現場の使いやすさを重視した画面改修を実施。" data-lab="図面・製品マスタ・在庫管理Webアプリの継続開発。現場の入力ストレスを削減するUI/DB改修を実装。">図面・製品マスタ・在庫管理Webアプリの継続開発。現場の入力ストレスを削減するUI/DB改修を実装。</p>
                 <div class="card-foot">
                   <div class="tags"><span>Next.js</span><span>TypeScript</span><span>DB設計</span></div>
-                  <span class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</span>
+                  <button type="button" class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</button>
                 </div>
               </article>
 
@@ -1071,7 +1077,7 @@
                 <p data-std="既存システムからHubSpotへの顧客データ移行と整合性チェックを担当。業務を止めない確実な切り替えを支援しています。" data-lab="旧CRMからHubSpotへの大規模データ転送と整合性検証。不整合レコードを抽出し、安全に新世界線へ収束。">旧CRMからHubSpotへの大規模データ転送と整合性検証。不整合レコードを抽出し、安全に新世界線へ収束。</p>
                 <div class="card-foot">
                   <div class="tags"><span>HubSpot</span><span>データ移行</span></div>
-                  <span class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</span>
+                  <button type="button" class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</button>
                 </div>
               </article>
             </div>
@@ -1096,7 +1102,7 @@
                 <p data-std="日々の収支をカレンダーとグラフで記録・分析できるiPhoneアプリ。AIによる入力支援や分析機能を搭載。" data-lab="日々の収支をカレンダーと統計で観測する主力iOSアプリ。AI機能・診断・課金導線まで一気通貫で構築。">日々の収支をカレンダーと統計で観測する主力iOSアプリ。AI機能・診断・課金導線まで一気通貫で構築。</p>
                 <div class="card-foot">
                   <div class="tags"><span>Flutter</span><span>iOS</span><span>AI</span></div>
-                  <span class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</span>
+                  <button type="button" class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</button>
                 </div>
               </article>
 
@@ -1115,7 +1121,7 @@
                 <p data-std="毎月の固定費や積立投資の流れを見える化し、無理のない家計管理・資産形成をサポートするiPhoneアプリ。" data-lab="毎月の資金移動と積立投資をツリーで可視化し、長期の資産収束点を計算するiOSアプリ。">毎月の資金移動と積立投資をツリーで可視化し、長期の資産収束点を計算するiOSアプリ。</p>
                 <div class="card-foot">
                   <div class="tags"><span>Flutter</span><span>SQLite</span><span>iOS</span></div>
-                  <span class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</span>
+                  <button type="button" class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</button>
                 </div>
               </article>
 
@@ -1134,7 +1140,7 @@
                 <p data-std="外食メニューにも対応し、日々の脂質を無理なく記録・管理できる、安心の端末内完結型iPhoneアプリ。" data-lab="外食データ対応の端末完結型・脂質管理iOSガジェット。全テスト通過・リリースビルド検証済み。">外食データ対応の端末完結型・脂質管理iOSガジェット。全テスト通過・リリースビルド検証済み。</p>
                 <div class="card-foot">
                   <div class="tags"><span>Flutter</span><span>iOS</span><span>健康管理</span></div>
-                  <span class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</span>
+                  <button type="button" class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</button>
                 </div>
               </article>
 
@@ -1153,7 +1159,7 @@
                 <p data-std="選択肢を自由に登録して回せるルーレットアプリ。バーコード読み取りによる食品管理機能も搭載しています。" data-lab="任意項目を高速登録・抽選できるiOSガジェット。iOSウィジェット連携やバーコード読取機能を搭載。">任意項目を高速登録・抽選できるiOSガジェット。iOSウィジェット連携やバーコード読取機能を搭載。</p>
                 <div class="card-foot">
                   <div class="tags"><span>Flutter</span><span>iOS</span><span>Widget</span></div>
-                  <span class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</span>
+                  <button type="button" class="inspect-hint" data-std="詳しく見る ›" data-lab="機密開示 ›">機密開示 ›</button>
                 </div>
               </article>
             </div>
@@ -1539,7 +1545,10 @@
     const modalTags = document.getElementById('modalTags');
 
     workCards.forEach((card) => {
-      card.addEventListener('click', () => {
+      const btn = card.querySelector('.inspect-hint');
+      if (!btn) return;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const isStandard = document.body.getAttribute('data-theme') === 'standard';
         modalCode.textContent = (isStandard ? card.dataset.idStd : card.dataset.idLab) || 'CASE';
         modalTitle.textContent = (isStandard ? card.dataset.titleStd : card.dataset.titleLab) || '';
