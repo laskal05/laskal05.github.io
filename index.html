@@ -729,7 +729,6 @@
     body[data-theme="standard"] .shift-flash,
     body[data-theme="standard"] .leap-log-overlay,
     body[data-theme="standard"] .true-banner,
-    body[data-theme="standard"] #branchShiftBtn,
     body[data-theme="standard"] #dispatcher,
     body[data-theme="standard"] .osc-box,
     body[data-theme="standard"] .tube-ghost {
@@ -850,9 +849,6 @@
       </nav>
       <div class="hud-actions">
         <button type="button" class="mode-toggle-btn" id="themeModeBtn" title="通常デザインとLAB表示を切り替える">📄 通常表示</button>
-        <button type="button" class="shift-btn" id="branchShiftBtn" title="観測ラインを切り替える">
-          <span>⚡ WORLDLINE SHIFT</span>
-        </button>
         <button type="button" class="menu-btn" id="menuBtn" aria-controls="drawer" aria-expanded="false">MENU</button>
       </div>
     </div>
@@ -907,7 +903,7 @@
 
           <div class="cta-row">
             <a class="btn btn-primary" href="#works">開発ガジェット一覧 →</a>
-            <a class="btn btn-ghost" href="https://github.com/laskal05" target="_blank" rel="noopener noreferrer">GitHub // laskal05</a>
+            <a class="btn btn-ghost" href="#profile">プロフィール・方針</a>
           </div>
         </div>
 
@@ -1356,7 +1352,6 @@
       }, 28);
     }
 
-    document.getElementById('branchShiftBtn').addEventListener('click', () => shiftBranch(false));
     document.getElementById('nixieRack').addEventListener('click', () => shiftBranch(false));
     window.addEventListener('load', () => shiftBranch(true, true));
 
@@ -1581,8 +1576,8 @@
           ctx.stroke();
         }
 
-        // Ambient low-frequency lightning sparks (~every 3s on average at 60fps)
-        if (document.body.getAttribute('data-theme') !== 'standard' && Math.random() < 0.0055) {
+        // Ambient lightning sparks (~every 1s on average at 60fps)
+        if (document.body.getAttribute('data-theme') !== 'standard' && Math.random() < 0.018) {
           spawnSpark(Math.random() * w, Math.random() * h, 1 + Math.floor(Math.random() * 2));
         }
 
